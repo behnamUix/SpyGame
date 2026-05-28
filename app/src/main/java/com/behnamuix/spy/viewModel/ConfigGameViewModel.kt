@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
-import com.behnamuix.spy.data.local.repository.KeywordRepository
+import com.behnamuix.spy.data.local.db.repository.KeywordRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

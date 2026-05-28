@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.spy.data.local.repository.KeywordRepository
+import com.behnamuix.spy.data.local.db.repository.KeywordRepository
 import com.behnamuix.spy.utils.createUnpredictableShuffle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

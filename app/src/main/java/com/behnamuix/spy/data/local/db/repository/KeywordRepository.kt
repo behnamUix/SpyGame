@@ -1,4 +1,4 @@
-package com.behnamuix.spy.data.local.repository
+package com.behnamuix.spy.data.local.db.repository
 
 import com.behnamuix.spy.data.local.db.model.KeyWord
 

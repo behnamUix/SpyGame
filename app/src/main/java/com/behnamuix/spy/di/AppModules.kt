@@ -5,8 +5,8 @@ import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
 import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.data.local.db.config.SpyDatabase
-import com.behnamuix.spy.data.local.repository.KeywordRepository
-import com.behnamuix.spy.data.local.repository.KeywordRepositoryImpl
+import com.behnamuix.spy.data.local.db.repository.KeywordRepository
+import com.behnamuix.spy.data.local.db.repository.KeywordRepositoryImpl
 import com.behnamuix.spy.media.config.getMediaPlayer
 import com.behnamuix.spy.media.repo.MediaPlayerRepository
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel

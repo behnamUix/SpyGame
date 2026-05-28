@@ -326,7 +326,7 @@ fun PlayerCard(
                                     contentAlignment = Alignment.BottomCenter
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.VideogameAsset,
+                                        painterResource(R.drawable.gamepad),
                                         contentDescription = "",
                                         tint = color,
                                         modifier = Modifier
