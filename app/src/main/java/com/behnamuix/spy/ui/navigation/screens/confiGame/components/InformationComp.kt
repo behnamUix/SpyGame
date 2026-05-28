@@ -33,6 +33,7 @@ import androidx.core.net.toUri
 
 @Composable
 fun InformationComp() {
+    val ctx = LocalContext.current
     val infiniteTrans = rememberInfiniteTransition()
     val translateY by infiniteTrans.animateFloat(
         initialValue = 0f,
@@ -42,7 +43,6 @@ fun InformationComp() {
             repeatMode = RepeatMode.Reverse
         )
     )
-    var ctx = LocalContext.current
     Box(
         Modifier
 
@@ -69,13 +69,14 @@ fun InformationComp() {
                     ),
                     shape = RoundedCornerShape(8.dp), onClick = {
                         val telegramIntent = Intent(Intent.ACTION_VIEW).apply {
-                            Intent.setData = "https://t.me/behnamUix".toUri()
-                            Intent.setPackage = "org.telegram.messenger"
+                            data = "https://t.me/behnamUix".toUri()
+                            `package` = "org.telegram.messenger"
                         }
                         try {
                             ctx.startActivity(telegramIntent)
                         } catch (e: ActivityNotFoundException) {
-                            Toast.makeText(ctx, "تلگرام نصب نیست!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ctx, "تلگرام نصب نیست!${e.message}", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }) {
                     Text(

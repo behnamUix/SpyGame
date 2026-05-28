@@ -40,15 +40,14 @@ import androidx.navigation.NavController
 import com.behnamuix.retrofittest.SpyGame.model.Spy
 import com.behnamuix.spy.R
 import com.behnamuix.spy.ui.navigation.Screens
-import com.behnamuix.spy.ui.navigation.screens.confiGame.AgentRoleComp
-import com.behnamuix.spy.ui.navigation.screens.confiGame.SpyRoleComp
+import com.behnamuix.spy.ui.navigation.screens.confiGame.components.AgentRoleComp
+import com.behnamuix.spy.ui.navigation.screens.confiGame.components.SpyRoleComp
 import com.behnamuix.spy.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koinViewModel()) {
-
     val scope = rememberCoroutineScope()
     val pagerState =
         rememberPagerState(initialPage = 0, pageCount = { trainingVm.listRole.size })

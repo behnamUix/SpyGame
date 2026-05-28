@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,7 +71,6 @@ import com.behnamuix.spy.ui.navigation.screens.confiGame.components.ListKeyWords
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.SpyComp
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
 
 @Composable
 fun ConfigGameSc(
@@ -108,65 +108,7 @@ fun ConfigGameSc(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                IconButton(
-                    modifier = Modifier.padding(8.dp),
-                    onClick = {
-                        vm.reverseExpand()
-                    }) {
-                    Icon(
-                        tint = Color.White,
-                        imageVector = Icons.Default.Settings,
-                        modifier = Modifier
-                            .size(32.dp)
-
-                            .rotate(rotationAngle),
-                        contentDescription = ""
-                    )
-                }
-                AnimatedVisibility(
-                    expandedState.value, enter = fadeIn(), exit = fadeOut()
-                ) {
-                    OutlinedCard(Modifier.padding(16.dp)) {
-                        Row(
-
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                "میخوای بازی از کلمات تو استفاده کنه",
-                                Modifier.weight(0.8f)
-                            )
-                            Checkbox(
-
-
-                                modifier = Modifier.weight(0.2f),
-                                checked = vm.userUse,
-                                onCheckedChange = {
-                                    vm.userUse = it
-                                    if (it) {
-                                        if (vm.checkDb()) {
-                                            Toast.makeText(
-                                                ctx,
-                                                "لیست کلماتت  خالی است ",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-
-                                        }
-                                    }
-
-
-                                })
-                        }
-                    }
-                }
-                Text(
-                    "تنظیمات بازی",
-                    color = Color.White,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineSmall
-                )
-
+                Header(vm, rotationAngle, expandedState, ctx)
                 AgentComp(
                     title = "تعداد ماموران",
                     agentCount = vm.agentCount,
@@ -177,7 +119,6 @@ fun ConfigGameSc(
                     vm.spyCount,
                     vm
                 )
-
                 HorizontalDivider(
                     thickness = 1.dp,
                     color = Color.White.copy(0.5f),
@@ -277,10 +218,8 @@ fun ConfigGameSc(
 
                         )
                 }
-
-
                 InformationComp()
-
+                //Alert
                 if (vm.showAddWordDialog.value) {
                     AddKeyWordAlert(
                         vm.showAddWordDialog,
@@ -298,6 +237,73 @@ fun ConfigGameSc(
     }
 
 
+}
+
+@Composable
+fun Header(
+    vm: ConfigGameViewModel,
+    rotationAngle: Float,
+    expandedState: State<Boolean>,
+    ctx: Context
+) {
+    IconButton(
+        modifier = Modifier.padding(8.dp),
+        onClick = {
+            vm.reverseExpand()
+        }) {
+        Icon(
+            tint = Color.White,
+            imageVector = Icons.Default.Settings,
+            modifier = Modifier
+                .size(32.dp)
+
+                .rotate(rotationAngle),
+            contentDescription = ""
+        )
+    }
+    AnimatedVisibility(
+        expandedState.value, enter = fadeIn(), exit = fadeOut()
+    ) {
+        OutlinedCard(Modifier.padding(16.dp)) {
+            Row(
+
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "میخوای بازی از کلمات تو استفاده کنه",
+                    Modifier.weight(0.8f)
+                )
+                Checkbox(
+
+
+                    modifier = Modifier.weight(0.2f),
+                    checked = vm.userUse,
+                    onCheckedChange = {
+                        vm.userUse = it
+                        if (it) {
+                            if (vm.checkDb()) {
+                                Toast.makeText(
+                                    ctx,
+                                    "لیست کلماتت  خالی است ",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                            }
+                        }
+
+
+                    })
+            }
+        }
+    }
+    Text(
+        "تنظیمات بازی",
+        color = Color.White,
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.headlineSmall
+    )
 }
 
 @Composable
@@ -402,9 +408,7 @@ fun AddKeyWordAlert(
                     color = Color.Black.copy(0.2f),
                     modifier = Modifier.padding(8.dp)
                 )
-
                 ListKeyWordsComp(configGameViewModel, listWord)
-
             }
         }
     }
