@@ -1,10 +1,12 @@
 package com.behnamuix.retrofittest.SpyGame.viewModel
 
+import SpyGameSimulator.model.Player
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.retrofittest.SpyGame.db.KeywordDao
+import com.behnamuix.spy.ui.navigation.screens.createUnpredictableShuffle
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -700,6 +702,24 @@ class RoleManagerViewModel : ViewModel() {
             setWord(word)
             Log.d("LOG_ROLE", word)
         }
+
+
+    }
+    fun configRole() {
+        var list = mutableListOf<Player>()
+
+        for (i in 1..agentCount.intValue) {
+            list.add(Player(i, "تو الان یه مامور هستی"))
+
+        }
+        for (i in 1..spyCount.intValue) {
+            list.add(Player(i, "تو یه جاسوسی"))
+        }
+        viewModelScope.launch {
+
+            _playerList.emit(createUnpredictableShuffle(list) as MutableList<Player>)
+        }
+        Log.d("LOG_ROLE", "${list.size}")
 
 
     }

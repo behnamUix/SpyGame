@@ -39,4 +39,8 @@ class MediaPlayerRepository(private val mp: MediaPlayer?) {
         return mp?.isPlaying
     }
 
+    fun setVolume(L: Float, R: Float) {
+        mp?.setVolume(L, R)
+    }
+
 }

@@ -1,38 +1,45 @@
 package com.behnamuix.retrofittest.SpyGame.viewModel
 
 import SpyGameSimulator.model.Player
-import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.retrofittest.SpyGame.db.DatabaseProvider
-import com.behnamuix.retrofittest.SpyGame.db.KeyWordEntity
-import com.behnamuix.retrofittest.SpyGame.view.ui.createUnpredictableShuffle
+import com.behnamuix.spy.data.local.db.model.KeyWord
+import com.behnamuix.spy.data.local.repository.KeywordRepository
+import com.behnamuix.spy.ui.navigation.screens.createUnpredictableShuffle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ConfigGameViewModel(ctx: Context) : ViewModel() {
+class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewModel() {
     private val _playerList = MutableStateFlow(mutableListOf<Player>())
     val playerList: StateFlow<MutableList<Player>> = _playerList.asStateFlow()
 
-    private val _wordList = MutableStateFlow(mutableListOf<KeyWordEntity>())
-    val wordList: StateFlow<MutableList<KeyWordEntity>> = _wordList.asStateFlow()
+    private val _wordList = MutableStateFlow(mutableListOf<KeyWord>())
+    val wordList: StateFlow<MutableList<KeyWord>> = _wordList.asStateFlow()
+
+
+    private val _expanded = MutableStateFlow<Boolean>(false)
+    val expanded: StateFlow<Boolean> = _expanded.asStateFlow()
 
 
     val agentCount = mutableIntStateOf(5)
     val spyCount = mutableIntStateOf(1)
 
-
     val wordExist = mutableStateOf(false)
-    val dao = DatabaseProvider.getKeywordDao(ctx)
+
+    var showAddWordDialog = mutableStateOf(false)
+
+    var userUse by mutableStateOf(false)
 
 
-
-
+    var progress by mutableStateOf(true)
 
 
     //Room
@@ -40,8 +47,7 @@ class ConfigGameViewModel(ctx: Context) : ViewModel() {
         word: String,
     ) {
         viewModelScope.launch {
-            dao.insert(KeyWordEntity(word = word))
-            getWords()
+            keywordRepo.addKeywords(word)
 
 
         }
@@ -53,7 +59,7 @@ class ConfigGameViewModel(ctx: Context) : ViewModel() {
 
     fun deleteWord(id: Int) {
         viewModelScope.launch {
-            dao.delete(KeyWordEntity(id = id, word = ""))
+            keywordRepo.deleteKeywords(KeyWord(id = id, word = ""))
             getWords()
 
 
@@ -61,11 +67,10 @@ class ConfigGameViewModel(ctx: Context) : ViewModel() {
     }
 
     fun getWords() {
-
         viewModelScope.launch {
-            var list = dao.getAll()
+            var list = keywordRepo.getKeywords()
             repeat(list.size) {
-                _wordList.emit(list)
+                _wordList.emit(list as MutableList<KeyWord>)
             }
         }
 
@@ -112,24 +117,7 @@ class ConfigGameViewModel(ctx: Context) : ViewModel() {
         }
     }
 
-    fun configRole() {
-        var list = mutableListOf<Player>()
 
-        for (i in 1..agentCount.intValue) {
-            list.add(Player(i, "تو الان یه مامور هستی"))
-
-        }
-        for (i in 1..spyCount.intValue) {
-            list.add(Player(i, "تو یه جاسوسی"))
-        }
-        viewModelScope.launch {
-
-            _playerList.emit(createUnpredictableShuffle(list) as MutableList<Player>)
-        }
-        Log.d("LOG_ROLE", "${list.size}")
-
-
-    }
 
     fun configTime(): Int {
         var total = agentCount.intValue + spyCount.intValue
@@ -139,7 +127,9 @@ class ConfigGameViewModel(ctx: Context) : ViewModel() {
 
     }
 
-
+    fun reverseExpand() {
+        _expanded.value = !_expanded.value
+    }
 
 
 }

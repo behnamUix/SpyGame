@@ -12,8 +12,8 @@ class KeywordRepositoryImpl(private val dao: KeywordDao) : KeywordRepository {
         }
     }
 
-    override suspend fun addKeywords(word: KeyWord) {
-        dao.insert(word.toKeywordEntity())
+    override suspend fun addKeywords(word: String) {
+        dao.insert(word)
     }
 
     override suspend fun deleteKeywords(word: KeyWord) {

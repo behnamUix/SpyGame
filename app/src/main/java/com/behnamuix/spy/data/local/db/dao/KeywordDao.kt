@@ -13,7 +13,7 @@ interface KeywordDao {
     suspend fun getAll(): MutableList<KeywordEntity>
 
     @Insert
-    suspend fun insert(words: KeywordEntity)
+    suspend fun insert(words: String)
 
     @Delete
     suspend fun delete(word: KeywordEntity)

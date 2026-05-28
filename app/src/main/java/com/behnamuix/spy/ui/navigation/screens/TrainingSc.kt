@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +40,8 @@ import androidx.navigation.NavController
 import com.behnamuix.retrofittest.SpyGame.model.Spy
 import com.behnamuix.spy.R
 import com.behnamuix.spy.ui.navigation.Screens
+import com.behnamuix.spy.ui.navigation.screens.confiGame.AgentRoleComp
+import com.behnamuix.spy.ui.navigation.screens.confiGame.SpyRoleComp
 import com.behnamuix.spy.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel

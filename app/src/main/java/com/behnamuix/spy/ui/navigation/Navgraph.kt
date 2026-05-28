@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.behnamuix.spy.ui.navigation.screens.ConfigGameSc
+import com.behnamuix.spy.ui.navigation.screens.confiGame.ConfigGameSc
 import com.behnamuix.spy.ui.navigation.screens.GameSc
 import com.behnamuix.spy.ui.navigation.screens.RoleManagerSc
 import com.behnamuix.spy.ui.navigation.screens.SplashSc
