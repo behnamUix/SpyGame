@@ -3,8 +3,14 @@ package com.behnamuix.spy.ui.navigation.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.behnamuix.spy.viewModel.SplashViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SplashSc(modifier: Modifier = Modifier,navController: NavController) {
+fun SplashSc(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    splashVm: SplashViewModel = koinViewModel()
+) {
 
 }

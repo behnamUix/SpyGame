@@ -63,22 +63,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.behnamuix.retrofittest.R
 import com.behnamuix.retrofittest.SpyGame.db.DatabaseProvider
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigRoleViewModel
+import com.behnamuix.retrofittest.SpyGame.viewModel.RoleManagerViewModel
 import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
 
 @Composable
 fun RoleManagerSc(
     navController: NavController,
-    userUse: Boolean,
-    listPlayer: StateFlow<MutableList<Player>>,
-    vm: ConfigRoleViewModel,
-    gameViewModel: GameViewModel,
+    gameViewModel: GameViewModel= koinViewModel(),
 ) {
     var word by remember { mutableStateOf("") }
     val ctx = LocalContext.current

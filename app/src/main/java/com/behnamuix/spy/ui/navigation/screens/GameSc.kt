@@ -56,11 +56,12 @@ import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import com.behnamuix.retrofittest.SpyGame.repository.SongController
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun GameSc(
     navController: NavController,
-    gameViewModel: GameViewModel
+    gameViewModel: GameViewModel= koinViewModel()
 ) {
 
     gameViewModel.startTimer()

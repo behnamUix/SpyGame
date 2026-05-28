@@ -94,24 +94,22 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import com.behnamuix.retrofittest.R
 import com.behnamuix.retrofittest.SpyGame.db.KeyWordEntity
-import com.behnamuix.retrofittest.SpyGame.model.SpyModel
-import com.behnamuix.retrofittest.SpyGame.model.agentEducModelList
+import com.behnamuix.retrofittest.SpyGame.model.Spy
+import com.behnamuix.retrofittest.SpyGame.model.agentEducationList
 import com.behnamuix.retrofittest.SpyGame.repository.SongController
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameTurnViewModel
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigRoleViewModel
-import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
+import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameViewModel
 import com.behnamuix.retrofittest.ui.theme.traffic
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun ConfigGameSc(
     navController: NavController,
-    gameViewModel: GameViewModel,
-    configRoleViewModel: ConfigRoleViewModel,
-    configGameViewModel: ConfigGameTurnViewModel
+    configGameViewModel: ConfigGameViewModel = koinViewModel()
 ) {
 
     //context
@@ -143,225 +141,225 @@ fun ConfigGameSc(
         SongController.play()
     }
     Column(Modifier.fillMaxSize()) {
-            "training" -> {
-                Training(setPage = { page = it }, configGameViewModel)
-            }
+        "training" -> {
+        Training(setPage = { page = it }, configGameViewModel)
+    }
 
-            "home" -> {
-                Box(Modifier.fillMaxSize()) {
-                    Column(
+        "home" -> {
+        Box(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .animateContentSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                IconButton(
+                    modifier = Modifier.padding(8.dp),
+                    onClick = {
+                        expanded = !expanded
+                    }) {
+                    Icon(
+                        tint = Color.White,
+                        painter = painterResource(R.drawable.icon_setting),
                         modifier = Modifier
-                            .animateContentSize()
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        IconButton(
-                            modifier = Modifier.padding(8.dp),
-                            onClick = {
-                                expanded = !expanded
-                            }) {
-                            Icon(
-                                tint = Color.White,
-                                painter = painterResource(R.drawable.icon_setting),
-                                modifier = Modifier
-                                    .size(32.dp)
+                            .size(32.dp)
 
-                                    .rotate(rotateIcon),
-                                contentDescription = ""
-                            )
-                        }
-                        AnimatedVisibility(
-                            expanded, enter = fadeIn(), exit = fadeOut()
-                        ) {
-                            OutlinedCard(Modifier.padding(16.dp)) {
-                                Row(
+                            .rotate(rotateIcon),
+                        contentDescription = ""
+                    )
+                }
+                AnimatedVisibility(
+                    expanded, enter = fadeIn(), exit = fadeOut()
+                ) {
+                    OutlinedCard(Modifier.padding(16.dp)) {
+                        Row(
 
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                        "میخوای بازی از کلمات تو استفاده کنه",
-                                        Modifier.weight(0.8f)
-                                    )
-                                    Checkbox(
-
-
-                                        modifier = Modifier.weight(0.2f),
-                                        checked = userUse,
-                                        onCheckedChange = {
-                                            userUse = it
-                                            if (it) {
-                                                if (configGameViewModel.checkDb()) {
-                                                    Toast.makeText(
-                                                        ctx,
-                                                        "لیست کلماتت  خالی است ",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-
-                                                }
-                                            }
-
-
-                                        })
-                                }
-                            }
-                        }
-                        Text(
-                            "تنظیمات بازی",
-                            color = Color.White,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-
-                        AgentComp(
-                            title = "تعداد ماموران",
-                            agentCount = configGameViewModel.agentCount,
-                            configGameViewModel,
-                        )
-                        SpyComp(
-                            "تعداد جاسوسان",
-                            configGameViewModel.spyCount,
-                            configGameViewModel
-                        )
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = Color.White.copy(0.5f),
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                        if (listWord.isNotEmpty()) {
-                            progress = false
-                            Text(
-                                "پایگاه داده بازی آماده است!",
-                                style = MaterialTheme.typography.headlineSmall,
-                                textAlign = TextAlign.Center,
-                                color = Color(0xFF64DD17),
-                                modifier = Modifier.fillMaxWidth(), fontSize = 14.sp
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-                            contentAlignment = Alignment.CenterEnd
-                        ) {
-                            Row {
-                                //training
-                                OutlinedButton(
-                                    border = BorderStroke(1.dp, Color(0xFF03A9F4)),
-                                    shape = RoundedCornerShape(8.dp),
-                                    modifier = Modifier,
-
-                                    onClick = { page = "training" }
-                                ) {
-                                    Text(
-                                        text = "آموزش بازی",
-                                        color = Color.White,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        modifier = Modifier.padding(8.dp)
-                                    )
-                                }
-                                Spacer(Modifier.weight(1f))
-                                //addWord
-                                OutlinedButton(
-                                    shape = RoundedCornerShape(8.dp),
-                                    modifier = Modifier,
-                                    onClick = { showAddWordDialog.value = true }
-                                ) {
-                                    Text(
-                                        text = "کلمات شما",
-                                        color = Color.White,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        modifier = Modifier.padding(8.dp)
-                                    )
-                                }
-
-
-                            }
-
-                        }
-                        Button(
-                            shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(Color(0xFFE53935)),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-
-                            onClick = {
-
-                                configGameViewModel.configRole()
-                                page = "role"
-
-                            }
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                color = MaterialTheme.colorScheme.onBackground,
-                                text = " برو بعدی (${configRoleViewModel.category.size.toString()} کلمه)",
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier
-                                    .padding(12.dp)
+                                "میخوای بازی از کلمات تو استفاده کنه",
+                                Modifier.weight(0.8f)
                             )
-                        }
-                        Column(
-                            Modifier.padding(horizontal = 16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(
-                                " 1405-02-05 برطرف شدن باگ پخش نقش ها الگوریتم رندوم تر دوست عزیزم رضا",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start,
-
-                                )
-                            Text(
-                                "1405-01-28 برطرف شدن باگ لو رفتن نقش با تشکر از دوست عزیزم سیاوش",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-
-                                )
-                        }
+                            Checkbox(
 
 
-                        InformationComp()
+                                modifier = Modifier.weight(0.2f),
+                                checked = userUse,
+                                onCheckedChange = {
+                                    userUse = it
+                                    if (it) {
+                                        if (configGameViewModel.checkDb()) {
+                                            Toast.makeText(
+                                                ctx,
+                                                "لیست کلماتت  خالی است ",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
 
-                        if (showAddWordDialog.value) {
-                            AddKeyWordAlert(
-                                showAddWordDialog,
-                                configGameViewModel,
-                                ctx,
-                                listWord
+                                        }
+                                    }
 
-                            )
+
+                                })
                         }
                     }
+                }
+                Text(
+                    "تنظیمات بازی",
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
+                AgentComp(
+                    title = "تعداد ماموران",
+                    agentCount = configGameViewModel.agentCount,
+                    configGameViewModel,
+                )
+                SpyComp(
+                    "تعداد جاسوسان",
+                    configGameViewModel.spyCount,
+                    configGameViewModel
+                )
+
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.White.copy(0.5f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                if (listWord.isNotEmpty()) {
+                    progress = false
+                    Text(
+                        "پایگاه داده بازی آماده است!",
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        color = Color(0xFF64DD17),
+                        modifier = Modifier.fillMaxWidth(), fontSize = 14.sp
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Row {
+                        //training
+                        OutlinedButton(
+                            border = BorderStroke(1.dp, Color(0xFF03A9F4)),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier,
+
+                            onClick = { page = "training" }
+                        ) {
+                            Text(
+                                text = "آموزش بازی",
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                        Spacer(Modifier.weight(1f))
+                        //addWord
+                        OutlinedButton(
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier,
+                            onClick = { showAddWordDialog.value = true }
+                        ) {
+                            Text(
+                                text = "کلمات شما",
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
 
 
+                    }
+
+                }
+                Button(
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFFE53935)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+
+                    onClick = {
+
+                        configGameViewModel.configRole()
+                        page = "role"
+
+                    }
+                ) {
+                    Text(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        text = " برو بعدی (${roleManagerViewModel.category.size.toString()} کلمه)",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .padding(12.dp)
+                    )
+                }
+                Column(
+                    Modifier.padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        " 1405-02-05 برطرف شدن باگ پخش نقش ها الگوریتم رندوم تر دوست عزیزم رضا",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start,
+
+                        )
+                    Text(
+                        "1405-01-28 برطرف شدن باگ لو رفتن نقش با تشکر از دوست عزیزم سیاوش",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+
+                        )
+                }
+
+
+                InformationComp()
+
+                if (showAddWordDialog.value) {
+                    AddKeyWordAlert(
+                        showAddWordDialog,
+                        configGameViewModel,
+                        ctx,
+                        listWord
+
+                    )
                 }
             }
 
-            "role" -> {
+
+        }
+    }
+
+        "role" -> {
         RoleManagerSc(
             userUse,
             listPlayer = configGameViewModel.playerList,
-            configRoleViewModel,
+            roleManagerViewModel,
             gameViewModel,
 
             )
-            }
+    }
 
     }
 
 }
 
 @Composable
-fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameTurnViewModel) {
+fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameViewModel) {
 
     val scope = rememberCoroutineScope()
     val pagerState =
@@ -445,7 +443,7 @@ fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameTurnViewM
                         )
 
 
-                        agentEducModelList.forEach {
+                        agentEducationList.forEach {
                             AgentRoleComp(it.title, desc = it.desc)
                         }
                     }
@@ -469,8 +467,8 @@ fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameTurnViewM
                             painter = painterResource(R.drawable.img_spy),
                             contentDescription = ""
                         )
-                        SpyRoleComp("اطلاعات", desc = SpyModel().etelaat)
-                        SpyRoleComp("هدف", desc = SpyModel().hadaf)
+                        SpyRoleComp("اطلاعات", desc = Spy().etelaat)
+                        SpyRoleComp("هدف", desc = Spy().hadaf)
                         Row {
                             Text(
                                 modifier = Modifier.weight(1f),
@@ -491,36 +489,36 @@ fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameTurnViewM
                         }
                         SpyRoleComp(
                             ">  پنهان کاری",
-                            desc = SpyModel().penhankari,
+                            desc = Spy().penhankari,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  تقلید",
-                            desc = SpyModel().taghlid,
+                            desc = Spy().taghlid,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  گوش دادن فعال",
-                            desc = SpyModel().gooshdadanFaal,
+                            desc = Spy().gooshdadanFaal,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  گمراه کردن",
-                            desc = SpyModel().gomrahKardan,
+                            desc = Spy().gomrahKardan,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  حدس زدن",
-                            desc = SpyModel().hadsZadan,
+                            desc = Spy().hadsZadan,
                             space = 16,
                             showIcon = false
                         )
 
-                        SpyRoleComp("چالش ", desc = SpyModel().chalesh)
+                        SpyRoleComp("چالش ", desc = Spy().chalesh)
                     }
                 }
 
@@ -640,7 +638,7 @@ fun SpyRoleComp(
 
 @Composable
 fun ListKeyWordsComp(
-    vm: ConfigGameTurnViewModel,
+    vm: ConfigGameViewModel,
     listWord: MutableList<KeyWordEntity>,
 ) {
     var count by remember { mutableIntStateOf(-1) }
@@ -742,7 +740,7 @@ fun ListKeyWordsComp(
 @Composable
 fun AddKeyWordAlert(
     showAddWordDialog: MutableState<Boolean>,
-    configGameViewModel: ConfigGameTurnViewModel,
+    configGameViewModel: ConfigGameViewModel,
     ctx: Context,
     listWord: MutableList<KeyWordEntity>,
 ) {
@@ -914,7 +912,7 @@ fun InformationComp() {
 fun AgentComp(
     title: String,
     agentCount: MutableIntState,
-    configGameViewModel: ConfigGameTurnViewModel,
+    configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
         modifier = Modifier
@@ -952,7 +950,7 @@ fun AgentComp(
 fun SpyComp(
     title: String,
     spyCount: MutableIntState,
-    configGameViewModel: ConfigGameTurnViewModel,
+    configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
         Modifier
@@ -987,7 +985,7 @@ fun SpyComp(
 fun AgentNumberCounterComp(
     modifier: Modifier,
     agentCount: MutableState<Int>,
-    configGameViewModel: ConfigGameTurnViewModel
+    configGameViewModel: ConfigGameViewModel
 ) {
     Row(
         modifier = modifier,
@@ -1029,7 +1027,7 @@ fun AgentNumberCounterComp(
 @Composable
 fun SpyNumberCounterComp(
     spyCount: MutableState<Int>,
-    configGameViewModel: ConfigGameTurnViewModel,
+    configGameViewModel: ConfigGameViewModel,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center

@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
@@ -37,15 +38,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.behnamuix.retrofittest.SpyGame.model.Spy
+import com.behnamuix.spy.R
+import com.behnamuix.spy.ui.navigation.Screens
+import com.behnamuix.spy.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun TrainingSc(navController: NavController,
-             configGameViewModel: ConfigGameTurnViewModel) {
+fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koinViewModel()) {
 
     val scope = rememberCoroutineScope()
     val pagerState =
-        rememberPagerState(initialPage = 0, pageCount = { configGameViewModel.listRole.size })
+        rememberPagerState(initialPage = 0, pageCount = { trainingVm.listRole.size })
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
@@ -59,13 +64,13 @@ fun TrainingSc(navController: NavController,
         ) {
             IconButton(
                 onClick = {
-
+                    navController.navigate(Screens.ConfigGame.route)
                 }
             ) {
                 Icon(
                     modifier = Modifier.size(36.dp),
                     tint = Color.White,
-                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = ""
                 )
 
@@ -75,33 +80,27 @@ fun TrainingSc(navController: NavController,
                 "آموزش نقش ها",
                 color = Color.White,
                 modifier = Modifier.fillMaxWidth(),
-
                 textAlign = TextAlign.Start,
                 style = MaterialTheme.typography.headlineSmall
             )
-
-
         }
-
         TabRow(
-
             selectedTabIndex = pagerState.currentPage,
             containerColor = Color.Transparent,
 
             ) {
-            configGameViewModel.listRole.forEachIndexed { index, item ->
+            trainingVm.listRole.forEachIndexed { index, item ->
                 Tab(
 
                     selected = pagerState.currentPage == index,
                     onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(item, fontFamily = traffic, fontSize = 16.sp) },
+                    text = { Text(item, style = MaterialTheme.typography.titleMedium) },
                     selectedContentColor = Color.White,
                     unselectedContentColor = Color.White.copy(0.3f)
                 )
             }
         }
         HorizontalPager(
-
             modifier = Modifier.weight(1f),
             state = pagerState
         ) { page ->
@@ -125,7 +124,7 @@ fun TrainingSc(navController: NavController,
                         )
 
 
-                        agentEducModelList.forEach {
+                        trainingVm.agentEducationList.forEach {
                             AgentRoleComp(it.title, desc = it.desc)
                         }
                     }
@@ -149,8 +148,8 @@ fun TrainingSc(navController: NavController,
                             painter = painterResource(R.drawable.img_spy),
                             contentDescription = ""
                         )
-                        SpyRoleComp("اطلاعات", desc = SpyModel().etelaat)
-                        SpyRoleComp("هدف", desc = SpyModel().hadaf)
+                        SpyRoleComp("اطلاعات", desc = Spy().etelaat)
+                        SpyRoleComp("هدف", desc = Spy().hadaf)
                         Row {
                             Text(
                                 modifier = Modifier.weight(1f),
@@ -171,36 +170,36 @@ fun TrainingSc(navController: NavController,
                         }
                         SpyRoleComp(
                             ">  پنهان کاری",
-                            desc = SpyModel().penhankari,
+                            desc = Spy().penhankari,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  تقلید",
-                            desc = SpyModel().taghlid,
+                            desc = Spy().taghlid,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  گوش دادن فعال",
-                            desc = SpyModel().gooshdadanFaal,
+                            desc = Spy().gooshdadanFaal,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  گمراه کردن",
-                            desc = SpyModel().gomrahKardan,
+                            desc = Spy().gomrahKardan,
                             space = 16,
                             showIcon = false
                         )
                         SpyRoleComp(
                             ">  حدس زدن",
-                            desc = SpyModel().hadsZadan,
+                            desc = Spy().hadsZadan,
                             space = 16,
                             showIcon = false
                         )
 
-                        SpyRoleComp("چالش ", desc = SpyModel().chalesh)
+                        SpyRoleComp("چالش ", desc = Spy().chalesh)
                     }
                 }
 
