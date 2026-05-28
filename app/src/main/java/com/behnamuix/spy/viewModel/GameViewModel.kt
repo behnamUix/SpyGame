@@ -1,11 +1,12 @@
 package com.behnamuix.retrofittest.SpyGame.viewModel
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class GameViewModel(ctx: Context) : ViewModel() {
-
+class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel() {
+    var showDialog by mutableStateOf(false)
     val questionList = mutableMapOf(
         "کمک اول" to "از طرف مقابل سوالات انحرافی بپرس (یه چیزی که به کلمه رمز ربط نداره)",
         "کمک دوم" to "از جنس اون چیز میتونی تو سوالت استفاده کنی",
@@ -36,10 +37,11 @@ class GameViewModel(ctx: Context) : ViewModel() {
 
     var initialSeconds by mutableIntStateOf(0) // برای محاسبه progress
 
+
     init {
         // مقدار اولیه ثانیه ها را بر اساس دقیقه تنظیم کن
         viewModelScope.launch {
-            _baseTimeInMinutes.collect { minutes ->
+            roleManagerVm.baseTimeInMinutes.collect { minutes ->
                 val totalSeconds = minutes * 60
                 _secondsLeft.value = totalSeconds
                 initialSeconds = totalSeconds // برای محاسبه progress
@@ -72,8 +74,6 @@ class GameViewModel(ctx: Context) : ViewModel() {
     }
 
 
-
-
     fun showTimerFormatedString(): String {
         val sec = secondsLeft.value
         val min = sec / 60
@@ -81,12 +81,8 @@ class GameViewModel(ctx: Context) : ViewModel() {
         return String.format(Locale.US, "%02d:%02d", min, remainingSec)
     }
 
-    fun calculateProgressValue(): Float {
-        return if (initialSeconds > 0) {
-            secondsLeft.value.toFloat() / initialSeconds.toFloat()
-        } else {
-            0f
-        }
+    fun calcProg(): Float {
+        return secondsLeft.value.toFloat() / initialSeconds.toFloat()
     }
 }
 

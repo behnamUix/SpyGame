@@ -1,18 +1,15 @@
-package com.behnamuix.retrofittest.SpyGame.viewModel
+package com.behnamuix.spy.viewModel
 
 import SpyGameSimulator.model.Player
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.repository.KeywordRepository
-import com.behnamuix.spy.ui.navigation.screens.roleManager.createUnpredictableShuffle
 import com.behnamuix.spy.utils.createUnpredictableShuffle
-import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -727,7 +724,7 @@ class RoleManagerViewModel(
             listWords.toMutableList().shuffle()
             try {
                 word = listWords[Random.nextInt(0, listWords.size)].word
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 Log.e("error", "ERR001")
             }
             setWord(word)

@@ -61,7 +61,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
-import com.behnamuix.retrofittest.SpyGame.viewModel.RoleManagerViewModel
+import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.ui.navigation.Screens

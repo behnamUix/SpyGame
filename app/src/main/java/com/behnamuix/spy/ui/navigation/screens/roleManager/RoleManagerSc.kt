@@ -53,7 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.behnamuix.retrofittest.SpyGame.viewModel.RoleManagerViewModel
+import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.R
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
