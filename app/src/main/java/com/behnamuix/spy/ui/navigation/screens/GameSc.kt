@@ -65,8 +65,6 @@ fun GameSc(
 ) {
 
     gameViewModel.startTimer()
-
-
     var showDialog = remember { mutableStateOf(false) }
     var isRunning = gameViewModel.isRunning.collectAsState()
     Column(

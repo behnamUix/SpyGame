@@ -102,6 +102,7 @@ import com.behnamuix.retrofittest.SpyGame.model.agentEducationList
 import com.behnamuix.retrofittest.SpyGame.repository.SongController
 import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameViewModel
 import com.behnamuix.retrofittest.ui.theme.traffic
+import com.behnamuix.spy.ui.navigation.Screens
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -111,15 +112,12 @@ fun ConfigGameSc(
     navController: NavController,
     configGameViewModel: ConfigGameViewModel = koinViewModel()
 ) {
-
     //context
     val ctx = LocalContext.current
-
     //vm
-    var page by remember { mutableStateOf("home") }
+
     val showAddWordDialog = remember { mutableStateOf(false) }
     var userUse by remember { mutableStateOf(false) }
-    var progress by remember { mutableStateOf(true) }
     var expanded by remember { mutableStateOf(false) }
     val listWord by configGameViewModel.wordList.collectAsState()
 
@@ -141,11 +139,6 @@ fun ConfigGameSc(
         SongController.play()
     }
     Column(Modifier.fillMaxSize()) {
-        "training" -> {
-        Training(setPage = { page = it }, configGameViewModel)
-    }
-
-        "home" -> {
         Box(Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
@@ -252,7 +245,7 @@ fun ConfigGameSc(
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier,
 
-                            onClick = { page = "training" }
+                            onClick = { navController.navigate(Screens.Training.route) }
                         ) {
                             Text(
                                 text = "آموزش بازی",
@@ -288,9 +281,7 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
-
-                        configGameViewModel.configRole()
-                        page = "role"
+                        navController.navigate(Screens.RoleManager)
 
                     }
                 ) {
@@ -342,195 +333,11 @@ fun ConfigGameSc(
 
 
         }
-    }
-
-        "role" -> {
-        RoleManagerSc(
-            userUse,
-            listPlayer = configGameViewModel.playerList,
-            roleManagerViewModel,
-            gameViewModel,
-
-            )
-    }
 
     }
 
-}
 
-@Composable
-fun Training(setPage: (String) -> Unit, configGameViewModel: ConfigGameViewModel) {
-
-    val scope = rememberCoroutineScope()
-    val pagerState =
-        rememberPagerState(initialPage = 0, pageCount = { configGameViewModel.listRole.size })
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp)
-    ) {
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = {
-                    setPage("home")
-                }
-            ) {
-                Icon(
-                    modifier = Modifier.size(36.dp),
-                    tint = Color.White,
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = ""
-                )
-
-            }
-
-            Text(
-                "آموزش نقش ها",
-                color = Color.White,
-                modifier = Modifier.fillMaxWidth(),
-
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-
-        }
-
-        TabRow(
-
-            selectedTabIndex = pagerState.currentPage,
-            containerColor = Color.Transparent,
-
-            ) {
-            configGameViewModel.listRole.forEachIndexed { index, item ->
-                Tab(
-
-                    selected = pagerState.currentPage == index,
-                    onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(item, fontFamily = traffic, fontSize = 16.sp) },
-                    selectedContentColor = Color.White,
-                    unselectedContentColor = Color.White.copy(0.3f)
-                )
-            }
-        }
-        HorizontalPager(
-
-            modifier = Modifier.weight(1f),
-            state = pagerState
-        ) { page ->
-            when (page) {
-                0 -> {
-                    Column(
-                        Modifier
-                            .verticalScroll(rememberScrollState())
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(22.dp)
-                    ) {
-
-                        Image(
-                            modifier = Modifier
-                                .size(250.dp)
-                                .clip(RoundedCornerShape(16.dp)),
-                            contentScale = ContentScale.Crop,
-                            painter = painterResource(R.drawable.img_agent),
-                            contentDescription = ""
-                        )
-
-
-                        agentEducationList.forEach {
-                            AgentRoleComp(it.title, desc = it.desc)
-                        }
-                    }
-
-
-                }
-
-                1 -> {
-                    Column(
-                        Modifier
-                            .verticalScroll(rememberScrollState())
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(22.dp)
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .size(250.dp)
-                                .clip(RoundedCornerShape(16.dp)),
-                            contentScale = ContentScale.Crop,
-                            painter = painterResource(R.drawable.img_spy),
-                            contentDescription = ""
-                        )
-                        SpyRoleComp("اطلاعات", desc = Spy().etelaat)
-                        SpyRoleComp("هدف", desc = Spy().hadaf)
-                        Row {
-                            Text(
-                                modifier = Modifier.weight(1f),
-                                text = "منطق و استراتژی",
-                                color = Color.White,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(Modifier.width(8.dp))
-
-                            Icon(
-
-                                tint = Color(0xFF4CAF50),
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = ""
-                            )
-
-                        }
-                        SpyRoleComp(
-                            ">  پنهان کاری",
-                            desc = Spy().penhankari,
-                            space = 16,
-                            showIcon = false
-                        )
-                        SpyRoleComp(
-                            ">  تقلید",
-                            desc = Spy().taghlid,
-                            space = 16,
-                            showIcon = false
-                        )
-                        SpyRoleComp(
-                            ">  گوش دادن فعال",
-                            desc = Spy().gooshdadanFaal,
-                            space = 16,
-                            showIcon = false
-                        )
-                        SpyRoleComp(
-                            ">  گمراه کردن",
-                            desc = Spy().gomrahKardan,
-                            space = 16,
-                            showIcon = false
-                        )
-                        SpyRoleComp(
-                            ">  حدس زدن",
-                            desc = Spy().hadsZadan,
-                            space = 16,
-                            showIcon = false
-                        )
-
-                        SpyRoleComp("چالش ", desc = Spy().chalesh)
-                    }
-                }
-
-            }
-
-
-        }
     }
-
-
-}
-
 @Composable
 fun AgentRoleComp(title: String, desc: String) {
     var rotateState by remember { mutableStateOf(0f) }
@@ -885,8 +692,8 @@ fun InformationComp() {
                     ),
                     shape = RoundedCornerShape(8.dp), onClick = {
                         val telegramIntent = Intent(Intent.ACTION_VIEW).apply {
-                            Intent.setData = "https://t.me/behnamUix".toUri()
-                            Intent.setPackage = "org.telegram.messenger"
+                            data = "https://t.me/behnamUix".toUri()
+                            `package` = "org.telegram.messenger"
                         }
                         try {
                             ctx.startActivity(telegramIntent)
@@ -989,7 +796,8 @@ fun AgentNumberCounterComp(
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         IconButton(onClick = {
 
@@ -1030,7 +838,8 @@ fun SpyNumberCounterComp(
     configGameViewModel: ConfigGameViewModel,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         IconButton(onClick = {
 
