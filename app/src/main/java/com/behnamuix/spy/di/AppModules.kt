@@ -1,0 +1,25 @@
+package com.behnamuix.spy.di
+
+import androidx.room.Room
+import com.behnamuix.spy.data.local.db.config.SpyDatabase
+import com.behnamuix.spy.data.local.repository.KeywordRepository
+import com.behnamuix.spy.data.local.repository.KeywordRepositoryImpl
+import org.koin.dsl.module
+
+val databaseModule = module {
+    single {
+        Room.databaseBuilder(
+            get(),
+            SpyDatabase::class.java,
+            "spy_database"
+        ).build()
+    }
+}
+val daoModule = module {
+    single {
+        get<SpyDatabase>().keyWordDao()
+    }
+}
+val repositoryModule = module {
+    single<KeywordRepository> { KeywordRepositoryImpl(get()) }
+}
