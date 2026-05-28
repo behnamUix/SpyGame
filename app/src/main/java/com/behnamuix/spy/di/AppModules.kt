@@ -1,7 +1,7 @@
 package com.behnamuix.spy.di
 
 import androidx.room.Room
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameViewModel
+import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
 import com.behnamuix.retrofittest.SpyGame.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.data.local.db.config.SpyDatabase
@@ -39,7 +39,7 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { SplashViewModel() }
     viewModel { ConfigGameViewModel(get()) }
-    viewModel { RoleManagerViewModel() }
+    viewModel { RoleManagerViewModel(get(), get()) }
     viewModel { GameViewModel(get()) }
     viewModel { MediaPlayerViewModel(get()) }
 }

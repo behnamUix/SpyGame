@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameViewModel
+import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.spy.data.local.db.model.KeyWord
 
 @Composable

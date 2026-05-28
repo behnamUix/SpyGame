@@ -1,6 +1,5 @@
-package com.behnamuix.spy.ui.navigation.screens
+package com.behnamuix.spy.ui.navigation.screens.roleManager
 
-import SpyGameSimulator.model.Player
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
@@ -11,13 +10,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,25 +27,20 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -57,19 +48,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.behnamuix.retrofittest.R
-import com.behnamuix.retrofittest.SpyGame.db.DatabaseProvider
 import com.behnamuix.retrofittest.SpyGame.viewModel.RoleManagerViewModel
-import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
+import com.behnamuix.spy.R
+import com.behnamuix.spy.ui.navigation.Screens
+import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
+import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
+import com.behnamuix.spy.utils.randomColor
+import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
@@ -77,19 +68,13 @@ import kotlin.random.Random
 @Composable
 fun RoleManagerSc(
     navController: NavController,
-    gameViewModel: GameViewModel= koinViewModel(),
+    vm: RoleManagerViewModel = koinViewModel(),
+    configGameVm: ConfigGameViewModel = koinViewModel(),
 ) {
-    var word by remember { mutableStateOf("") }
-    val ctx = LocalContext.current
-    val dao = DatabaseProvider.getKeywordDao(ctx)
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    var showStartButton by remember { mutableStateOf(false) }
-    var showPage by remember { mutableStateOf("roleManager") }
-    var newListPlayer = listPlayer.collectAsState()
-    var done = remember { mutableStateOf(true) }
-    var stateScale by remember { mutableStateOf(false) }
-    val scaleTrans = updateTransition(stateScale)
+
+    val scaleTrans = updateTransition(vm.stateScale)
     val scaleState by scaleTrans.animateFloat(transitionSpec = {
         spring(
             Spring.DampingRatioHighBouncy, Spring.StiffnessLow
@@ -101,16 +86,16 @@ fun RoleManagerSc(
             1f
         }
     }
-    val timeLeft by gameViewModel.baseTimeInMinutes.collectAsState()
-
+    val newListPlayer = vm.playerList.collectAsState()
+    val timeLeft by vm.baseTimeInMinutes.collectAsState()
 
     LaunchedEffect(Unit) {
+        vm.configRole()
         val keyWord =
-            if (userUse) {
+            if (configGameVm.userUse) {
                 //use database
                 vm.getKeyWord(
-                    dao,
-                    setWord = { word = it }
+                    setWord = { vm.word = it }
                 ).toString()
             } else {
                 //use example
@@ -120,156 +105,147 @@ fun RoleManagerSc(
                 ))]
 
             }
-        word = keyWord
+        vm.word = keyWord
     }
-    var end = remember { mutableStateOf(false) }
-    when (showPage) {
 
-        "gameSc" -> {
-            GameSc(gameViewModel)
-        }
+    Column(
+        Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-        "roleManager" -> {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
-                Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
+                Text(
+                    color = Color.White,
+                    text = " پخش نقش ها",
+                    style = MaterialTheme.typography.headlineSmall
+                )
 
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(24.dp)
-                    ) {
-                        Text(
-                            color = Color.White,
-                            text = " پخش نقش ها",
-                            style = MaterialTheme.typography.headlineSmall
+
+                /*                        test:
+
+                                        newListPlayer.value.forEach {
+                                            Column {
+                                                Text(it.id.toString(), color = Color.Yellow)
+                                                Text(it.role, color = Color.Yellow)
+
+                                            }
+                                        }*/
+
+                LazyRow(
+                    reverseLayout = true,
+                    contentPadding = PaddingValues(horizontal = 24.dp),
+                    userScrollEnabled = false,
+                    state = scrollState
+                ) {
+
+                    itemsIndexed(newListPlayer.value) { index, item ->
+                        PlayerCard(
+                            vm.end, item.role, index,
+                            vm.state, vm.word, vm.done
                         )
 
 
-//                        test:
-
-//                        newListPlayer.value.forEach {
-//                            Column {
-//                                Text(it.id.toString(), color = Color.Yellow)
-//                                Text(it.role, color = Color.Yellow)
-//
-//                            }
-//                        }
-
-
-                        LazyRow(
-                            reverseLayout = true,
-                            contentPadding = PaddingValues(horizontal = 24.dp),
-                            userScrollEnabled = false,
-                            state = scrollState
-                        ) {
-
-                            itemsIndexed(newListPlayer.value) { index, item ->
-                                PlayerCard(
-                                    end, item.role, index,
-                                    vm.state, word, done
-                                )
-
-
-                            }
-                        }
-
-                        if (showStartButton) {
-                            TimerCard(
-                                "زمان بازی",
-                                gameViewModel,
-                                timeLeft
-                            )
-                            Button(
-                                shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f),
-                                onClick = {
-                                    showPage = "gameSc"
-                                }, colors = ButtonDefaults.buttonColors(Color(0xFF4CAF50))
-
-                            ) {
-                                Text(
-                                    color = Color.White,
-
-                                    text = "شروع بازی",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier.padding(8.dp)
-                                )
-                            }
-                        } else {
-                            Button(
-                                elevation = ButtonDefaults.elevatedButtonElevation(6.dp),
-                                shape = RoundedCornerShape(16.dp),
-
-
-                                modifier = Modifier
-                                    .graphicsLayer(scaleX = scaleState)
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth(0.7f),
-
-                                onClick = {
-
-                                    var nextIndex = vm.currentCardIndex.intValue + 1
-                                    if (nextIndex < newListPlayer.value.size) {
-                                        done.value = false
-                                        scope.launch {
-                                            var job = launch {
-                                                scrollState.animateScrollToItem(nextIndex)
-                                                vm.currentCardIndex.intValue = nextIndex
-                                            }
-                                            job.invokeOnCompletion {
-                                                done.value = true
-                                            }
-                                            launch() {
-                                                stateScale = true
-                                                delay(400)
-                                                stateScale = false
-
-                                            }
-
-
-                                        }
-                                    } else {
-
-                                        showStartButton = true
-                                        end.value = true
-
-                                    }
-                                }, colors = ButtonDefaults.buttonColors(
-                                    Color(0xFFE53935)
-
-                                )
-                            ) {
-                                Text(
-                                    text = "بده نفر بعدی",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier.padding(8.dp)
-                                )
-                            }
-                        }
                     }
                 }
 
+                if (vm.showStartButton) {
+                    TimerCard(
+                        "زمان بازی",
+                        vm,
+                        timeLeft
+                    )
+                    Button(
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth(0.7f),
+                        onClick = {
+                            navController.navigate(Screens.Game.route)
+                        }, colors = ButtonDefaults.buttonColors(Color(0xFF4CAF50))
+
+                    ) {
+                        Text(
+                            color = Color.White,
+
+                            text = "شروع بازی",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                } else {
+                    Button(
+                        elevation = ButtonDefaults.elevatedButtonElevation(6.dp),
+                        shape = RoundedCornerShape(16.dp),
+
+
+                        modifier = Modifier
+                            .graphicsLayer(scaleX = scaleState)
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth(0.7f),
+
+                        onClick = {
+
+                            val nextIndex = vm.currentCardIndex.intValue + 1
+                            if (nextIndex < newListPlayer.value.size) {
+                                vm.done = false
+                                scope.launch {
+                                    val job = launch {
+                                        scrollState.animateScrollToItem(nextIndex)
+                                        vm.currentCardIndex.intValue = nextIndex
+                                    }
+                                    job.invokeOnCompletion {
+                                        vm.done = true
+                                    }
+                                    launch() {
+                                        vm.stateScale = true
+                                        delay(400)
+                                        vm.stateScale = false
+
+                                    }
+
+
+                                }
+                            } else {
+
+                                vm.showStartButton = true
+                                vm.end = true
+
+                            }
+                        }, colors = ButtonDefaults.buttonColors(
+                            Color(0xFFE53935)
+
+                        )
+                    ) {
+                        Text(
+                            text = "بده نفر بعدی",
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                }
             }
         }
+
     }
 }
 
+
 @Composable
 fun PlayerCard(
-    end: MutableState<Boolean>,
+    end: Boolean,
     role: String,
     index: Int,
     state: MutableIntState,
     keyWord: String,
-    done: MutableState<Boolean>,
+    done: Boolean,
 ) {
-    var color = randomColor()
+    val color = randomColor()
 
 
     Box(contentAlignment = Alignment.Center) {
@@ -281,7 +257,6 @@ fun PlayerCard(
                 .size(380.dp)
                 .padding(28.dp)
         ) {
-            var ctx = LocalContext.current
             val infiniteAnim = rememberInfiniteTransition()
             val rotate by infiniteAnim.animateFloat(
                 0f,
@@ -297,7 +272,7 @@ fun PlayerCard(
 
             if (state.intValue == index) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    if (end.value) {
+                    if (end) {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -351,8 +326,7 @@ fun PlayerCard(
                                     contentAlignment = Alignment.BottomCenter
                                 ) {
                                     Icon(
-                                        painter =
-                                            painterResource(R.drawable.gamepad),
+                                        imageVector = Icons.Default.VideogameAsset,
                                         contentDescription = "",
                                         tint = color,
                                         modifier = Modifier
@@ -476,141 +450,10 @@ fun PlayerCard(
 }
 
 
-@Composable
-fun SpoilerComp(
-    state: MutableIntState,
-    index: Int,
-    done: MutableState<Boolean>
-) {
-    var ctx = LocalContext.current
-    var scope = rememberCoroutineScope()
-    Box(
-        modifier = Modifier
-            .clickable(onClick = {
-                state.intValue = index
-
-            })
 
 
-            .padding(2.dp)
-            .fillMaxSize()
-            .background(
-                color = Color.White, shape = RoundedCornerShape(8.dp)
-            )
-
-    ) {
-
-        Box(
-            modifier = Modifier
-                .clickable(onClick = {
-                    state.intValue = index
 
 
-                })
-                .padding(32.dp)
-                .fillMaxSize()
-                .background(
-                    color = Color.White, shape = RoundedCornerShape(8.dp)
-
-                )
 
 
-        ) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    " رو اینجا ضربه بزن تا نقشت رو نشون بدم",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
 
-
-}
-
-fun createUnpredictableShuffle(players: List<Player>): List<Player> {
-    return players.shuffled()
-}
-
-fun randomColor(): Color {
-    var r = Random.nextInt(0, 255)
-    var b = Random.nextInt(0, 255)
-    return Color(red = r, green = 255 / 2, blue = b)
-}
-
-
-@Composable
-fun TimerCard(
-    title: String,
-    gameViewModel: GameViewModel,
-    time: Int,
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            Color.Transparent
-        ),
-        enabled = true,
-        onClick = {},
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth(),
-    ) {
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(8.dp),
-
-            ) {
-
-            Row(
-
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-
-                ) {
-                TimerComp(
-                    modifier = Modifier,
-                    time,
-                    gameViewModel
-                )
-                Spacer(Modifier.weight(1f))
-
-                Text(title, modifier = Modifier.padding(end = 20.dp))
-            }
-        }
-
-
-    }
-}
-
-@Composable
-fun TimerComp(
-    modifier: Modifier,
-    time: Int,
-    gameViewModel: GameViewModel
-) {
-
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
-    ) {
-        IconButton(onClick = {
-            gameViewModel.decTime()
-        }) {
-            Text("—", fontSize = 20.sp)
-        }
-        Text(time.toString())
-        IconButton({
-            gameViewModel.incTime()
-        }) {
-
-            Icon(
-
-                imageVector = Icons.Default.Add, contentDescription = ""
-            )
-        }
-    }
-}

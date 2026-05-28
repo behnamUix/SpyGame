@@ -23,8 +23,7 @@ class GameViewModel(ctx: Context) : ViewModel() {
     )
 
     // زمان پایه به دقیقه
-    private val _baseTimeInMinutes = MutableStateFlow(1)
-    val baseTimeInMinutes: StateFlow<Int> = _baseTimeInMinutes.asStateFlow()
+
 
     // زمان باقی مانده به ثانیه
     private val _secondsLeft =
@@ -72,19 +71,8 @@ class GameViewModel(ctx: Context) : ViewModel() {
         _secondsLeft.value = initialSeconds
     }
 
-    fun setTime(minutes: Int) {
-        val clampedMinutes = minutes.coerceIn(5, 15) // محدود کردن بین 5 تا 15 دقیقه
-        _baseTimeInMinutes.value = clampedMinutes
-        // این باعث میشه _secondsLeft هم آپدیت بشه چون از collect استفاده کردیم
-    }
 
-    fun incTime() {
-        setTime((_baseTimeInMinutes.value + 5).coerceAtMost(15))
-    }
 
-    fun decTime() {
-        setTime((_baseTimeInMinutes.value - 5).coerceAtMost(5)) // حداقل 5 دقیقه
-    }
 
     fun showTimerFormatedString(): String {
         val sec = secondsLeft.value

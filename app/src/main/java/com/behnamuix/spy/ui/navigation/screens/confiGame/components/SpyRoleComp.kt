@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.behnamuix.retrofittest.SpyGame.viewModel.ConfigGameViewModel
+import com.behnamuix.spy.viewModel.ConfigGameViewModel
 
 @Composable
 fun SpyRoleComp(

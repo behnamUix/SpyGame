@@ -1,25 +1,20 @@
-package com.behnamuix.retrofittest.SpyGame.viewModel
+package com.behnamuix.spy.viewModel
 
-import SpyGameSimulator.model.Player
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.repository.KeywordRepository
-import com.behnamuix.spy.ui.navigation.screens.createUnpredictableShuffle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewModel() {
-    private val _playerList = MutableStateFlow(mutableListOf<Player>())
-    val playerList: StateFlow<MutableList<Player>> = _playerList.asStateFlow()
+
 
     private val _wordList = MutableStateFlow(mutableListOf<KeyWord>())
     val wordList: StateFlow<MutableList<KeyWord>> = _wordList.asStateFlow()
@@ -130,6 +125,7 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
     fun reverseExpand() {
         _expanded.value = !_expanded.value
     }
+
 
 
 }
