@@ -183,7 +183,7 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
-                        navController.navigate(Screens.RoleManager)
+                        navController.navigate(Screens.RoleManager.route)
 
                     }
                 ) {
@@ -373,7 +373,7 @@ fun AddKeyWordAlert(
                                 if (word.isNotEmpty()) {
                                     if (!wordExist) {
                                         configGameViewModel.addWord(
-                                            word = word
+                                            KeyWord(word = word)
                                         )
                                         word = ""
 

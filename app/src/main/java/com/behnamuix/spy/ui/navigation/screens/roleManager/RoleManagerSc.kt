@@ -62,7 +62,8 @@ import com.behnamuix.spy.utils.randomColor
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.androidx.compose.koinViewModel
+
 import kotlin.random.Random
 
 @Composable

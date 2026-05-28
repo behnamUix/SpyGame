@@ -39,10 +39,10 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
 
     //Room
     fun addWord(
-        word: String,
+        kyword: KeyWord,
     ) {
         viewModelScope.launch {
-            keywordRepo.addKeywords(word)
+            keywordRepo.addKeywords(kyword)
 
 
         }

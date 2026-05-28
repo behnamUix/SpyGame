@@ -13,7 +13,7 @@ import com.behnamuix.spy.ui.navigation.screens.TrainingSc
 @Composable
 fun AppNavgraph() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = Screens.Splash.route) {
+    NavHost(navController, startDestination = Screens.ConfigGame.route) {
         composable(Screens.Splash.route) { SplashSc(navController=navController) }
         composable(Screens.ConfigGame.route) { ConfigGameSc(navController=navController) }
         composable(Screens.Training.route) { TrainingSc(navController=navController) }

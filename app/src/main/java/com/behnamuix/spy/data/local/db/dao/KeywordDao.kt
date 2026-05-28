@@ -9,11 +9,12 @@ import com.behnamuix.spy.data.local.db.model.KeywordEntity
 
 @Dao
 interface KeywordDao {
-    @Query("SELECT * FROM words ORDER BY word ASC ")
+    @Query("SELECT * FROM words ORDER BY word ASC")
     suspend fun getAll(): MutableList<KeywordEntity>
 
+    // 🔴 ورودی تابع از String به KeywordEntity اصلاح شد
     @Insert
-    suspend fun insert(words: String)
+    suspend fun insert(wordEntity: KeywordEntity)
 
     @Delete
     suspend fun delete(word: KeywordEntity)

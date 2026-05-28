@@ -44,7 +44,8 @@ import com.behnamuix.spy.ui.navigation.screens.confiGame.components.AgentRoleCom
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.SpyRoleComp
 import com.behnamuix.spy.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
 fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koinViewModel()) {

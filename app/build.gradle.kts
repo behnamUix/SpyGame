@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -9,6 +10,7 @@ android {
     compileSdk {
         version = release(36)
     }
+
 
     defaultConfig {
         applicationId = "com.behnamuix.spy"
@@ -30,15 +32,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -58,9 +65,7 @@ dependencies {
     //Room
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
     ksp(libs.room.compiler)
-
     //Koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
@@ -76,5 +81,7 @@ dependencies {
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
+
+
 
 }

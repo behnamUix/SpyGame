@@ -43,7 +43,8 @@ import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.game.components.QCardComp
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
 fun GameSc(
