@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -38,10 +39,11 @@ import com.behnamuix.spy.data.local.db.model.KeyWord
 @Composable
 fun ListKeyWordsComp(
     vm: ConfigGameViewModel,
-    listWord: MutableList<KeyWord>,
+    listWord: List<KeyWord>,
 ) {
     var count by remember { mutableIntStateOf(-1) }
     val ctx = LocalContext.current
+
 
     Column(Modifier.padding(8.dp)) {
         //list word
@@ -87,7 +89,7 @@ fun ListKeyWordsComp(
                                     vm.deleteWord(
                                         id = item.id
                                     )
-                                    listWord.removeAt(index)
+                                    listWord.toMutableList().removeAt(index)
                                 } catch (e: IndexOutOfBoundsException) {
                                     Toast.makeText(
                                         ctx,

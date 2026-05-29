@@ -1,4 +1,4 @@
-package com.behnamuix.spy.ui.navigation.screens.confiGame.components
+package com.behnamuix.spy.ui.navigation.screens.training.components
 
 import androidx.compose.animation.core.EaseInElastic
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,86 +33,65 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 
 @Composable
-fun SpyRoleComp(
-    title: String,
-    desc: String,
-    space: Int = 0,
-    showIcon: Boolean = true
-) {
+fun AgentRoleComp(title: String, desc: String) {
     var rotateState by remember { mutableStateOf(0f) }
     val animateRotate by animateFloatAsState(
         targetValue = rotateState,
-        animationSpec = tween(2000, easing = EaseInElastic)
+        animationSpec = tween(1500, easing = EaseInElastic)
 
     )
-    if (showIcon) {
-        Column(modifier = Modifier.padding(end = space.dp)) {
-            Row(
-
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { rotateState = 360f },
-                    text = title,
-                    color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(Modifier.width(8.dp))
-
-                Icon(
-                    modifier = Modifier.rotate(animateRotate),
-                    tint = Color(0xFF4CAF50),
-                    imageVector = Icons.Default.CheckCircle,
-                    contentDescription = ""
-                )
-            }
-            Spacer(Modifier.height(6.dp))
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) {
             Text(
-                text = desc,
-                fontSize = 18.sp,
-                color = Color.White.copy(0.5f)
-            )
-        }
-    } else {
-        Column(modifier = Modifier.padding(end = space.dp)) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+
+                    .clickable { rotateState = 360f },
                 text = title,
                 color = Color.White,
-                fontSize = 18.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = desc,
-                fontSize = 16.sp,
-                color = Color.White.copy(0.5f)
-            )
+            Spacer(Modifier.width(8.dp))
 
+            Icon(
+                modifier = Modifier.rotate(animateRotate),
+                tint = Color(0xFF4CAF50),
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = ""
+            )
         }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            textAlign = TextAlign.End,
+            modifier = Modifier.fillMaxWidth(),
+            text = desc,
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.White.copy(0.5f)
+        )
     }
 }
 
+
 @Composable
-fun SpyComp(
+fun AgentComp(
     title: String,
-    spyCount: MutableIntState,
+    agentCount: MutableIntState,
     configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
-        Modifier
+        modifier = Modifier
             .padding(horizontal = 16.dp)
-
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
         Row(
             Modifier.padding(horizontal = 24.dp, vertical = 6.dp),
@@ -124,49 +103,55 @@ fun SpyComp(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SpyNumberCounterComp(
-                    spyCount,
+                AgentNumberCounterComp(
+                    modifier = Modifier,
+                    agentCount,
                     configGameViewModel
+
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = title, style = MaterialTheme.typography.titleLarge)
+                Text(title, style = MaterialTheme.typography.titleLarge)
             }
         }
+
+
     }
 
 
 }
 
+
 @Composable
-fun SpyNumberCounterComp(
-    spyCount: MutableState<Int>,
-    configGameViewModel: ConfigGameViewModel,
+fun AgentNumberCounterComp(
+    modifier: Modifier,
+    agentCount: MutableState<Int>,
+    configGameViewModel: ConfigGameViewModel
 ) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         IconButton(onClick = {
 
-
-            configGameViewModel.decSpyCountPlayer()
-
+            configGameViewModel.decAgentCountPlayer()
 
         }) {
             Card {
                 Icon(
                     tint = Color.White,
+
                     imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                     contentDescription = ""
                 )
             }
 
         }
-        Text(spyCount.value.toString(), style = MaterialTheme.typography.titleLarge)
+        Text(agentCount.value.toString(), style = MaterialTheme.typography.titleLarge)
         IconButton({
-            configGameViewModel.incSpyCountPlayer()
 
 
+            configGameViewModel.incAgentCountPlayer()
         }) {
             Card {
                 Icon(
@@ -179,3 +164,6 @@ fun SpyNumberCounterComp(
         }
     }
 }
+
+
+

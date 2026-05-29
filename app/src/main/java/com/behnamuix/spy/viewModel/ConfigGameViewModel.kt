@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.collections.listOf
 
 class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewModel() {
 
 
-    private val _wordList = MutableStateFlow(mutableListOf<KeyWord>())
-    val wordList: StateFlow<MutableList<KeyWord>> = _wordList.asStateFlow()
+    private val _wordList = MutableStateFlow<List<KeyWord>>(emptyList())
+    val wordList: StateFlow<List<KeyWord>> = _wordList.asStateFlow()
 
 
     private val _expanded = MutableStateFlow<Boolean>(false)
@@ -43,6 +44,7 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
     ) {
         viewModelScope.launch {
             keywordRepo.addKeywords(kyword)
+            getWords()
 
 
         }
@@ -63,10 +65,7 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
 
     fun getWords() {
         viewModelScope.launch {
-            var list = keywordRepo.getKeywords()
-            repeat(list.size) {
-                _wordList.emit(list as MutableList<KeyWord>)
-            }
+            _wordList.emit(keywordRepo.getKeywords())
         }
 
 

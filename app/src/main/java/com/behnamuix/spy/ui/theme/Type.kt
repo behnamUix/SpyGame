@@ -3,6 +3,8 @@ package com.behnamuix.spy.ui.theme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
@@ -60,6 +62,7 @@ val Typography = Typography(
     titleMedium = TextStyle(
         fontFamily = Traffic,
         fontWeight = FontWeight.Medium,
+
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp

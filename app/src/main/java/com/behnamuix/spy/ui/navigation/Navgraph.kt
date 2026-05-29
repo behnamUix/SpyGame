@@ -8,7 +8,7 @@ import com.behnamuix.spy.ui.navigation.screens.confiGame.ConfigGameSc
 import com.behnamuix.spy.ui.navigation.screens.game.GameSc
 import com.behnamuix.spy.ui.navigation.screens.roleManager.RoleManagerSc
 import com.behnamuix.spy.ui.navigation.screens.SplashSc
-import com.behnamuix.spy.ui.navigation.screens.TrainingSc
+import com.behnamuix.spy.ui.navigation.screens.training.TrainingSc
 
 @Composable
 fun AppNavgraph() {

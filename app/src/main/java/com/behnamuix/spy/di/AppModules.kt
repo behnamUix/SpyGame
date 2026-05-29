@@ -11,6 +11,7 @@ import com.behnamuix.spy.media.config.getMediaPlayer
 import com.behnamuix.spy.media.repo.MediaPlayerRepository
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.viewModel.SplashViewModel
+import com.behnamuix.spy.viewModel.TrainingViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -42,4 +43,5 @@ val viewModelModule = module {
     viewModel { RoleManagerViewModel(get(), get()) }
     viewModel { GameViewModel(get()) }
     viewModel { MediaPlayerViewModel(get()) }
+    viewModel { TrainingViewModel() }
 }

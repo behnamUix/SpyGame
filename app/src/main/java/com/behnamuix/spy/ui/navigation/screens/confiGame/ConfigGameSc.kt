@@ -65,10 +65,10 @@ import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.ui.navigation.Screens
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.AgentComp
+import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.ListKeyWordsComp
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.SpyComp
+import com.behnamuix.spy.ui.navigation.screens.training.components.SpyComp
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -137,7 +137,7 @@ fun ConfigGameSc(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 8.dp),
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Row {
@@ -311,7 +311,7 @@ fun AddKeyWordAlert(
     showAddWordDialog: MutableState<Boolean>,
     configGameViewModel: ConfigGameViewModel,
     ctx: Context,
-    listWord: MutableList<KeyWord>,
+    listWord: List<KeyWord>,
 ) {
     val scope = rememberCoroutineScope()
     var word by remember { mutableStateOf("") }
@@ -327,6 +327,7 @@ fun AddKeyWordAlert(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
+                    textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
                     text = "هر کلمه ای بخوای میتونی به بازی اضافه کنی و از بازی بیشتر لذت ببری",
                     fontWeight = FontWeight.Bold

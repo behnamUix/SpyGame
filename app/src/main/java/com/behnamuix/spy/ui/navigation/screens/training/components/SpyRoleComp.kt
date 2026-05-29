@@ -1,4 +1,4 @@
-package com.behnamuix.spy.ui.navigation.screens.confiGame.components
+package com.behnamuix.spy.ui.navigation.screens.training.components
 
 import androidx.compose.animation.core.EaseInElastic
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,61 +33,93 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 
 @Composable
-fun AgentRoleComp(title: String, desc: String) {
+fun SpyRoleComp(
+    title: String,
+    desc: String,
+    space: Int = 0,
+    showIcon: Boolean = true
+) {
     var rotateState by remember { mutableStateOf(0f) }
     val animateRotate by animateFloatAsState(
         targetValue = rotateState,
-        animationSpec = tween(1500, easing = EaseInElastic)
+        animationSpec = tween(2000, easing = EaseInElastic)
 
     )
-    Column {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { rotateState = 360f },
-                text = title,
-                color = Color.White,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(Modifier.width(8.dp))
+    if (showIcon) {
+        Column(modifier = Modifier.padding(end = space.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    modifier = Modifier
 
-            Icon(
-                modifier = Modifier.rotate(animateRotate),
-                tint = Color(0xFF4CAF50),
-                imageVector = Icons.Default.CheckCircle,
-                contentDescription = ""
+                        .clickable { rotateState = 360f },
+                    text = title,
+                    color = Color.White,
+                    fontSize = 24.sp,
+
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(Modifier.width(8.dp))
+
+                Icon(
+                    modifier = Modifier.rotate(animateRotate),
+                    tint = Color(0xFF4CAF50),
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = ""
+                )
+            }
+            Spacer(Modifier.height(6.dp))
+            Text(
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth(),
+                text = desc,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White.copy(0.5f)
             )
         }
-        Spacer(Modifier.height(6.dp))
-        Text(
-            text = desc,
-            fontSize = 18.sp,
-            color = Color.White.copy(0.5f)
-        )
+    } else {
+        Column(modifier = Modifier.padding(end = space.dp)) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = title,
+                textAlign = TextAlign.End,
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth(),
+                text = desc,
+                fontSize = 16.sp,
+                color = Color.White.copy(0.5f)
+            )
+
+        }
     }
 }
 
-
 @Composable
-fun AgentComp(
+fun SpyComp(
     title: String,
-    agentCount: MutableIntState,
+    spyCount: MutableIntState,
     configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
-        modifier = Modifier
+        Modifier
             .padding(horizontal = 16.dp)
-            .fillMaxWidth()
+
+            .fillMaxWidth(),
     ) {
         Row(
             Modifier.padding(horizontal = 24.dp, vertical = 6.dp),
@@ -99,55 +131,49 @@ fun AgentComp(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AgentNumberCounterComp(
-                    modifier = Modifier,
-                    agentCount,
+                SpyNumberCounterComp(
+                    spyCount,
                     configGameViewModel
-
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(title, style = MaterialTheme.typography.titleLarge)
+                Text(text = title, style = MaterialTheme.typography.titleLarge)
             }
         }
-
-
     }
 
 
 }
 
-
 @Composable
-fun AgentNumberCounterComp(
-    modifier: Modifier,
-    agentCount: MutableState<Int>,
-    configGameViewModel: ConfigGameViewModel
+fun SpyNumberCounterComp(
+    spyCount: MutableState<Int>,
+    configGameViewModel: ConfigGameViewModel,
 ) {
     Row(
-        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         IconButton(onClick = {
 
-            configGameViewModel.decAgentCountPlayer()
+
+            configGameViewModel.decSpyCountPlayer()
+
 
         }) {
             Card {
                 Icon(
                     tint = Color.White,
-
                     imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                     contentDescription = ""
                 )
             }
 
         }
-        Text(agentCount.value.toString(), style = MaterialTheme.typography.titleLarge)
+        Text(spyCount.value.toString(), style = MaterialTheme.typography.titleLarge)
         IconButton({
+            configGameViewModel.incSpyCountPlayer()
 
 
-            configGameViewModel.incAgentCountPlayer()
         }) {
             Card {
                 Icon(
@@ -160,6 +186,3 @@ fun AgentNumberCounterComp(
         }
     }
 }
-
-
-

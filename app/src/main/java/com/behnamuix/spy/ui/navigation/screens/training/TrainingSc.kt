@@ -1,10 +1,11 @@
-package com.behnamuix.spy.ui.navigation.screens
+package com.behnamuix.spy.ui.navigation.screens.training
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,15 +41,17 @@ import androidx.navigation.NavController
 import com.behnamuix.retrofittest.SpyGame.model.Spy
 import com.behnamuix.spy.R
 import com.behnamuix.spy.ui.navigation.Screens
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.AgentRoleComp
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.SpyRoleComp
+import com.behnamuix.spy.ui.navigation.screens.training.components.AgentRoleComp
+import com.behnamuix.spy.ui.navigation.screens.training.components.SpyRoleComp
 import com.behnamuix.spy.viewModel.TrainingViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koinViewModel()) {
+fun TrainingSc(navController: NavController,
+               trainingVm: TrainingViewModel = koinViewModel()
+) {
     val scope = rememberCoroutineScope()
     val pagerState =
         rememberPagerState(initialPage = 0, pageCount = { trainingVm.listRole.size })
@@ -69,20 +72,20 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
                 }
             ) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(24.dp),
                     tint = Color.White,
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = ""
                 )
 
             }
-
+            Spacer(Modifier.weight(1f))
             Text(
                 "آموزش نقش ها",
                 color = Color.White,
-                modifier = Modifier.fillMaxWidth(),
+
                 textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.bodyLarge
             )
         }
         TabRow(
@@ -114,17 +117,15 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(22.dp)
                     ) {
-
                         Image(
                             modifier = Modifier
-                                .size(250.dp)
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.5f)
                                 .clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.Crop,
                             painter = painterResource(R.drawable.img_agent),
                             contentDescription = ""
                         )
-
-
                         trainingVm.agentEducationList.forEach {
                             AgentRoleComp(it.title, desc = it.desc)
                         }
@@ -143,7 +144,8 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(250.dp)
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.5f)
                                 .clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.Crop,
                             painter = painterResource(R.drawable.img_spy),
@@ -151,12 +153,14 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
                         )
                         SpyRoleComp("اطلاعات", desc = Spy().etelaat)
                         SpyRoleComp("هدف", desc = Spy().hadaf)
-                        Row {
+                        SpyRoleComp("منطق و استراتژی", desc = "")
+                       /* Row {
                             Text(
-                                modifier = Modifier.weight(1f),
-                                text = "منطق و استراتژی",
+                                textAlign = TextAlign.End,
+
+                                text = "",
                                 color = Color.White,
-                                fontSize = 24.sp,
+                                style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(Modifier.width(8.dp))
@@ -168,9 +172,9 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
                                 contentDescription = ""
                             )
 
-                        }
+                        }*/
                         SpyRoleComp(
-                            ">  پنهان کاری",
+                            " پنهان کاری",
                             desc = Spy().penhankari,
                             space = 16,
                             showIcon = false
@@ -208,6 +212,7 @@ fun TrainingSc(navController: NavController, trainingVm: TrainingViewModel = koi
 
 
         }
+
     }
 
 
