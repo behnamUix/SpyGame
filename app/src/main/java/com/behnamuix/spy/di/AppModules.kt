@@ -43,5 +43,5 @@ val viewModelModule = module {
     viewModel { RoleManagerViewModel(get(), get()) }
     viewModel { GameViewModel(get()) }
     viewModel { MediaPlayerViewModel(get()) }
-    viewModel { TrainingViewModel() }
+    viewModel { TrainingViewModel(get()) }
 }

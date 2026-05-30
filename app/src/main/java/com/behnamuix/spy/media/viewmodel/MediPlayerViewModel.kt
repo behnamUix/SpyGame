@@ -26,8 +26,12 @@ class MediaPlayerViewModel(private val repo: MediaPlayerRepository) : ViewModel(
         return repo.isPlaying()
     }
 
-    fun setVolume(R: Float, L: Float) {
-        repo.setVolume(R, L)
+    fun volumeHigh() {
+        repo.setVolume(1f, 1f)
+    }
+
+    fun volumeLow() {
+        repo.setVolume(0.3f, 0.3f)
     }
 
 

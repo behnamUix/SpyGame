@@ -149,6 +149,10 @@ class ConfigGameViewModel(
         _mediaState.value = MediaState.PAUSE
     }
 
+    fun setVolume() {
+        mediaVm.volumeHigh()
+    }
+
 
 }
 

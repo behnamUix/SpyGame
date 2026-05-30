@@ -2,8 +2,9 @@ package com.behnamuix.spy.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.behnamuix.retrofittest.SpyGame.model.Agent
+import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 
-class TrainingViewModel : ViewModel() {
+class TrainingViewModel(private val mediaVm: MediaPlayerViewModel) : ViewModel() {
     var listRole = listOf<String>(
         "مامور",
         "جاسوس",
@@ -38,6 +39,10 @@ class TrainingViewModel : ViewModel() {
             desc = "باید بتواند در میان بازیکنان کسی که اطلاعات کمتری دارد یا پاسخ هایش با منطق موقعیت همخوانی ندارد پیدا کند"
         )
     )
+
+    fun setVolume() {
+        mediaVm.volumeLow()
+    }
 
 
 }

@@ -54,7 +54,7 @@ fun GameSc(
 ) {
     val isRunning = vm.isRunning.collectAsState()
     LaunchedEffect(Unit) {
-        mediaVm.setVolume(0.2f, 0.2f)
+        mediaVm.volumeLow()
         vm.startTimer()
 
     }

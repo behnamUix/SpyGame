@@ -108,12 +108,15 @@ fun ConfigGameSc(
         if (ctx.checkNet() == false) {
             Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
         } else {
+            vm.setVolume()
             vm.play()
 
 
         }
 
+
     }
+
     Column(
         Modifier
             .fillMaxSize()

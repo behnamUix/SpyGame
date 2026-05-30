@@ -12,7 +12,7 @@ class MediaPlayerRepository(private var mp: MediaPlayer) {
         if (mp.isPlaying) return
         try {
             mp.setOnPreparedListener { player ->
-                setVolume(1f, 1f)
+
                 player.start()
             }
             mp.start()

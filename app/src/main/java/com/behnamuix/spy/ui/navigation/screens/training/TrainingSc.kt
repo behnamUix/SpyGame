@@ -26,6 +26,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,9 +50,13 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun TrainingSc(navController: NavController,
-               trainingVm: TrainingViewModel = koinViewModel()
+fun TrainingSc(
+    navController: NavController,
+    trainingVm: TrainingViewModel = koinViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        trainingVm.setVolume()
+    }
     val scope = rememberCoroutineScope()
     val pagerState =
         rememberPagerState(initialPage = 0, pageCount = { trainingVm.listRole.size })
@@ -154,25 +159,25 @@ fun TrainingSc(navController: NavController,
                         SpyRoleComp("اطلاعات", desc = Spy().etelaat)
                         SpyRoleComp("هدف", desc = Spy().hadaf)
                         SpyRoleComp("منطق و استراتژی", desc = "")
-                       /* Row {
-                            Text(
-                                textAlign = TextAlign.End,
+                        /* Row {
+                             Text(
+                                 textAlign = TextAlign.End,
 
-                                text = "",
-                                color = Color.White,
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(Modifier.width(8.dp))
+                                 text = "",
+                                 color = Color.White,
+                                 style = MaterialTheme.typography.titleLarge,
+                                 fontWeight = FontWeight.Bold
+                             )
+                             Spacer(Modifier.width(8.dp))
 
-                            Icon(
+                             Icon(
 
-                                tint = Color(0xFF4CAF50),
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = ""
-                            )
+                                 tint = Color(0xFF4CAF50),
+                                 imageVector = Icons.Default.CheckCircle,
+                                 contentDescription = ""
+                             )
 
-                        }*/
+                         }*/
                         SpyRoleComp(
                             " پنهان کاری",
                             desc = Spy().penhankari,
