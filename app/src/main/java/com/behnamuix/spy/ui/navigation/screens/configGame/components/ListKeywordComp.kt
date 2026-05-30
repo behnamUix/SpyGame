@@ -1,4 +1,4 @@
-package com.behnamuix.spy.ui.navigation.screens.confiGame.components
+package com.behnamuix.spy.ui.navigation.screens.configGame.components
 
 import android.util.Log
 import android.widget.Toast
@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember

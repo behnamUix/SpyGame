@@ -1,4 +1,4 @@
-package com.behnamuix.spy.ui.navigation.screens.confiGame.components
+package com.behnamuix.spy.ui.navigation.screens.configGame.components
 
 import android.content.ActivityNotFoundException
 import android.content.Intent

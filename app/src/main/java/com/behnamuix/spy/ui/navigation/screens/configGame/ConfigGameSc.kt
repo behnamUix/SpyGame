@@ -1,4 +1,4 @@
-package com.behnamuix.spy.ui.navigation.screens.confiGame
+package com.behnamuix.spy.ui.navigation.screens.configGame
 
 import android.content.Context
 import android.util.Log
@@ -24,8 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -66,8 +64,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.ui.navigation.Screens
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.InformationComp
-import com.behnamuix.spy.ui.navigation.screens.confiGame.components.ListKeyWordsComp
+import com.behnamuix.spy.ui.navigation.screens.configGame.components.InformationComp
+import com.behnamuix.spy.ui.navigation.screens.configGame.components.ListKeyWordsComp
+import com.behnamuix.spy.ui.navigation.screens.configGame.components.MediaControllerComp
 import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spy.utils.checkNet
@@ -269,7 +268,6 @@ fun Header(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-
         IconButton(
             modifier = Modifier.padding(8.dp), onClick = {
                 vm.reverseExpand()
@@ -286,30 +284,8 @@ fun Header(
         }
 
         Spacer(Modifier.weight(1f))
-        when (mediaState) {
-            MediaState.PLAY -> {
-                IconButton({ vm.pause() }) {
-                    Icon(
-                        Icons.Default.Pause,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
 
-            MediaState.PAUSE -> {
-                IconButton({ vm.play() }) {
-                    Icon(
-                        Icons.Default.PlayArrow,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-
-            else -> {}
-        }
-
+        MediaControllerComp(mediaState, vm)
     }
     AnimatedVisibility(
         expandedState.value, enter = fadeIn(), exit = fadeOut()
@@ -345,6 +321,7 @@ fun Header(
         }
     }
 }
+
 
 @Composable
 fun AddKeyWordAlert(
