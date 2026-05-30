@@ -127,19 +127,18 @@ fun RoleManagerSc(
                 )
 
 
-                /*                        test:
+/* test:
 
-                                        newListPlayer.value.forEach {
-                                            Column {
-                                                Text(it.id.toString(), color = Color.Yellow)
-                                                Text(it.role, color = Color.Yellow)
+                newListPlayer.value.forEach {
+                    Column {
+                        Text(it.id.toString(), color = Color.Yellow)
+                        Text(it.role, color = Color.Yellow)
 
-                                            }
-                                        }*/
+                    }
+                }*/
 
                 LazyRow(
                     reverseLayout = true,
-
                     userScrollEnabled = false,
                     state = scrollState
                 ) {
