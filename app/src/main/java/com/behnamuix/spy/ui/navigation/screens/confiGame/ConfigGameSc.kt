@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -62,16 +64,16 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
-import com.behnamuix.spy.viewModel.ConfigGameViewModel
-import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.data.local.db.model.KeyWord
-import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.ui.navigation.Screens
-import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.ListKeyWordsComp
+import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spy.utils.checkNet
+import com.behnamuix.spy.viewModel.ConfigGameViewModel
+import com.behnamuix.spy.viewModel.MediaState
+import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -80,8 +82,8 @@ fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
-    mediaVm: MediaPlayerViewModel = koinViewModel()
-) {
+
+    ) {
     //context
     val ctx = LocalContext.current
 
@@ -90,10 +92,8 @@ fun ConfigGameSc(
     var expandedState = vm.expanded.collectAsState()
 
     val rotationAngle by animateFloatAsState(
-        targetValue = if (expandedState.value) 180f else 0f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioHighBouncy,
-            stiffness = Spring.StiffnessLow
+        targetValue = if (expandedState.value) 180f else 0f, animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow
         ), label = "rotation" // اضافه کردن label برای بهتر شدن لاگ‌ها
     )
 
@@ -101,12 +101,17 @@ fun ConfigGameSc(
 
     val spyCount by vm.spyCount.collectAsState()
 
+    val mediaState by vm.mediaState.collectAsState()
+
     LaunchedEffect(Unit) {
         vm.getWords()
         if (ctx.checkNet() == false) {
             Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
+        } else {
+            vm.play()
+
+
         }
-        mediaVm.play()
 
     }
     Column(
@@ -114,7 +119,7 @@ fun ConfigGameSc(
             .fillMaxSize()
             .animateContentSize()
     ) {
-        Header(vm, rotationAngle, expandedState, ctx)
+        Header(mediaState, vm, rotationAngle, expandedState, ctx)
         Spacer(Modifier.height(24.dp))
         Box(Modifier.fillMaxSize()) {
 
@@ -131,9 +136,7 @@ fun ConfigGameSc(
                     vm,
                 )
                 SpyComp(
-                    "تعداد جاسوسان",
-                    spyCount,
-                    vm
+                    "تعداد جاسوسان", spyCount, vm
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -147,7 +150,8 @@ fun ConfigGameSc(
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center,
                         color = Color(0xFF64DD17),
-                        modifier = Modifier.fillMaxWidth(), fontSize = 14.sp
+                        modifier = Modifier.fillMaxWidth(),
+                        fontSize = 14.sp
                     )
                 }
                 Box(
@@ -163,8 +167,7 @@ fun ConfigGameSc(
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier,
 
-                            onClick = { navController.navigate(Screens.Training.route) }
-                        ) {
+                            onClick = { navController.navigate(Screens.Training.route) }) {
                             Text(
                                 text = "آموزش بازی",
                                 color = Color.White,
@@ -177,8 +180,7 @@ fun ConfigGameSc(
                         OutlinedButton(
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier,
-                            onClick = { vm.showAddWordDialog.value = true }
-                        ) {
+                            onClick = { vm.showAddWordDialog.value = true }) {
                             Text(
                                 text = "کلمات شما",
                                 color = Color.White,
@@ -193,7 +195,7 @@ fun ConfigGameSc(
                 }
                 Button(
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFFE53935)),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
@@ -202,15 +204,13 @@ fun ConfigGameSc(
                         Log.d("TAG", "${agentCount.toString()}/${spyCount.toString()}")
                         navController.navigate(Screens.RoleManager.route)
 
-                    }
-                ) {
+                    }) {
                     Text(
                         color = MaterialTheme.colorScheme.onBackground,
                         text = " برو بعدی (${roleManagerViewModel.category.size.toString()} کلمه)",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(12.dp)
+                        modifier = Modifier.padding(12.dp)
                     )
                 }
                 Column(
@@ -239,10 +239,7 @@ fun ConfigGameSc(
                 //Alert
                 if (vm.showAddWordDialog.value) {
                     AddKeyWordAlert(
-                        vm.showAddWordDialog,
-                        vm,
-                        ctx,
-                        listWord
+                        vm.showAddWordDialog, vm, ctx, listWord
 
                     )
                 }
@@ -258,25 +255,58 @@ fun ConfigGameSc(
 
 @Composable
 fun Header(
+    mediaState: MediaState,
     vm: ConfigGameViewModel,
     rotationAngle: Float,
     expandedState: State<Boolean>,
     ctx: Context
 ) {
-    IconButton(
-        modifier = Modifier.padding(8.dp),
-        onClick = {
-            vm.reverseExpand()
-        }) {
-        Icon(
-            tint = Color.White,
-            imageVector = Icons.Default.Settings,
-            modifier = Modifier
-                .size(32.dp)
+    Row(
+        modifier = Modifier.padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
 
-                .rotate(rotationAngle),
-            contentDescription = ""
-        )
+        IconButton(
+            modifier = Modifier.padding(8.dp), onClick = {
+                vm.reverseExpand()
+            }) {
+            Icon(
+                tint = Color.White,
+                imageVector = Icons.Default.Settings,
+                modifier = Modifier
+                    .size(32.dp)
+
+                    .rotate(rotationAngle),
+                contentDescription = ""
+            )
+        }
+
+        Spacer(Modifier.weight(1f))
+        when (mediaState) {
+            MediaState.PLAY -> {
+                IconButton({ vm.pause() }) {
+                    Icon(
+                        Icons.Default.Pause,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            MediaState.PAUSE -> {
+                IconButton({ vm.play() }) {
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            else -> {}
+        }
+
     }
     AnimatedVisibility(
         expandedState.value, enter = fadeIn(), exit = fadeOut()
@@ -295,15 +325,12 @@ fun Header(
                 Checkbox(
 
 
-                    checked = vm.userUse,
-                    onCheckedChange = {
+                    checked = vm.userUse, onCheckedChange = {
                         vm.userUse = it
                         if (it) {
                             if (vm.checkDb()) {
                                 Toast.makeText(
-                                    ctx,
-                                    "لیست کلماتت  خالی است ",
-                                    Toast.LENGTH_SHORT
+                                    ctx, "لیست کلماتت  خالی است ", Toast.LENGTH_SHORT
                                 ).show()
 
                             }
@@ -346,8 +373,7 @@ fun AddKeyWordAlert(
                     isError = wordExist,
                     supportingText = { if (wordExist) Text(" ببخشید کلمه $word در بازی وجود داره:( ") },
                     textStyle = TextStyle(
-                        textDirection = TextDirection.Rtl,
-                        textAlign = TextAlign.Right
+                        textDirection = TextDirection.Rtl, textAlign = TextAlign.Right
                     ),
                     label = {
                         Text(
@@ -357,8 +383,7 @@ fun AddKeyWordAlert(
                         )
                     },
                     value = word,
-                    onValueChange = { word = it }
-                )
+                    onValueChange = { word = it })
                 Row(Modifier.padding(horizontal = 16.dp)) {
                     Button(
                         onClick = {
@@ -389,9 +414,7 @@ fun AddKeyWordAlert(
                                         word = ""
 
                                         Toast.makeText(
-                                            ctx,
-                                            " کلمه $word به بازی اضافه شد ",
-                                            Toast.LENGTH_SHORT
+                                            ctx, " کلمه $word به بازی اضافه شد ", Toast.LENGTH_SHORT
                                         ).show()
                                     }
 

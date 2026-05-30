@@ -39,7 +39,7 @@ val repositoryModule = module {
 
 val viewModelModule = module {
     viewModel { SplashViewModel() }
-    viewModel { ConfigGameViewModel(get()) }
+    viewModel { ConfigGameViewModel(get(), get()) }
     viewModel { RoleManagerViewModel(get(), get()) }
     viewModel { GameViewModel(get()) }
     viewModel { MediaPlayerViewModel(get()) }

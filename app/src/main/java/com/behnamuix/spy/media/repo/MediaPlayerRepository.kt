@@ -2,45 +2,65 @@ package com.behnamuix.spy.media.repo
 
 import android.content.Context
 import android.media.MediaPlayer
+import com.behnamuix.spy.media.config.getMediaPlayer
+import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 
-class MediaPlayerRepository(private val mp: MediaPlayer?) {
+class MediaPlayerRepository(private var mp: MediaPlayer) {
+
 
     fun play() {
-        if (mp != null) {
-            if (!mp.isPlaying) {
-                mp.start()
+        if (mp.isPlaying) return
+        try {
+            mp.setOnPreparedListener { player ->
+                setVolume(1f, 1f)
+                player.start()
             }
+            mp.start()
+        } catch (e: IllegalStateException) {
+
         }
+
+
+
+
+
     }
 
+
     fun pause() {
-        if (mp != null) {
-            if (mp.isPlaying) {
-                mp.pause()
-            }
+        if (mp.isPlaying) {
+            mp.pause()
         }
+
     }
 
     fun stop() {
-        if (mp != null) {
-            if (mp.isPlaying) {
-                mp.stop()
-                mp.seekTo(0)
-            }
+        try {
+            mp.stop()
+            // برای استفاده مجدد بعد از stop، باید مجدد prepareAsync شود
+            mp.prepareAsync()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
     }
 
     fun release() {
-        mp?.release()
+        mp.release()
 
     }
 
-    fun isPlaying(): Boolean? {
-        return mp?.isPlaying
+    fun isPlaying(): Boolean {
+        if (mp.isPlaying) {
+            return true
+        } else {
+            return false
+        }
     }
 
     fun setVolume(L: Float, R: Float) {
-        mp?.setVolume(L, R)
+        mp.setVolume(L, R)
     }
 
 }
+

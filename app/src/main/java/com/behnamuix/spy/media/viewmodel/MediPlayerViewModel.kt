@@ -13,6 +13,7 @@ class MediaPlayerViewModel(private val repo: MediaPlayerRepository) : ViewModel(
     }
 
     fun stop() {
+
         repo.stop()
     }
 
@@ -21,11 +22,13 @@ class MediaPlayerViewModel(private val repo: MediaPlayerRepository) : ViewModel(
 
     }
 
-    fun isPlaying(): Boolean? {
+    fun isPlaying(): Boolean {
         return repo.isPlaying()
     }
 
     fun setVolume(R: Float, L: Float) {
         repo.setVolume(R, L)
     }
+
+
 }

@@ -127,15 +127,15 @@ fun RoleManagerSc(
                 )
 
 
-/* test:
+                /* test:
 
-                newListPlayer.value.forEach {
-                    Column {
-                        Text(it.id.toString(), color = Color.Yellow)
-                        Text(it.role, color = Color.Yellow)
+                                newListPlayer.value.forEach {
+                                    Column {
+                                        Text(it.id.toString(), color = Color.Yellow)
+                                        Text(it.role, color = Color.Yellow)
 
-                    }
-                }*/
+                                    }
+                                }*/
 
                 LazyRow(
                     reverseLayout = true,
@@ -216,11 +216,10 @@ fun RoleManagerSc(
                                 vm.end = true
 
                             }
-                        }, colors = ButtonDefaults.buttonColors(
-                            Color(0xFFE53935)
+                        },
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
 
-                        )
-                    ) {
+                        ) {
                         Text(
                             text = "بده نفر بعدی",
                             color = Color.White,

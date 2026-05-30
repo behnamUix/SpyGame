@@ -1,20 +1,22 @@
 package com.behnamuix.spy.viewModel
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.KeywordRepository
+import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.collections.listOf
 
-class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewModel() {
+class ConfigGameViewModel(
+    private val keywordRepo: KeywordRepository,
+    private val mediaVm: MediaPlayerViewModel
+) : ViewModel() {
 
 
     private val _wordList = MutableStateFlow<List<KeyWord>>(emptyList())
@@ -30,6 +32,9 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
 
     private val _spyCount = MutableStateFlow<Int>(1)
     val spyCount: StateFlow<Int> = _spyCount.asStateFlow()
+
+    private val _mediaState = MutableStateFlow<MediaState>(MediaState.PLAY)
+    val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
 
 
     val wordExist = mutableStateOf(false)
@@ -133,5 +138,23 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
     }
 
 
+    //MediaController
+    fun play() {
+        mediaVm.play()
+        _mediaState.value = MediaState.PLAY
+    }
+
+    fun pause() {
+        mediaVm.pause()
+        _mediaState.value = MediaState.PAUSE
+    }
+
+
+}
+
+enum class MediaState {
+    PLAY,
+    PAUSE,
+    STOP
 }
 
