@@ -115,6 +115,7 @@ val Typography = Typography(
         fontFamily = Traffic,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
+        textDirection = TextDirection.Rtl,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )

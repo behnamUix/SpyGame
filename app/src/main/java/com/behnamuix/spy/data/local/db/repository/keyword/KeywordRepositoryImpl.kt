@@ -1,4 +1,4 @@
-package com.behnamuix.spy.data.local.db.repository
+package com.behnamuix.spy.data.local.db.repository.keyword
 
 import com.behnamuix.spy.data.local.db.dao.KeywordDao
 import com.behnamuix.spy.data.local.db.model.KeyWord

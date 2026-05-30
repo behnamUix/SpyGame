@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
-import com.behnamuix.spy.data.local.db.repository.KeywordRepository
+import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,11 +37,13 @@ class ConfigGameViewModel(
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
 
 
+    private val _userUse = MutableStateFlow<Boolean?>(null)
+    val userUse: StateFlow<Boolean?> = _userUse.asStateFlow()
+
+
     val wordExist = mutableStateOf(false)
 
     var showAddWordDialog = mutableStateOf(false)
-
-    var userUse by mutableStateOf(false)
 
 
     var progress by mutableStateOf(true)
@@ -136,6 +138,7 @@ class ConfigGameViewModel(
     fun reverseExpand() {
         _expanded.value = !_expanded.value
     }
+
 
 
     //MediaController

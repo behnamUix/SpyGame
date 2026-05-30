@@ -70,8 +70,9 @@ import kotlin.random.Random
 fun RoleManagerSc(
     navController: NavController,
     vm: RoleManagerViewModel = koinViewModel(),
-    configGameVm: ConfigGameViewModel = koinViewModel(),
-) {
+
+    ) {
+    val userUse by vm.userState.collectAsState()
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -92,21 +93,17 @@ fun RoleManagerSc(
 
     LaunchedEffect(Unit) {
         vm.configRole()
-        val keyWord =
-            if (configGameVm.userUse) {
-                //use database
-                vm.getKeyWord(
-                    setWord = { vm.word = it }
-                ).toString()
-            } else {
-                //use example
-                vm.category[(Random(System.currentTimeMillis()).nextInt(
-                    0,
-                    vm.category.size
-                ))]
+        if (userUse?.state ?: false) {
+            //use database
+            vm.getKeyWord(setWord = { vm.word = it.word }).toString()
+        } else {
+            //use example
+            vm.word = vm.category[(Random(System.currentTimeMillis()).nextInt(
+                0,
+                vm.category.size
+            ))]
 
-            }
-        vm.word = keyWord
+        }
     }
 
     Column(

@@ -8,13 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.spy.data.local.db.repository.KeywordRepository
+import com.behnamuix.spy.data.local.db.model.KeyWord
+import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spy.utils.createUnpredictableShuffle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class RoleManagerViewModel(
     private val repo: KeywordRepository,
@@ -706,29 +706,26 @@ class RoleManagerViewModel(
 
     var done by mutableStateOf(true)
 
-    var end by  mutableStateOf(false)
+    var end by mutableStateOf(false)
 
-    var word by  mutableStateOf("")
+    var word by mutableStateOf("")
 
-    var stateScale by  mutableStateOf(false)
+    var stateScale by mutableStateOf(false)
 
+    var userState = vm.userUse
 
 
     fun getKeyWord(
-        setWord: (String) -> Unit,
+        setWord: (KeyWord) -> Unit,
     ) {
 
         viewModelScope.launch {
-            var word = ""
+            var keyword: KeyWord? = null
             val listWords = repo.getKeywords()
-            listWords.toMutableList().shuffle()
-            try {
-                word = listWords[Random.nextInt(0, listWords.size)].word
-            } catch (_: IllegalArgumentException) {
-                Log.e("error", "ERR001")
-            }
-            setWord(word)
-            Log.d("LOG_ROLE", word)
+            val new = listWords.toMutableList().shuffled()
+            keyword = new[0]
+            setWord(keyword)
+            Log.d("LOG_ROLE", keyword.word)
         }
 
 
@@ -752,6 +749,7 @@ class RoleManagerViewModel(
 
 
     }
+
     fun incTime() {
         setTime((_baseTimeInMinutes.value + 5).coerceAtMost(15))
     }
@@ -759,12 +757,12 @@ class RoleManagerViewModel(
     fun decTime() {
         setTime((_baseTimeInMinutes.value - 5).coerceAtMost(5)) // حداقل 5 دقیقه
     }
+
     fun setTime(minutes: Int) {
         val clampedMinutes = minutes.coerceIn(5, 15) // محدود کردن بین 5 تا 15 دقیقه
         _baseTimeInMinutes.value = clampedMinutes
         // این باعث میشه _secondsLeft هم آپدیت بشه چون از collect استفاده کردیم
     }
-
 
 
 }
