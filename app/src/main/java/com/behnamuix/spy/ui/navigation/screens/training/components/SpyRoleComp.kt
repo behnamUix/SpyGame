@@ -22,8 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -112,7 +110,7 @@ fun SpyRoleComp(
 @Composable
 fun SpyComp(
     title: String,
-    spyCount: MutableIntState,
+    spyCount: Int,
     configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
@@ -146,7 +144,7 @@ fun SpyComp(
 
 @Composable
 fun SpyNumberCounterComp(
-    spyCount: MutableState<Int>,
+    spyCount: Int,
     configGameViewModel: ConfigGameViewModel,
 ) {
     Row(
@@ -169,7 +167,7 @@ fun SpyNumberCounterComp(
             }
 
         }
-        Text(spyCount.value.toString(), style = MaterialTheme.typography.titleLarge)
+        Text(spyCount.toString(), style = MaterialTheme.typography.titleLarge)
         IconButton({
             configGameViewModel.incSpyCountPlayer()
 

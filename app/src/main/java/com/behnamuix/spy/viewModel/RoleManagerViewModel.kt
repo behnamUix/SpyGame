@@ -737,11 +737,11 @@ class RoleManagerViewModel(
     fun configRole() {
         val list = mutableListOf<Player>()
 
-        for (i in 1..vm.agentCount.intValue) {
+        for (i in 1..vm.agentCount.value) {
             list.add(Player(i, "تو الان یه مامور هستی"))
 
         }
-        for (i in 1..vm.spyCount.intValue) {
+        for (i in 1..vm.spyCount.value) {
             list.add(Player(i, "تو یه جاسوسی"))
         }
         viewModelScope.launch {

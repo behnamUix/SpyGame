@@ -25,8 +25,12 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
     val expanded: StateFlow<Boolean> = _expanded.asStateFlow()
 
 
-    val agentCount = mutableIntStateOf(5)
-    val spyCount = mutableIntStateOf(1)
+    private val _agentCount = MutableStateFlow<Int>(4)
+    val agentCount: StateFlow<Int> = _agentCount.asStateFlow()
+
+    private val _spyCount = MutableStateFlow<Int>(1)
+    val spyCount: StateFlow<Int> = _spyCount.asStateFlow()
+
 
     val wordExist = mutableStateOf(false)
 
@@ -75,19 +79,22 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
 
 
     fun incSpyCountPlayer() {
-        if (spyCount.intValue < 3) {
-
-            spyCount.intValue++
+        if (_spyCount.value < 3) {
+            viewModelScope.launch {
+                +_spyCount.value++
+            }
         }
     }
 
     fun incAgentCountPlayer() {
 
-        if (agentCount.intValue < 10) {
+        if (_agentCount.value < 10) {
 
-            agentCount.intValue++
+            viewModelScope.launch {
+                _agentCount.value++
+            }
         }
-        if (agentCount.intValue > 5) {
+        if (_agentCount.value > 5) {
             incSpyCountPlayer()
         }
 
@@ -95,26 +102,26 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
 
 
     fun decAgentCountPlayer() {
-        if (agentCount.intValue > 1) {
+        if (_agentCount.value > 1) {
 
-            agentCount.intValue--
+            viewModelScope.launch {
+                _agentCount.value--
+            }
         }
-        if (agentCount.intValue < 5) {
+        if (_agentCount.value < 5) {
             decSpyCountPlayer()
         }
     }
 
     fun decSpyCountPlayer() {
-        if (spyCount.intValue > 1) {
-
-            spyCount.intValue--
+        if (_spyCount.value > 1) {
+            _spyCount.value--
         }
     }
 
 
-
     fun configTime(): Int {
-        var total = agentCount.intValue + spyCount.intValue
+        val total = agentCount.value + spyCount.value
         //5-10
         //8-16
         return total * 2
@@ -124,7 +131,6 @@ class ConfigGameViewModel(private val keywordRepo: KeywordRepository) : ViewMode
     fun reverseExpand() {
         _expanded.value = !_expanded.value
     }
-
 
 
 }

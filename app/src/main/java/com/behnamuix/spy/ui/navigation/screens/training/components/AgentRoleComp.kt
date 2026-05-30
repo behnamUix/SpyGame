@@ -22,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -85,7 +84,7 @@ fun AgentRoleComp(title: String, desc: String) {
 @Composable
 fun AgentComp(
     title: String,
-    agentCount: MutableIntState,
+    agentCount: Int,
     configGameViewModel: ConfigGameViewModel,
 ) {
     Column(
@@ -124,7 +123,7 @@ fun AgentComp(
 @Composable
 fun AgentNumberCounterComp(
     modifier: Modifier,
-    agentCount: MutableState<Int>,
+    agentCount: Int,
     configGameViewModel: ConfigGameViewModel
 ) {
     Row(
@@ -147,7 +146,7 @@ fun AgentNumberCounterComp(
             }
 
         }
-        Text(agentCount.value.toString(), style = MaterialTheme.typography.titleLarge)
+        Text(agentCount.toString(), style = MaterialTheme.typography.titleLarge)
         IconButton({
 
 

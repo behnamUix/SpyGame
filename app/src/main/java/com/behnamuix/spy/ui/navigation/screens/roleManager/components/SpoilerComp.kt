@@ -24,8 +24,6 @@ fun SpoilerComp(
     index: Int,
     done: Boolean
 ) {
-    var ctx = LocalContext.current
-    var scope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .clickable(onClick = {
@@ -58,7 +56,8 @@ fun SpoilerComp(
 
 
         ) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center) {
                 Text(
                     " رو اینجا ضربه بزن تا نقشت رو نشون بدم",
                     style = MaterialTheme.typography.labelLarge,

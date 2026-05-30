@@ -139,7 +139,7 @@ fun RoleManagerSc(
 
                 LazyRow(
                     reverseLayout = true,
-                    contentPadding = PaddingValues(horizontal = 24.dp),
+
                     userScrollEnabled = false,
                     state = scrollState
                 ) {

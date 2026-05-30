@@ -1,6 +1,7 @@
 package com.behnamuix.spy.ui.navigation.screens.confiGame
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -69,6 +71,7 @@ import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.confiGame.components.ListKeyWordsComp
 import com.behnamuix.spy.ui.navigation.screens.training.components.SpyComp
+import com.behnamuix.spy.utils.checkNet
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -94,29 +97,42 @@ fun ConfigGameSc(
         ), label = "rotation" // اضافه کردن label برای بهتر شدن لاگ‌ها
     )
 
+    val agentCount by vm.agentCount.collectAsState()
+
+    val spyCount by vm.spyCount.collectAsState()
+
     LaunchedEffect(Unit) {
         vm.getWords()
+        if (ctx.checkNet() == false) {
+            Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
+        }
         mediaVm.play()
 
     }
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .animateContentSize()
+    ) {
+        Header(vm, rotationAngle, expandedState, ctx)
+        Spacer(Modifier.height(24.dp))
         Box(Modifier.fillMaxSize()) {
+
             Column(
                 modifier = Modifier
-                    .animateContentSize()
+
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                Header(vm, rotationAngle, expandedState, ctx)
                 AgentComp(
                     title = "تعداد ماموران",
-                    agentCount = vm.agentCount,
+                    agentCount = agentCount,
                     vm,
                 )
                 SpyComp(
                     "تعداد جاسوسان",
-                    vm.spyCount,
+                    spyCount,
                     vm
                 )
                 HorizontalDivider(
@@ -183,6 +199,7 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
+                        Log.d("TAG", "${agentCount.toString()}/${spyCount.toString()}")
                         navController.navigate(Screens.RoleManager.route)
 
                     }
@@ -271,13 +288,13 @@ fun Header(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "میخوای بازی از کلمات تو استفاده کنه",
-                    Modifier.weight(0.8f)
+                    textAlign = TextAlign.End,
+                    text = "میخوای بازی از کلمات تو استفاده کنه",
+                    modifier = Modifier.weight(0.8f)
                 )
                 Checkbox(
 
 
-                    modifier = Modifier.weight(0.2f),
                     checked = vm.userUse,
                     onCheckedChange = {
                         vm.userUse = it
@@ -297,13 +314,6 @@ fun Header(
             }
         }
     }
-    Text(
-        "تنظیمات بازی",
-        color = Color.White,
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.headlineSmall
-    )
 }
 
 @Composable
