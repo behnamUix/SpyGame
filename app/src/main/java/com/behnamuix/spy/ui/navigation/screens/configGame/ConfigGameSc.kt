@@ -63,7 +63,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.behnamuix.spy.data.local.db.model.KeyWord
-import com.behnamuix.spy.data.local.db.model.UserState
+
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.ListKeyWordsComp
@@ -103,7 +103,6 @@ fun ConfigGameSc(
 
     val mediaState by vm.mediaState.collectAsState()
 
-    val userUse by vm.userUse.collectAsState()
 
     LaunchedEffect(Unit) {
         vm.getWords()
@@ -124,7 +123,13 @@ fun ConfigGameSc(
             .fillMaxSize()
             .animateContentSize()
     ) {
-        Header(userUse, mediaState, vm, rotationAngle, expandedState, ctx)
+        Header(
+            mediaState,
+            vm,
+            rotationAngle,
+            expandedState,
+            ctx
+        )
         Spacer(Modifier.height(24.dp))
         Box(Modifier.fillMaxSize()) {
 
@@ -260,13 +265,14 @@ fun ConfigGameSc(
 
 @Composable
 fun Header(
-    userUse: UserState?,
+
     mediaState: MediaState,
     vm: ConfigGameViewModel,
     rotationAngle: Float,
     expandedState: State<Boolean>,
     ctx: Context
 ) {
+    val userUse by vm.userUse.collectAsState()
     Row(
         modifier = Modifier.padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -306,21 +312,14 @@ fun Header(
                     modifier = Modifier.weight(0.8f)
                 )
                 Checkbox(
-                    checked = vm.getState()?.state ?: false,
-                    onCheckedChange = {
-                        userUse?.state = it
-                        vm.addState(state = UserState(state = it))
-                        if (it) {
-                            if (vm.checkDb()) {
-                                Toast.makeText(
-                                    ctx, "لیست کلماتت  خالی است ", Toast.LENGTH_SHORT
-                                ).show()
-
-                            }
+                    checked = userUse,
+                    onCheckedChange = { isChecked ->
+                        vm.toggleUserUse(isChecked)
+                        if (isChecked && vm.checkDb()) {
+                            Toast.makeText(ctx, "لیست کلماتت خالی است", Toast.LENGTH_SHORT).show()
                         }
-
-
-                    })
+                    }
+                )
             }
         }
     }

@@ -93,7 +93,7 @@ fun RoleManagerSc(
 
     LaunchedEffect(Unit) {
         vm.configRole()
-        if (userUse?.state ?: false) {
+        if (userUse?: false) {
             //use database
             vm.getKeyWord(setWord = { vm.word = it.word }).toString()
         } else {

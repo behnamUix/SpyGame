@@ -37,8 +37,8 @@ class ConfigGameViewModel(
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
 
 
-    private val _userUse = MutableStateFlow<Boolean?>(null)
-    val userUse: StateFlow<Boolean?> = _userUse.asStateFlow()
+    private val _userUse = MutableStateFlow(false)
+    val userUse: StateFlow<Boolean> = _userUse.asStateFlow()
 
 
     val wordExist = mutableStateOf(false)
@@ -140,7 +140,6 @@ class ConfigGameViewModel(
     }
 
 
-
     //MediaController
     fun play() {
         mediaVm.play()
@@ -154,6 +153,10 @@ class ConfigGameViewModel(
 
     fun setVolume() {
         mediaVm.volumeHigh()
+    }
+
+    fun toggleUserUse(value: Boolean) {
+        _userUse.value = value
     }
 
 
