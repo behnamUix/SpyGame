@@ -38,7 +38,7 @@
     </tbody>
 </table>
 
-<h2 align="center">📈 بهبود <span style="color:#4CAF50;">%۱۶</span> در سرعت اجرا</h2>
+<h2 align="center">%17 Faster</h2>
 
 ---
 
