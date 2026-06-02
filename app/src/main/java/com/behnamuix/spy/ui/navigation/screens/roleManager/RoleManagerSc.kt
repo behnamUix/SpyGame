@@ -1,5 +1,6 @@
 package com.behnamuix.spy.ui.navigation.screens.roleManager
 
+import android.util.Log
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.R
+import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
@@ -70,9 +72,10 @@ import kotlin.random.Random
 fun RoleManagerSc(
     navController: NavController,
     vm: RoleManagerViewModel = koinViewModel(),
+    dataStoreVm: DataStoreViewModel = koinViewModel(),
 
     ) {
-    val userUse by vm.userState.collectAsState()
+    val userUse by dataStoreVm.userUse.collectAsState()
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -92,10 +95,11 @@ fun RoleManagerSc(
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
 
     LaunchedEffect(Unit) {
+        Log.d("LOG_ROLE", "${userUse}")
         vm.configRole()
-        if (userUse?: false) {
+        if (userUse) {
             //use database
-            vm.getKeyWord(setWord = { vm.word = it.word }).toString()
+            vm.getKeyWord()
         } else {
             //use example
             vm.word = vm.category[(Random(System.currentTimeMillis()).nextInt(
@@ -104,6 +108,7 @@ fun RoleManagerSc(
             ))]
 
         }
+
     }
 
     Column(

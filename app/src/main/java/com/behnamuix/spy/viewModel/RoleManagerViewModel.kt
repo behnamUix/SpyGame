@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
+import com.behnamuix.spy.data.local.ds.repository.DataStoreRepository
+import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.utils.createUnpredictableShuffle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class RoleManagerViewModel(
     private val repo: KeywordRepository,
-    private val vm: ConfigGameViewModel
+    private val vm: ConfigGameViewModel,
 ) : ViewModel() {
 
     private val _playerList = MutableStateFlow(mutableListOf<Player>())
@@ -712,22 +714,14 @@ class RoleManagerViewModel(
 
     var stateScale by mutableStateOf(false)
 
-    var userState = vm.userUse
 
-
-    fun getKeyWord(
-        setWord: (KeyWord) -> Unit,
-    ) {
+    fun getKeyWord() {
 
         viewModelScope.launch {
-            var keyword: KeyWord? = null
             val listWords = repo.getKeywords()
-            val new = listWords.toMutableList().shuffled()
-            keyword = new[0]
-            setWord(keyword)
-            Log.d("LOG_ROLE", keyword.word)
+            val new = listWords.toMutableList().shuffled().get(0)
+            word = new.word
         }
-
 
     }
 
@@ -745,7 +739,7 @@ class RoleManagerViewModel(
 
             _playerList.emit(createUnpredictableShuffle(list) as MutableList<Player>)
         }
-        Log.d("LOG_ROLE", "${list.size}")
+
 
 
     }

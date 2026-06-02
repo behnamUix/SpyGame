@@ -63,6 +63,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.behnamuix.spy.data.local.db.model.KeyWord
+import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.InformationComp
@@ -82,8 +83,9 @@ fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
+    dsVm: DataStoreViewModel = koinViewModel()
 
-    ) {
+) {
     //context
     val ctx = LocalContext.current
 
@@ -124,6 +126,7 @@ fun ConfigGameSc(
             .animateContentSize()
     ) {
         Header(
+            dsVm = dsVm,
             mediaState,
             vm,
             rotationAngle,
@@ -265,13 +268,14 @@ fun ConfigGameSc(
 
 @Composable
 fun Header(
-
+    dsVm: DataStoreViewModel,
     mediaState: MediaState,
     vm: ConfigGameViewModel,
     rotationAngle: Float,
     expandedState: State<Boolean>,
     ctx: Context
 ) {
+    val useUser by dsVm.userUse.collectAsState()
     val userUse by vm.userUse.collectAsState()
     Row(
         modifier = Modifier.padding(16.dp),
@@ -312,9 +316,11 @@ fun Header(
                     modifier = Modifier.weight(0.8f)
                 )
                 Checkbox(
-                    checked = userUse,
+                    checked = useUser,
                     onCheckedChange = { isChecked ->
                         vm.toggleUserUse(isChecked)
+                        dsVm.setUserUse(isChecked)
+
                         if (isChecked && vm.checkDb()) {
                             Toast.makeText(ctx, "لیست کلماتت خالی است", Toast.LENGTH_SHORT).show()
                         }
