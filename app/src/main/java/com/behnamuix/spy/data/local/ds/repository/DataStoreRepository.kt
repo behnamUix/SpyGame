@@ -12,10 +12,29 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
         it[PrefKey.USER_USE_KEY] ?: false
     }
 
+    fun getAgentCount(): Flow<Int> = dataStore.data.map {
+        it[PrefKey.AGENT_COUNT_KEY] ?: 0
+    }
+
+    fun getSpyCount(): Flow<Int> = dataStore.data.map {
+        it[PrefKey.SPY_COUNT_KEY] ?: 0
+    }
+
 
     suspend fun setUserUseState(value: Boolean) {
         dataStore.edit {
             it[PrefKey.USER_USE_KEY] = value
+        }
+    }
+
+    suspend fun setAgentCount(value: Int) {
+        dataStore.edit {
+            it[PrefKey.AGENT_COUNT_KEY] = value
+        }
+    }
+    suspend fun setSpyCount(value: Int) {
+        dataStore.edit {
+            it[PrefKey.SPY_COUNT_KEY] = value
         }
     }
 }

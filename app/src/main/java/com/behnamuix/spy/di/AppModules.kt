@@ -57,7 +57,7 @@ val viewModelModule = module {
         )
     }
     viewModel { SplashViewModel() }
-    viewModel { RoleManagerViewModel(get(), get()) }
+    viewModel { RoleManagerViewModel(get()) }
     viewModel { GameViewModel(get()) }
     viewModel { MediaPlayerViewModel(get()) }
     viewModel { TrainingViewModel(get()) }
