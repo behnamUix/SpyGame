@@ -21,36 +21,8 @@
   <i>🎯 اسکرین‌شات واقعی به زودی — در حال آماده‌سازی نسخه نمایشی</i>
   
 </div>
-
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>نتایج بنچمارک بازی جاسوس</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-family: Tahoma, sans-serif;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .bad {
-            background-color: #ffe6e6;
-        }
-        .good {
-            background-color: #e6ffe6;
-        }
-    </style>
-</head>
-<body>
-    <table>
+<p>📊 نتیجه تست (اعداد واقعی): </p>
+<table>
         <thead>
             <tr>
                 <th>حالت</th>
@@ -74,8 +46,6 @@
             </tr>
         </tbody>
     </table>
-</body>
-</html>
 
 
 
