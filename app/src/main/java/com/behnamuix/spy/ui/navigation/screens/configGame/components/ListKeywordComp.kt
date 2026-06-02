@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.spy.data.local.db.model.KeyWord
+import com.behnamuix.spy.utils.setLog
 
 @Composable
 fun ListKeyWordsComp(
@@ -127,7 +128,7 @@ fun ListKeyWordsComp(
                     }
                 }
             }
-            Log.d("LOG", listWord.toString())
+            setLog(listWord)
 
         }
     }

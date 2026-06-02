@@ -178,7 +178,7 @@ fun TimerScreenComp(
                 text = vm.showTimerFormatedString(),
                 style = MaterialTheme.typography.displayMedium
             )
-            Log.d("TIME", vm.showTimerFormatedString())
+
 
         }
 

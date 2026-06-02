@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
+import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class ConfigGameViewModel(
     private val keywordRepo: KeywordRepository,
-    private val mediaVm: MediaPlayerViewModel
+    private val mediaVm: MediaPlayerViewModel,
 ) : ViewModel() {
 
 
@@ -35,10 +37,6 @@ class ConfigGameViewModel(
 
     private val _mediaState = MutableStateFlow<MediaState>(MediaState.PLAY)
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
-
-
-    private val _userUse = MutableStateFlow(false)
-    val userUse: StateFlow<Boolean> = _userUse.asStateFlow()
 
 
     val wordExist = mutableStateOf(false)
@@ -136,7 +134,24 @@ class ConfigGameViewModel(
     }
 
     fun reverseExpand() {
-        _expanded.value = !_expanded.value
+        viewModelScope.launch {
+            delay(200)
+            _expanded.value = !_expanded.value
+        }
+
+    }
+
+    fun userUseOperation(dsVm: DataStoreViewModel, setCheck: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            dsVm.userUse.collect {
+                setCheck(it)
+                if (it) {
+                    reverseExpand()
+
+                }
+            }
+        }
+
     }
 
 
@@ -153,10 +168,6 @@ class ConfigGameViewModel(
 
     fun setVolume() {
         mediaVm.volumeHigh()
-    }
-
-    fun toggleUserUse(value: Boolean) {
-        _userUse.value = value
     }
 
 

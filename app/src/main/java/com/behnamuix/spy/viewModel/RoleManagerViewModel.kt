@@ -1,18 +1,15 @@
 package com.behnamuix.spy.viewModel
 
 import SpyGameSimulator.model.Player
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
-import com.behnamuix.spy.data.local.ds.repository.DataStoreRepository
-import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spy.utils.createUnpredictableShuffle
+import com.behnamuix.spy.utils.setLog
+import com.behnamuix.spy.utils.shuffledList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -716,7 +713,6 @@ class RoleManagerViewModel(
 
 
     fun getKeyWord() {
-
         viewModelScope.launch {
             val listWords = repo.getKeywords()
             val new = listWords.toMutableList().shuffled().get(0)
@@ -725,7 +721,7 @@ class RoleManagerViewModel(
 
     }
 
-    fun configRole() {
+    fun configRole(useSecureRandom: Boolean) {
         val list = mutableListOf<Player>()
 
         for (i in 1..vm.agentCount.value) {
@@ -736,10 +732,12 @@ class RoleManagerViewModel(
             list.add(Player(i, "تو یه جاسوسی"))
         }
         viewModelScope.launch {
+            _playerList.emit(shuffledList(useSecureRandom, list))
+            shuffledList(useSecureRandom, list).forEach {
+                setLog(it.role)
+            }
 
-            _playerList.emit(createUnpredictableShuffle(list) as MutableList<Player>)
         }
-
 
 
     }

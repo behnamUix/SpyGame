@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DataStoreViewModel(private val dataStoreRepo: DataStoreRepository) : ViewModel() {
-    val userUse = dataStoreRepo.getUserUseState().stateIn(
+    var userUse = dataStoreRepo.getUserUseState().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(2000),
         initialValue = false
