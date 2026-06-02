@@ -11,7 +11,7 @@
 
 ---
 
-## ⚡ بهینه‌سازی با Baseline Profile
+## ⚡ بهینه‌سازی سرعت بازی
 
 <table align="center">
     <thead>
