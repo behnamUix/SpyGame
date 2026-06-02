@@ -1,4 +1,4 @@
-<div dir="rtl" align="center">
+<div dir="rtl" align="end">
 
 # 🎮 Spy Manager Game
 
