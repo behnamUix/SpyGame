@@ -48,6 +48,8 @@
             </tr>
         </tbody>
     </table>
+    <br>
+    <h1>%16 Faster</h1>
 
 
 
