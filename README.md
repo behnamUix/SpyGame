@@ -1,10 +1,5 @@
-<h1>بازی جاسوس</h1>
-<h3>Spy game</h3>
-<div align="center">
-    
-  <img src="home.png" width="80 px" height="100 px" />
-  
-</div>
+
+
 
 ---
 
@@ -18,7 +13,7 @@
 <div align="center">
   
   <!-- TODO: جایگزین با اسکرین‌شات واقعی بازی -->
-  <img src="https://via.placeholder.com/800x400/1a1a2e/6D28D9?text=Game+Screenshot+Coming+Soon" alt="Game Screenshot" width="80%" style="border-radius: 20px; border: 2px solid #6D28D9;" />
+   <img src="home.png" width="100 px" height="100 px" />" />
   
   <br/>
   <br/>
