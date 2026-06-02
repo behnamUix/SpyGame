@@ -49,7 +49,7 @@
         </tbody>
     </table>
     <br>
-    <h1>%16 Faster</h1>
+    <h1 align="center">%16 Faster</h1>
 
 
 
