@@ -13,7 +13,7 @@
 <div align="center">
   
   <!-- TODO: جایگزین با اسکرین‌شات واقعی بازی -->
-   <img src="home.png" width="100 px" height="100 px" />" />
+  <img src="home.png" width="80" />
   
   <br/>
   <br/>
