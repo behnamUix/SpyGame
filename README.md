@@ -24,7 +24,7 @@
 
 <h4>use baselineprofile tech in android</h4>
 <p>📊 نتیجه تست سرعت: </p>
-<table>
+<table align="center">
         <thead>
             <tr>
                 <th>حالت</th>
