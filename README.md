@@ -2,7 +2,7 @@
 <h3>Spy game</h3>
 <div align="center">
     
-  <img src="home.png" size="50 px" />
+  <img src="home.png" width="80 px" height="100 px" />
   
 </div>
 
