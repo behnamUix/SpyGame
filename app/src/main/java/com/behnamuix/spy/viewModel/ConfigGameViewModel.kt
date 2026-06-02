@@ -86,7 +86,7 @@ class ConfigGameViewModel(
     fun incSpyCountPlayer() {
         if (_spyCount.value < 3) {
             viewModelScope.launch {
-                +_spyCount.value++
+                _spyCount.value++
             }
         }
     }
@@ -152,6 +152,11 @@ class ConfigGameViewModel(
             }
         }
 
+    }
+
+    fun init(agent: Int, spy: Int) {
+        _agentCount.value = agent
+        _spyCount.value = spy
     }
 
 

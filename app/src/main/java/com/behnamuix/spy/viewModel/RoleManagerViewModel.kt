@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 class RoleManagerViewModel(
     private val repo: KeywordRepository,
-    private val vm: ConfigGameViewModel,
 ) : ViewModel() {
 
     private val _playerList = MutableStateFlow(mutableListOf<Player>())
@@ -711,6 +710,9 @@ class RoleManagerViewModel(
 
     var stateScale by mutableStateOf(false)
 
+    var spyCount = 0
+
+    var agentCount = 0
 
     fun getKeyWord() {
         viewModelScope.launch {
@@ -722,24 +724,23 @@ class RoleManagerViewModel(
     }
 
     fun configRole(useSecureRandom: Boolean) {
-        val list = mutableListOf<Player>()
-
-        for (i in 1..vm.agentCount.value) {
-            list.add(Player(i, "تو الان یه مامور هستی"))
-
-        }
-        for (i in 1..vm.spyCount.value) {
-            list.add(Player(i, "تو یه جاسوسی"))
-        }
         viewModelScope.launch {
-            _playerList.emit(shuffledList(useSecureRandom, list))
-            shuffledList(useSecureRandom, list).forEach {
-                setLog(it.role)
+            setLog("spyCount = $spyCount, agentCount = $agentCount")
+
+            val list = mutableListOf<Player>()
+            for (i in 1..agentCount) {
+                list.add(Player(i, "تو الان یه مامور هستی"))
+            }
+            for (i in 1..spyCount) {
+                list.add(Player(i + agentCount, "تو یه جاسوسی"))
             }
 
+            val shuffled = shuffledList(useSecureRandom, list)
+            _playerList.emit(shuffled)
+            shuffled.forEach {
+                setLog(it.role)
+            }
         }
-
-
     }
 
     fun incTime() {

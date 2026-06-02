@@ -58,6 +58,7 @@ import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
 import com.behnamuix.spy.utils.randomColor
 import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.random.Random
@@ -88,7 +89,13 @@ fun RoleManagerSc(
     val newListPlayer = vm.playerList.collectAsState()
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
 
-    LaunchedEffect(Unit,check) {
+
+
+    LaunchedEffect(Unit, check) {
+        vm.agentCount = dataStoreVm.agent.first()   // توجه: first() نیاز به import دارد
+
+        vm.spyCount = dataStoreVm.spy.first()
+
         vm.configRole(true)
 
         if (check) {
@@ -102,6 +109,7 @@ fun RoleManagerSc(
             ))]
 
         }
+
 
     }
 

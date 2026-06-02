@@ -75,6 +75,7 @@ import com.behnamuix.spy.utils.setLog
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.spy.viewModel.MediaState
 import com.behnamuix.spy.viewModel.RoleManagerViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -107,6 +108,7 @@ fun ConfigGameSc(
 
 
     LaunchedEffect(Unit) {
+        vm.init(dsVm.agent.first(), dsVm.spy.first())
         vm.getWords()
         if (ctx.checkNet() == false) {
             Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
@@ -118,6 +120,10 @@ fun ConfigGameSc(
         }
 
 
+    }
+    LaunchedEffect(agentCount, spyCount) {
+        dsVm.setAgent(agentCount)
+        dsVm.setSpy(spyCount)
     }
 
     Column(
@@ -214,7 +220,6 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
-                        setLog("${agentCount.toString()}/${spyCount.toString()}")
                         navController.navigate(Screens.RoleManager.route)
 
                     }) {
