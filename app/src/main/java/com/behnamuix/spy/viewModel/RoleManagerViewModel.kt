@@ -1,18 +1,15 @@
 package com.behnamuix.spy.viewModel
 
 import SpyGameSimulator.model.Player
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
-import com.behnamuix.spy.data.local.ds.repository.DataStoreRepository
-import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spy.utils.createUnpredictableShuffle
+import com.behnamuix.spy.utils.setLog
+import com.behnamuix.spy.utils.shuffledList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +17,6 @@ import kotlinx.coroutines.launch
 
 class RoleManagerViewModel(
     private val repo: KeywordRepository,
-    private val vm: ConfigGameViewModel,
 ) : ViewModel() {
 
     private val _playerList = MutableStateFlow(mutableListOf<Player>())
@@ -714,9 +710,11 @@ class RoleManagerViewModel(
 
     var stateScale by mutableStateOf(false)
 
+    var spyCount = 0
+
+    var agentCount = 0
 
     fun getKeyWord() {
-
         viewModelScope.launch {
             val listWords = repo.getKeywords()
             val new = listWords.toMutableList().shuffled().get(0)
@@ -725,23 +723,24 @@ class RoleManagerViewModel(
 
     }
 
-    fun configRole() {
-        val list = mutableListOf<Player>()
-
-        for (i in 1..vm.agentCount.value) {
-            list.add(Player(i, "تو الان یه مامور هستی"))
-
-        }
-        for (i in 1..vm.spyCount.value) {
-            list.add(Player(i, "تو یه جاسوسی"))
-        }
+    fun configRole(useSecureRandom: Boolean) {
         viewModelScope.launch {
+            setLog("spyCount = $spyCount, agentCount = $agentCount")
 
-            _playerList.emit(createUnpredictableShuffle(list) as MutableList<Player>)
+            val list = mutableListOf<Player>()
+            for (i in 1..agentCount) {
+                list.add(Player(i, "تو الان یه مامور هستی"))
+            }
+            for (i in 1..spyCount) {
+                list.add(Player(i + agentCount, "تو یه جاسوسی"))
+            }
+
+            val shuffled = shuffledList(useSecureRandom, list)
+            _playerList.emit(shuffled)
+            shuffled.forEach {
+                setLog(it.role)
+            }
         }
-
-
-
     }
 
     fun incTime() {

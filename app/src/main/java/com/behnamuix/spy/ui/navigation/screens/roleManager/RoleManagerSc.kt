@@ -1,6 +1,5 @@
 package com.behnamuix.spy.ui.navigation.screens.roleManager
 
-import android.util.Log
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
@@ -14,7 +13,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,8 +25,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -54,18 +50,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import com.behnamuix.spy.R
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
 import com.behnamuix.spy.utils.randomColor
-import com.behnamuix.spy.viewModel.ConfigGameViewModel
+import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
 import kotlin.random.Random
 
 @Composable
@@ -75,7 +70,7 @@ fun RoleManagerSc(
     dataStoreVm: DataStoreViewModel = koinViewModel(),
 
     ) {
-    val userUse by dataStoreVm.userUse.collectAsState()
+    val check by dataStoreVm.userUse.collectAsState()  // ← مستقیم بخوان
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -94,10 +89,16 @@ fun RoleManagerSc(
     val newListPlayer = vm.playerList.collectAsState()
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
 
-    LaunchedEffect(Unit) {
-        Log.d("LOG_ROLE", "${userUse}")
-        vm.configRole()
-        if (userUse) {
+
+
+    LaunchedEffect(Unit, check) {
+        vm.agentCount = dataStoreVm.agent.first()   // توجه: first() نیاز به import دارد
+
+        vm.spyCount = dataStoreVm.spy.first()
+
+        vm.configRole(true)
+
+        if (check) {
             //use database
             vm.getKeyWord()
         } else {
@@ -108,6 +109,7 @@ fun RoleManagerSc(
             ))]
 
         }
+
 
     }
 

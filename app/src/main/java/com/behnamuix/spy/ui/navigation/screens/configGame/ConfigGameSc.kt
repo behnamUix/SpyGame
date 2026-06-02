@@ -1,7 +1,6 @@
 package com.behnamuix.spy.ui.navigation.screens.configGame
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -72,9 +71,11 @@ import com.behnamuix.spy.ui.navigation.screens.configGame.components.MediaContro
 import com.behnamuix.spy.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spy.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spy.utils.checkNet
+import com.behnamuix.spy.utils.setLog
 import com.behnamuix.spy.viewModel.ConfigGameViewModel
 import com.behnamuix.spy.viewModel.MediaState
 import com.behnamuix.spy.viewModel.RoleManagerViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -107,17 +108,22 @@ fun ConfigGameSc(
 
 
     LaunchedEffect(Unit) {
+        vm.init(dsVm.agent.first(), dsVm.spy.first())
         vm.getWords()
         if (ctx.checkNet() == false) {
             Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
         } else {
             vm.setVolume()
-            vm.play()
+            //vm.play()
 
 
         }
 
 
+    }
+    LaunchedEffect(agentCount, spyCount) {
+        dsVm.setAgent(agentCount)
+        dsVm.setSpy(spyCount)
     }
 
     Column(
@@ -214,7 +220,8 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
-                        Log.d("TAG", "${agentCount.toString()}/${spyCount.toString()}")
+                        setLog("${agentCount.toString()}/${spyCount.toString()}")
+
                         navController.navigate(Screens.RoleManager.route)
 
                     }) {
@@ -275,8 +282,11 @@ fun Header(
     expandedState: State<Boolean>,
     ctx: Context
 ) {
-    val useUser by dsVm.userUse.collectAsState()
-    val userUse by vm.userUse.collectAsState()
+    var check by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        vm.userUseOperation(dsVm, setCheck = { check = it })
+
+    }
     Row(
         modifier = Modifier.padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -316,12 +326,13 @@ fun Header(
                     modifier = Modifier.weight(0.8f)
                 )
                 Checkbox(
-                    checked = useUser,
+                    checked = check,
                     onCheckedChange = { isChecked ->
-                        vm.toggleUserUse(isChecked)
                         dsVm.setUserUse(isChecked)
+                        check = isChecked
+                        setLog(value = check)
 
-                        if (isChecked && vm.checkDb()) {
+                        if (check && vm.checkDb()) {
                             Toast.makeText(ctx, "لیست کلماتت خالی است", Toast.LENGTH_SHORT).show()
                         }
                     }
