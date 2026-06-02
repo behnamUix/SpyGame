@@ -1,0 +1,21 @@
+package com.behnamuix.spy.data.local.ds.repository
+
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import com.behnamuix.spy.data.local.ds.config.PrefKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
+    fun getUserUseState(): Flow<Boolean> = dataStore.data.map {
+        it[PrefKey.USER_USE_KEY] ?: false
+    }
+
+
+    suspend fun setUserUseState(value: Boolean) {
+        dataStore.edit {
+            it[PrefKey.USER_USE_KEY] = value
+        }
+    }
+}

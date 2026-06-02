@@ -2,6 +2,7 @@ package com.behnamuix.spy.base
 
 import android.app.Application
 import com.behnamuix.spy.di.daoModule
+import com.behnamuix.spy.di.dataStoreModule
 import com.behnamuix.spy.di.databaseModule
 import com.behnamuix.spy.di.mediaModule
 import com.behnamuix.spy.di.repositoryModule
@@ -20,7 +21,8 @@ class MyApp : Application() {
                     repositoryModule,
                     daoModule,
                     viewModelModule,
-                    mediaModule
+                    mediaModule,
+                    dataStoreModule
                 )
             )
         }
