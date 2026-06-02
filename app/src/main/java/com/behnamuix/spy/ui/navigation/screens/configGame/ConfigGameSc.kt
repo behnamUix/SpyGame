@@ -220,8 +220,6 @@ fun ConfigGameSc(
                         .padding(horizontal = 16.dp),
 
                     onClick = {
-                        setLog("${agentCount.toString()}/${spyCount.toString()}")
-
                         navController.navigate(Screens.RoleManager.route)
 
                     }) {

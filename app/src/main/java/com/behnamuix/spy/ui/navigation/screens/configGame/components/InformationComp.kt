@@ -62,7 +62,7 @@ fun InformationComp() {
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text("طراحی و برنامه نویسی:BehnamUix")
-                Text("نسخه 1")
+                Text("نسخه 1.3.0")
                 OutlinedButton(
                     border = BorderStroke(
                         1.dp, color = Color(0xFFFFFF00),
