@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -228,7 +229,7 @@ fun RoleManagerSc(
                             text = "بده نفر بعدی",
                             color = Color.White,
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(8.dp)
+                            modifier = Modifier.padding(8.dp).testTag("bede_nafar_badi")
                         )
                     }
                 }

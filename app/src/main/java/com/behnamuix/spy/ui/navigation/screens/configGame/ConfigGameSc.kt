@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +64,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
-
 import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.ListKeyWordsComp
@@ -228,7 +228,9 @@ fun ConfigGameSc(
                         text = " برو بعدی (${roleManagerViewModel.category.size.toString()} کلمه)",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(12.dp)
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .testTag("boro_badi")
                     )
                 }
                 Column(
