@@ -65,7 +65,7 @@ fun QCardComp(quiz: String, answer: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                tint = Color.Black,
+                tint = Color.White,
                 modifier = Modifier
                     .size(24.dp)
                     .rotate(
@@ -77,7 +77,7 @@ fun QCardComp(quiz: String, answer: String) {
             Spacer(Modifier.weight(1f))
 
             Text(
-                color = Color.Black,
+
                 style = MaterialTheme.typography.titleMedium,
                 text = quiz,
                 textAlign = TextAlign.Start,
@@ -88,16 +88,12 @@ fun QCardComp(quiz: String, answer: String) {
         AnimatedVisibility(showAnswer) {
             HorizontalDivider(Modifier.fillMaxWidth())
             Text(
-                color = Color.Black,
-
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 style = MaterialTheme.typography.titleSmall,
                 text = answer,
-                textAlign = TextAlign.Start,
-
-
+                textAlign = TextAlign.End,
                 )
 
         }

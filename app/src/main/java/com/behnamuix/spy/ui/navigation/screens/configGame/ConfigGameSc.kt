@@ -65,6 +65,7 @@ import androidx.navigation.NavController
 import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.ui.navigation.Screens
+import com.behnamuix.spy.ui.navigation.screens.configGame.components.AddKeyWordAlert
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.InformationComp
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.ListKeyWordsComp
 import com.behnamuix.spy.ui.navigation.screens.configGame.components.MediaControllerComp
@@ -259,7 +260,10 @@ fun ConfigGameSc(
                 //Alert
                 if (vm.showAddWordDialog.value) {
                     AddKeyWordAlert(
-                        vm.showAddWordDialog, vm, ctx, listWord
+                        vm.showAddWordDialog,
+                        vm,
+                        ctx,
+                        listWord
 
                     )
                 }
@@ -267,12 +271,8 @@ fun ConfigGameSc(
 
 
         }
-
     }
-
-
 }
-
 @Composable
 fun Header(
     dsVm: DataStoreViewModel,
@@ -312,7 +312,9 @@ fun Header(
         MediaControllerComp(mediaState, vm)
     }
     AnimatedVisibility(
-        expandedState.value, enter = fadeIn(), exit = fadeOut()
+        expandedState.value,
+        enter = fadeIn(),
+        exit = fadeOut()
     ) {
         OutlinedCard(Modifier.padding(16.dp)) {
             Row(
@@ -343,110 +345,7 @@ fun Header(
 }
 
 
-@Composable
-fun AddKeyWordAlert(
-    showAddWordDialog: MutableState<Boolean>,
-    configGameViewModel: ConfigGameViewModel,
-    ctx: Context,
-    listWord: List<KeyWord>,
-) {
-    val scope = rememberCoroutineScope()
-    var word by remember { mutableStateOf("") }
-    var wordExist by remember { mutableStateOf(configGameViewModel.wordExist.value) }
-    Dialog(
-        { showAddWordDialog.value = false },
-        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
-    ) {
-        Card(colors = CardDefaults.cardColors(Color.Black)) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge,
-                    text = "هر کلمه ای بخوای میتونی به بازی اضافه کنی و از بازی بیشتر لذت ببری",
-                    fontWeight = FontWeight.Bold
-                )
-                OutlinedTextField(
-                    isError = wordExist,
-                    supportingText = { if (wordExist) Text(" ببخشید کلمه $word در بازی وجود داره:( ") },
-                    textStyle = TextStyle(
-                        textDirection = TextDirection.Rtl, textAlign = TextAlign.Right
-                    ),
-                    label = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "کلمه را وارد کنید",
-                            textAlign = TextAlign.Right
-                        )
-                    },
-                    value = word,
-                    onValueChange = { word = it })
-                Row(Modifier.padding(horizontal = 16.dp)) {
-                    Button(
-                        onClick = {
 
-                            showAddWordDialog.value = false
-                        },
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFFEF5350)),
-                    ) {
-                        Text(
-                            style = MaterialTheme.typography.bodyLarge,
-                            text = "بیخیال",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Spacer(Modifier.width(16.dp))
-                    Button(
-                        modifier = Modifier.weight(0.6f),
-                        onClick = {
-                            scope.launch {
-                                if (word.isNotEmpty()) {
-                                    if (!wordExist) {
-                                        configGameViewModel.addWord(
-                                            KeyWord(word = word)
-                                        )
-                                        word = ""
-
-                                        Toast.makeText(
-                                            ctx, " کلمه $word به بازی اضافه شد ", Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-
-
-                                }
-                            }
-
-
-                        },
-                        elevation = ButtonDefaults.elevatedButtonElevation(6.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFF66BB6A)),
-                    ) {
-                        Text(
-                            style = MaterialTheme.typography.bodyLarge,
-                            text = "اضافه کن",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                }
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color.Black.copy(0.2f),
-                    modifier = Modifier.padding(8.dp)
-                )
-                ListKeyWordsComp(configGameViewModel, listWord)
-            }
-        }
-    }
-}
 
 
 
