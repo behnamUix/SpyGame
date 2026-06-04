@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,7 +50,7 @@ fun GameSc(
         verticalArrangement = Arrangement.SpaceAround
     ) {
         ToolbarComp("زمان بحث و گفتگو", word)
-        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        LazyColumn {
             items(vm.questionList.toList().take(4)) {
                 QCardComp(quiz = it.first, answer = it.second)
             }
