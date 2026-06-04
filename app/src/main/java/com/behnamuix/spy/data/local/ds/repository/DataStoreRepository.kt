@@ -13,11 +13,11 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
     }
 
     fun getAgentCount(): Flow<Int> = dataStore.data.map {
-        it[PrefKey.AGENT_COUNT_KEY] ?: 0
+        it[PrefKey.AGENT_COUNT_KEY] ?: 3
     }
 
     fun getSpyCount(): Flow<Int> = dataStore.data.map {
-        it[PrefKey.SPY_COUNT_KEY] ?: 0
+        it[PrefKey.SPY_COUNT_KEY] ?: 1
     }
 
 
