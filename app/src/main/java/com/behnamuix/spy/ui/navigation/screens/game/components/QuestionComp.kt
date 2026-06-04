@@ -5,6 +5,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,62 +49,58 @@ fun QCardComp(quiz: String, answer: String) {
             0f
         }
     }
-    Card(
-        modifier = Modifier.padding(4.dp),
-        elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(Color.White),
+
+    Column(
+        modifier = Modifier.clickable(
         onClick = {
             showAnswer = !showAnswer
 
 
-        },
-    ) {
-        Column() {
-            Row(
-                modifier = Modifier
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    tint = Color.Black,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .rotate(
-                            rotateIcon
-                        ),
-                    imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = ""
-                )
-                Spacer(Modifier.weight(1f))
-
-                Text(
-                    color = Color.Black,
-                    style = MaterialTheme.typography.titleMedium,
-                    text = quiz,
-                    textAlign = TextAlign.Start,
-
-
-                    )
-            }
-            AnimatedVisibility(showAnswer) {
-                HorizontalDivider(Modifier.fillMaxWidth())
-                Text(
-                    color = Color.Black,
-
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    style = MaterialTheme.typography.titleSmall,
-                    text = answer,
-                    textAlign = TextAlign.Start,
-
-
-                    )
-
-            }
         }
+    )) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                tint = Color.Black,
+                modifier = Modifier
+                    .size(24.dp)
+                    .rotate(
+                        rotateIcon
+                    ),
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = ""
+            )
+            Spacer(Modifier.weight(1f))
 
+            Text(
+                color = Color.Black,
+                style = MaterialTheme.typography.titleMedium,
+                text = quiz,
+                textAlign = TextAlign.Start,
+
+
+                )
+        }
+        AnimatedVisibility(showAnswer) {
+            HorizontalDivider(Modifier.fillMaxWidth())
+            Text(
+                color = Color.Black,
+
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.titleSmall,
+                text = answer,
+                textAlign = TextAlign.Start,
+
+
+                )
+
+        }
     }
 
 

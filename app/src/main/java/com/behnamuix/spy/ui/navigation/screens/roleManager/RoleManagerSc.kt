@@ -1,15 +1,23 @@
 package com.behnamuix.spy.ui.navigation.screens.roleManager
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.EaseInCubic
+import androidx.compose.animation.core.EaseInElastic
+import androidx.compose.animation.core.EaseInOutBack
 import androidx.compose.animation.core.InfiniteRepeatableSpec
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,11 +74,11 @@ import kotlin.random.Random
 
 @Composable
 fun RoleManagerSc(
-    navController: NavController,
     vm: RoleManagerViewModel = koinViewModel(),
     dataStoreVm: DataStoreViewModel = koinViewModel(),
+    nextClick: (Int, String) -> Unit
 
-    ) {
+) {
     val check by dataStoreVm.userUse.collectAsState()  // ← مستقیم بخوان
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -116,7 +124,8 @@ fun RoleManagerSc(
 
     Column(
         Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .animateContentSize(tween(500)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -143,6 +152,7 @@ fun RoleManagerSc(
                                 }*/
 
                 LazyRow(
+                    modifier = Modifier.padding(end = 8.dp),
                     reverseLayout = true,
                     userScrollEnabled = false,
                     state = scrollState
@@ -170,7 +180,9 @@ fun RoleManagerSc(
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth(0.7f),
                         onClick = {
-                            navController.navigate(Screens.Game.route)
+
+                            nextClick(vm.baseTimeInMinutes.value, vm.word)
+
                         }, colors = ButtonDefaults.buttonColors(Color(0xFF4CAF50))
 
                     ) {
@@ -229,7 +241,9 @@ fun RoleManagerSc(
                             text = "بده نفر بعدی",
                             color = Color.White,
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(8.dp).testTag("bede_nafar_badi")
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .testTag("bede_nafar_badi")
                         )
                     }
                 }
@@ -249,7 +263,24 @@ fun PlayerCard(
     keyWord: String,
     done: Boolean,
 ) {
-    val color = randomColor()
+    val infiniteState = rememberInfiniteTransition()
+    val infiniteStateEnd = rememberInfiniteTransition()
+    val color by infiniteState.animateColor(
+        initialValue = Color(0xFFFF5252),
+        targetValue = Color(0xFFFFEB3B),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = EaseInOutBack),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val colorEnd by infiniteStateEnd.animateColor(
+        initialValue = randomColor(),
+        targetValue = randomColor(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
 
 
     Box(contentAlignment = Alignment.Center) {
@@ -304,7 +335,9 @@ fun PlayerCard(
                                     contentAlignment = Alignment.CenterStart
                                 ) {
                                     Image(
-                                        modifier = Modifier.clip(CircleShape),
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .border(0.5.dp, color = colorEnd, shape = CircleShape),
                                         painter = painterResource(R.drawable.img_spy),
                                         contentDescription = "",
 
@@ -319,26 +352,15 @@ fun PlayerCard(
                                     contentAlignment = Alignment.CenterEnd
                                 ) {
                                     Image(
-                                        modifier = Modifier.clip(CircleShape),
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .border(1.dp, color = colorEnd, shape = CircleShape),
 
                                         painter = painterResource(R.drawable.img_agent),
                                         contentDescription = "",
                                     )
                                 }
-                                Box(
-                                    Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.BottomCenter
-                                ) {
-                                    Icon(
-                                        painterResource(R.drawable.gamepad),
-                                        contentDescription = "",
-                                        tint = color,
-                                        modifier = Modifier
-                                            .offset(x = -translateY.dp)
-                                            .size(60.dp)
-                                            .rotate(rotate)
-                                    )
-                                }
+
 
                             }
 
@@ -389,7 +411,7 @@ fun PlayerCard(
                                                 text = " کلمه رمز: $keyWord",
                                                 fontWeight = FontWeight.Bold,
                                                 style = MaterialTheme.typography.titleSmall,
-                                                color = Color(0xFFFFEB3B)
+                                                color = color
                                             )
                                         }
                                     }

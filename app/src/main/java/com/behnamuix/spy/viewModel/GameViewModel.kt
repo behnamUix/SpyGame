@@ -1,50 +1,42 @@
-package com.behnamuix.retrofittest.SpyGame.viewModel
+package com.behnamuix.spy.viewModel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.behnamuix.spy.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel() {
-    var showDialog by mutableStateOf(false)
     val questionList = mutableMapOf(
         "کمک اول" to "از طرف مقابل سوالات انحرافی بپرس (یه چیزی که به کلمه رمز ربط نداره)",
-        "کمک دوم" to "از جنس اون چیز میتونی تو سوالت استفاده کنی",
-        "کمک سوم" to "کسی که خیلی ساکته رو بیار وسط بهش اتهام بزن",
-        "نکته" to "هیچکس جاسوس صد درصدی نیست مگر اینکه واقعان اشتباه جواب بده",
+        "کمک دوم" to "کسی که خیلی ساکته رو بیار وسط بهش اتهام بزن",
     )
 
-    // زمان پایه به دقیقه
-
-
-    // زمان باقی مانده به ثانیه
-    private val _secondsLeft =
-        MutableStateFlow(0) // مقدار اولیه را بر اساس baseTimeInMinutes تنظیم کنید
+    private val _secondsLeft = MutableStateFlow(0)
     val secondsLeft: StateFlow<Int> = _secondsLeft.asStateFlow()
 
-    // وضعیت اجرای تایمر
     private val _isRunning = MutableStateFlow(false)
     var isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
-    var initialSeconds by mutableIntStateOf(0) // برای محاسبه progress
+    private val _showDialog = MutableSharedFlow<Boolean>()
+    var showDialog: SharedFlow<Boolean> = _showDialog
 
+    var initialSeconds by mutableIntStateOf(0)
 
     init {
-        // مقدار اولیه ثانیه ها را بر اساس دقیقه تنظیم کن
         viewModelScope.launch {
             roleManagerVm.baseTimeInMinutes.collect { minutes ->
                 val totalSeconds = minutes * 60
                 _secondsLeft.value = totalSeconds
-                initialSeconds = totalSeconds // برای محاسبه progress
+                initialSeconds = totalSeconds  // ✅ اصلاح شد
             }
         }
     }
@@ -52,15 +44,14 @@ class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel
     fun startTimer() {
         _isRunning.value = true
         viewModelScope.launch {
-            while (_isRunning.value) {
+            while (_secondsLeft.value > 0 && _isRunning.value) {
                 delay(1000)
                 _secondsLeft.value--
             }
             if (_secondsLeft.value == 0) {
-                _isRunning.value = false
-                // اینجا می توانید یک event برای اتمام زمان بفرستید
-                // مثلا: _timerFinishedEvent.emit(Unit)
+                _showDialog.emit(true)
             }
+            _isRunning.value = false
         }
     }
 
@@ -68,21 +59,32 @@ class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel
         _isRunning.value = false
     }
 
+    fun resumeTimer() {
+        if (!_isRunning.value && _secondsLeft.value > 0) {
+            _isRunning.value = true
+            startTimer()  // ✅ دوباره تایمر رو شروع کن
+        }
+    }
+
     fun resetTimer() {
-//        stopTimer()
+        stopTimer()
         _secondsLeft.value = initialSeconds
     }
 
-
     fun showTimerFormatedString(): String {
-        val sec = secondsLeft.value
+        val sec = _secondsLeft.value
         val min = sec / 60
         val remainingSec = sec % 60
         return String.format(Locale.US, "%02d:%02d", min, remainingSec)
     }
 
-    fun calcProg(): Float {
-        return secondsLeft.value.toFloat() / initialSeconds.toFloat()
+    fun calcProgress(): Float {
+        if (initialSeconds == 0) return 0f
+        return (_secondsLeft.value.toFloat() / initialSeconds.toFloat()) * 100
+    }
+
+    fun setTime(time: Int) {
+        _secondsLeft.value = time * 60
+        initialSeconds = time * 60  // ✅ حتماً این رو هم ست کن
     }
 }
-

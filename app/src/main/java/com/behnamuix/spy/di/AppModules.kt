@@ -1,9 +1,8 @@
 package com.behnamuix.spy.di
 
 import android.content.Context
-import androidx.datastore.core.DataStore
 import androidx.room.Room
-import com.behnamuix.retrofittest.SpyGame.viewModel.GameViewModel
+import com.behnamuix.spy.viewModel.GameViewModel
 import com.behnamuix.spy.data.local.db.config.SpyDatabase
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepositoryImpl

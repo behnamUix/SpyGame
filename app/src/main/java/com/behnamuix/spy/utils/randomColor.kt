@@ -6,5 +6,6 @@ import kotlin.random.Random
 fun randomColor(): Color {
     var r = Random.nextInt(0, 255)
     var b = Random.nextInt(0, 255)
-    return Color(red = r, green = 255 / 2, blue = b)
+    var g = Random.nextInt(0, 255)
+    return Color(red = r, green = g, blue = b)
 }
