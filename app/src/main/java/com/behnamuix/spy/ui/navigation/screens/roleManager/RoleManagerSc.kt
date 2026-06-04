@@ -62,6 +62,7 @@ import androidx.navigation.NavController
 import com.behnamuix.spy.R
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.ui.navigation.Screens
+import com.behnamuix.spy.ui.navigation.screens.game.components.ToolbarComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
 import com.behnamuix.spy.utils.randomColor
@@ -134,11 +135,7 @@ fun RoleManagerSc(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                Text(
-                    color = Color.White,
-                    text = " پخش نقش ها",
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                ToolbarComp(" پخش نقش ها")
 
 
                 /* test:

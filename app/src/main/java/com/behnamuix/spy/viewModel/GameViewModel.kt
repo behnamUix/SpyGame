@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,45 +25,40 @@ class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel
     val secondsLeft: StateFlow<Int> = _secondsLeft.asStateFlow()
 
     private val _isRunning = MutableStateFlow(false)
-    var isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
+    val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
     private val _showDialog = MutableSharedFlow<Boolean>()
-    var showDialog: SharedFlow<Boolean> = _showDialog
+    val showDialog: SharedFlow<Boolean> = _showDialog
 
     var initialSeconds by mutableIntStateOf(0)
 
-    init {
-        viewModelScope.launch {
-            roleManagerVm.baseTimeInMinutes.collect { minutes ->
-                val totalSeconds = minutes * 60
-                _secondsLeft.value = totalSeconds
-                initialSeconds = totalSeconds  // ✅ اصلاح شد
-            }
-        }
-    }
+    // مدیریت کوروتین برای جلوگیری از ساخت موازی حلقه‌ها
+    private var timerJob: Job? = null
 
     fun startTimer() {
+        timerJob?.cancel() // لغو تایمر قبلی در صورت وجود
         _isRunning.value = true
-        viewModelScope.launch {
+
+        timerJob = viewModelScope.launch {
             while (_secondsLeft.value > 0 && _isRunning.value) {
                 delay(1000)
                 _secondsLeft.value--
             }
             if (_secondsLeft.value == 0) {
                 _showDialog.emit(true)
+                _isRunning.value = false
             }
-            _isRunning.value = false
         }
     }
 
     fun stopTimer() {
         _isRunning.value = false
+        timerJob?.cancel()
     }
 
     fun resumeTimer() {
         if (!_isRunning.value && _secondsLeft.value > 0) {
-            _isRunning.value = true
-            startTimer()  // ✅ دوباره تایمر رو شروع کن
+            startTimer()
         }
     }
 
@@ -71,20 +67,27 @@ class GameViewModel(private val roleManagerVm: RoleManagerViewModel) : ViewModel
         _secondsLeft.value = initialSeconds
     }
 
-    fun showTimerFormatedString(): String {
-        val sec = _secondsLeft.value
-        val min = sec / 60
-        val remainingSec = sec % 60
+
+    fun showTimerFormatedString(currentSeconds: Int): String {
+        val min = currentSeconds / 60
+        val remainingSec = currentSeconds % 60
         return String.format(Locale.US, "%02d:%02d", min, remainingSec)
     }
 
-    fun calcProgress(): Float {
+
+    fun calcProgress(currentSeconds: Int): Float {
         if (initialSeconds == 0) return 0f
-        return (_secondsLeft.value.toFloat() / initialSeconds.toFloat()) * 100
+        return currentSeconds.toFloat() / initialSeconds.toFloat()
     }
 
     fun setTime(time: Int) {
-        _secondsLeft.value = time * 60
-        initialSeconds = time * 60  // ✅ حتماً این رو هم ست کن
+        val totalSeconds = time * 60
+        _secondsLeft.value = totalSeconds
+        initialSeconds = totalSeconds
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timerJob?.cancel()
     }
 }
