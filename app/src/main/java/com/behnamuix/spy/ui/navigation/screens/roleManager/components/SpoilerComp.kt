@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SpoilerComp(
     state: MutableIntState,
-    index: Int,
-    done: Boolean
+    index: Int
 ) {
     Box(
         modifier = Modifier
@@ -30,14 +29,11 @@ fun SpoilerComp(
                 state.intValue = index
 
             })
-
-
             .padding(2.dp)
             .fillMaxSize()
             .background(
                 color = Color.White, shape = RoundedCornerShape(8.dp)
             )
-
     ) {
 
         Box(

@@ -1,11 +1,7 @@
 package com.behnamuix.spy.ui.navigation.screens.roleManager
-
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.EaseInCubic
-import androidx.compose.animation.core.EaseInElastic
 import androidx.compose.animation.core.EaseInOutBack
-import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
@@ -25,7 +21,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,7 +32,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,10 +52,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.behnamuix.spy.R
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spy.ui.navigation.Screens
 import com.behnamuix.spy.ui.navigation.screens.game.components.ToolbarComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.SpoilerComp
 import com.behnamuix.spy.ui.navigation.screens.roleManager.components.TimerCard
@@ -80,10 +72,10 @@ fun RoleManagerSc(
     nextClick: (Int, String) -> Unit
 
 ) {
-    val check by dataStoreVm.userUse.collectAsState()  // ← مستقیم بخوان
+    val check by dataStoreVm.userUse.collectAsState()
+    val timeLeft by vm.baseTimeInMinutes.collectAsState()
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-
     val scaleTrans = updateTransition(vm.stateScale)
     val scaleState by scaleTrans.animateFloat(transitionSpec = {
         spring(
@@ -97,9 +89,6 @@ fun RoleManagerSc(
         }
     }
     val newListPlayer = vm.playerList.collectAsState()
-    val timeLeft by vm.baseTimeInMinutes.collectAsState()
-
-
 
     LaunchedEffect(Unit, check) {
         vm.agentCount = dataStoreVm.agent.first()   // توجه: first() نیاز به import دارد
@@ -250,7 +239,6 @@ fun RoleManagerSc(
     }
 }
 
-
 @Composable
 fun PlayerCard(
     end: Boolean,
@@ -289,22 +277,12 @@ fun PlayerCard(
                 .size(380.dp)
                 .padding(28.dp)
         ) {
-            val infiniteAnim = rememberInfiniteTransition()
-            val rotate by infiniteAnim.animateFloat(
-                0f,
-                targetValue = 360f,
-                animationSpec = InfiniteRepeatableSpec(tween(1500), repeatMode = RepeatMode.Reverse)
-            )
-            val translateY by infiniteAnim.animateFloat(
-                initialValue = -100f,
-                targetValue = 100f,
-                animationSpec = InfiniteRepeatableSpec(tween(2000), repeatMode = RepeatMode.Reverse)
-
-            )
-
             if (state.intValue == index) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    if (end) {
+                Box(Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (end)
+                    {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -363,7 +341,9 @@ fun PlayerCard(
 
 
                         }
-                    } else {
+                    }
+                    else
+                    {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -459,13 +439,11 @@ fun PlayerCard(
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    SpoilerComp(state, index, done)
-
+                    SpoilerComp(state, index)
                 }
 
 
             }
-
         }
 
 
