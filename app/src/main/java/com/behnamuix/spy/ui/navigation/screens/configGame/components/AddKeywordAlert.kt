@@ -120,6 +120,7 @@ fun AddKeyWordAlert(
                         onClick = {
                             scope.launch {
                                 if (word.isNotEmpty()) {
+                                    configGameViewModel.setEnabled(true)
                                     configGameViewModel.addWord(
                                         KeyWord(word = word)
                                     )

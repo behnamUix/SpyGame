@@ -94,6 +94,9 @@ fun ConfigGameSc(
 
     val mediaState by vm.mediaState.collectAsState()
 
+    val enabled = vm.enabled.collectAsState()
+
+
 
     LaunchedEffect(Unit) {
         vm.init(dsVm.agent.first(), dsVm.spy.first())
@@ -201,6 +204,7 @@ fun ConfigGameSc(
 
                 }
                 Button(
+                    enabled = enabled.value,
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     modifier = Modifier
@@ -260,6 +264,7 @@ fun ConfigGameSc(
         }
     }
 }
+
 @Composable
 fun Header(
     dsVm: DataStoreViewModel,
@@ -322,7 +327,10 @@ fun Header(
                         setLog(value = check)
 
                         if (check && vm.checkDb()) {
-                            Toast.makeText(ctx, "لیست کلماتت خالی است", Toast.LENGTH_SHORT).show()
+                            vm.setEnabled(false)
+                            Toast.makeText(ctx, "لیست کلماتت خالیه", Toast.LENGTH_SHORT).show()
+                        } else {
+                            vm.setEnabled(true)
                         }
                     }
                 )

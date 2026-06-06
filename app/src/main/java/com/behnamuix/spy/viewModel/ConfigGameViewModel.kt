@@ -41,6 +41,10 @@ class ConfigGameViewModel(
     private val _mediaState = MutableStateFlow<MediaState>(MediaState.PLAY)
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
 
+    private val _enabled = MutableStateFlow<Boolean>(true)
+    val enabled: StateFlow<Boolean> = _enabled.asStateFlow()
+
+
     private val _wordExist = MutableStateFlow<Boolean>(false)
     val wordExist: StateFlow<Boolean> = _wordExist.asStateFlow()
 
@@ -50,6 +54,9 @@ class ConfigGameViewModel(
 
     var progress by mutableStateOf(true)
 
+    fun setEnabled(value: Boolean) {
+        _enabled.value = value
+    }
 
     //Room
     fun addWord(
