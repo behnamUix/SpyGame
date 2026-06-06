@@ -105,9 +105,7 @@ fun ConfigGameSc(
             Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
         } else {
             vm.setVolume()
-            //vm.play()
-
-
+            vm.play()
         }
 
 
@@ -206,7 +204,9 @@ fun ConfigGameSc(
                 Button(
                     enabled = enabled.value,
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                    colors =
+                        ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
