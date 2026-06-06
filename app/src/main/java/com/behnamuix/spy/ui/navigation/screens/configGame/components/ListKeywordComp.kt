@@ -51,8 +51,8 @@ fun ListKeyWordsComp(
 
             Text(
                 style = MaterialTheme.typography.labelLarge,
-                text = "پایگاه داده کلماتت خالیه!",
-                color = Color.Black.copy(0.5f),
+                text = "!پایگاه داده کلماتت خالیه",
+                color = Color.White.copy(0.5f),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

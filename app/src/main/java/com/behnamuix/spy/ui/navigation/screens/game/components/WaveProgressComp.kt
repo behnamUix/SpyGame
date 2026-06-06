@@ -12,21 +12,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.dp
 import kotlin.math.sin
+
 @Composable
-fun WaterTankProgressBar(
+fun WaterProgress(
     progress: Float,
     modifier: Modifier = Modifier,
     waterColor: Color = Color(0xFF2196F3),
     tankColor: Color = Color(0xFFE0E0E0)
 ) {
-    val infiniteTransition =
-        rememberInfiniteTransition(label = "NaturalWater")
+    val infiniteTransition = rememberInfiniteTransition(label = "NaturalWater")
 
     // ۱. انیمیشن موج لایه اول (جلو)
     val waveOffset1 by infiniteTransition.animateFloat(
@@ -50,7 +53,7 @@ fun WaterTankProgressBar(
         label = "WaveOffset2"
     )
 
-    // ۳. انیمیشن گهواره‌ای (تکان خوردن کل توده آب به چپ و راست شبیه تنگ آب واقعی)
+    // ۳. انیمیشن گهواره‌ای (تکان خوردن کل توده آب به چپ و راست)
     val sloshOffset by infiniteTransition.animateFloat(
         initialValue = -8f,
         targetValue = 8f,
@@ -61,11 +64,22 @@ fun WaterTankProgressBar(
         label = "SloshOffset"
     )
 
-    // انیمیشن نرم برای حرکت عمودی سطح آب (هماهنگ با ثانیه‌شمار)
+    // انیمیشن نرم برای حرکت عمودی سطح آب
     val animatedProgress by animateFloatAsState(
         targetValue = progress.coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 500, easing = LinearEasing),
         label = "ProgressAnimation"
+    )
+
+    // انیمیشن سریع برای جریان خروج آب و حرکت قطرات
+    val leakOffset by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 2 * Math.PI.toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500, easing = LinearEasing), // سریع‌تر برای حس شتاب فوران
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "LeakOffset"
     )
 
     Canvas(modifier = modifier.size(300.dp)) {
@@ -83,20 +97,18 @@ fun WaterTankProgressBar(
         val containerPath = Path().apply {
             addOval(Rect(0f, 0f, width, height))
         }
+        val waterLevelY = height * (1f - animatedProgress)
 
         clipPath(containerPath) {
-            val waterLevelY = height * (1f - animatedProgress)
-
             val baseAmplitude = 10f
             val frequency1 = 0.015f
-            val frequency2 = 0.035f // فرکانس دوم برای ریزموج‌ها
+            val frequency2 = 0.035f
 
             // 🌊 لایه اول: آب پس‌زمینه (تیره و عمیق)
             val backWavePath = Path().apply {
                 moveTo(0f, height)
                 lineTo(0f, waterLevelY)
                 for (x in 0..width.toInt()) {
-                    // ترکیب دو موج سینوسی + اثر تکان خوردن گهواره‌ای (sloshOffset)
                     val sloshFactor = (x - width / 2) / width * sloshOffset
                     val y = waterLevelY +
                             sin(x * frequency1 - waveOffset2) * baseAmplitude +
@@ -107,17 +119,14 @@ fun WaterTankProgressBar(
                 lineTo(width, height)
                 close()
             }
-            drawPath(
-                path = backWavePath,
-                color = waterColor.copy(alpha = 0.35f)
-            )
+            drawPath(path = backWavePath, color = waterColor.copy(alpha = 0.35f))
 
             // 🌊 لایه دوم: بدنه اصلی آب (رنگ استاندارد)
             val middleWavePath = Path().apply {
                 moveTo(0f, height)
                 lineTo(0f, waterLevelY)
                 for (x in 0..width.toInt()) {
-                    val sloshFactor = (x - width / 2) / width * -sloshOffset // جهت مخالف لایه عقب
+                    val sloshFactor = (x - width / 2) / width * -sloshOffset
                     val y = waterLevelY +
                             sin(x * frequency1 + waveOffset1) * baseAmplitude +
                             sin(x * frequency2 - waveOffset1) * (baseAmplitude * 0.2f) +
@@ -127,18 +136,14 @@ fun WaterTankProgressBar(
                 lineTo(width, height)
                 close()
             }
-            drawPath(
-                path = middleWavePath,
-                color = waterColor.copy(alpha = 0.8f)
-            )
+            drawPath(path = middleWavePath, color = waterColor.copy(alpha = 0.8f))
 
-            // 🌊 لایه سوم: درخشش روی سطح آب (Highlight سفید/روشن در لبه بالایی برای حس براق بودن مایع)
+            // 🌊 لایه سوم: درخشش روی سطح آب (Highlight)
             val frontHighlightPath = Path().apply {
                 moveTo(0f, height)
                 lineTo(0f, waterLevelY)
                 for (x in 0..width.toInt()) {
                     val sloshFactor = (x - width / 2) / width * -sloshOffset
-                    // این لایه را ۲ پیکسل پایین‌تر رسم میکنیم تا ضخامت لبه براق دیده شود
                     val y = (waterLevelY + 3f) +
                             sin(x * frequency1 + waveOffset1) * baseAmplitude +
                             sin(x * frequency2 - waveOffset1) * (baseAmplitude * 0.2f) +
@@ -148,20 +153,98 @@ fun WaterTankProgressBar(
                 lineTo(width, height)
                 close()
             }
-            drawPath(
-                path = frontHighlightPath,
-                color = Color.White.copy(alpha = 0.25f)
-            )
+            drawPath(path = frontHighlightPath, color = Color.White.copy(alpha = 0.25f))
         }
 
-        // ج) رسم یک هاله شیشه‌ای یا خط براق روی کل دایره (اختیاری - برای شبیه‌تر شدن به جنس شیشه تنگ)
+        // ج) رسم هاله شیشه‌ای روی کل دایره
         drawCircle(
             color = Color.White.copy(alpha = 0.1f),
             radius = radius,
-            style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
+            style = Stroke(width = 3.dp.toPx())
         )
+
+        // 💥 د) شبیه‌سازی سوراخ شکستگی و خروج آب پویا (Dynamic Leakage)
+        val leakX = width-80f
+        val leakY = height * 0.8f
+
+        // کشیدن نقطه شکستگی شیشه
+        drawCircle(
+            color = Color.White.copy(alpha = 0.7f),
+            radius = 4.dp.toPx(),
+            center = Offset(leakX - 2.dp.toPx(), leakY)
+        )
+
+        // خروج آب با منطق فشار هیدرواستاتیکی کاملاً داینامیک
+        if (waterLevelY < leakY) {
+
+            // ۱. محاسبه میزان فشار آب: فاصله عمودی سطح آب تا سوراخ
+            val waterHeadPressure = ((leakY - waterLevelY) / height).coerceIn(0f, 1f)
+            // برد پرتاب افقی متناسب با مقدار فشار فعلی آب تنظیم می‌شود (حداکثر ۷۰ پیکسل)
+            val maxHorizontalBlast = 70f * waterHeadPressure
+
+            val streamPath = Path().apply {
+                moveTo(leakX, leakY)
+
+                val streamBottomY = height + 60f // شلاق آب تا کمی پایین‌تر از تانک سقوط کند
+                var currentY = leakY
+
+                while (currentY <= streamBottomY) {
+                    val progressFactor = (currentY - leakY) / (streamBottomY - leakY)
+
+                    // استفاده از تابع سینوسی نیم‌قوس برای اعمال شتاب گرانش زمین نیوتن (سقوط تیزتر در انتها)
+                    val parabolaX = leakX + (kotlin.math.sin(progressFactor * Math.PI / 2) * maxHorizontalBlast).toFloat()
+
+                    // تلاطم و موج‌های ریز داخل جت خروجی آب با فرکانس بالا (پایه نازک و انتهای پخش‌تر)
+                    val waveX = parabolaX + sin(currentY * 0.15f - leakOffset * 2.5f) * (1.5f + progressFactor * 3.5f)
+
+                    lineTo(waveX, currentY)
+                    currentY += 4f
+                }
+            }
+
+            // ۲. رسم جت اصلی آب (بدنه ضخیم با انتهای نرم)
+            drawPath(
+                path = streamPath,
+                color = waterColor.copy(alpha = 0.75f),
+                style = Stroke(width = 4.5.dp.toPx(), cap = StrokeCap.Round)
+            )
+
+            // رسم هسته نوری و براق داخل جت آب
+            drawPath(
+                path = streamPath,
+                color = Color.White.copy(alpha = 0.45f),
+                style = Stroke(width = 1.5.dp.toPx(), cap = StrokeCap.Round)
+            )
+
+            // ۳. 🛑 افکت پاشش قطرات پراکنده (Water Droplets/Spray) در نقطه فرود
+            val sprayBaseY = height + 10f
+            if (maxHorizontalBlast > 8f) { // فقط زمانی که فشار کافی وجود دارد قطرات معلق ایجاد شوند
+                for (i in 1..4) {
+                    // تغییر موقعیت لحظه‌ای قطرات با فرکانس فریم ریت انیمیشن
+                    val dropletAnimFactor = ((leakOffset + (i * 1.5f)) % (2 * Math.PI.toFloat()))
+                    val dropY = sprayBaseY + (i * 10f) + sin(dropletAnimFactor) * 8f
+                    val dropX = leakX + maxHorizontalBlast + (sin(i.toFloat() * 25f) * 14f) + (dropletAnimFactor * 3f)
+
+                    if (dropY <= height + 55f) {
+                        // قطره اصلی آب
+                        drawCircle(
+                            color = waterColor.copy(alpha = 0.55f),
+                            radius = (1.5f + (i % 2)).dp.toPx(),
+                            center = Offset(dropX, dropY)
+                        )
+                        // درخشش روی قطره کوچک آب
+                        drawCircle(
+                            color = Color.White.copy(alpha = 0.7f),
+                            radius = 0.6.dp.toPx(),
+                            center = Offset(dropX - 1f, dropY - 1f)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
+
 
 @Composable
 fun SampleWaterTankProgressBar(

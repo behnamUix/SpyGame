@@ -12,14 +12,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddKeyWordAlert(
+
     showAddWordDialog: MutableState<Boolean>,
     configGameViewModel: ConfigGameViewModel,
     ctx: Context,
@@ -48,26 +50,41 @@ fun AddKeyWordAlert(
 ) {
     val scope = rememberCoroutineScope()
     var word by remember { mutableStateOf("") }
-    var wordExist by remember { mutableStateOf(configGameViewModel.wordExist.value) }
+    val wordExist = configGameViewModel.wordExist.collectAsState()
+
+
     Dialog(
         { showAddWordDialog.value = false },
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
     ) {
-        Card(colors = CardDefaults.cardColors(Color.Black)) {
+        OutlinedCard() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
                     textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge,
-                    text = "هر کلمه ای بخوای میتونی به بازی اضافه کنی و از بازی بیشتر لذت ببری",
+                    style = MaterialTheme.typography.titleLarge,
+                    text = "کلمات من",
                     fontWeight = FontWeight.Bold
                 )
+                Text(
+                    color = Color.White.copy(0.6f),
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
+                    text = "هر کلمه ای بخوای میتونی به بازی اضافه کنی و از بازی بیشتر لذت ببری",
+                    fontWeight = FontWeight.Medium
+                )
                 OutlinedTextField(
-                    isError = wordExist,
-                    supportingText = { if (wordExist) Text(" ببخشید کلمه $word در بازی وجود داره:( ") },
+                    isError = wordExist.value,
+                    supportingText = {
+                        if (wordExist.value) {
+                            " ببخشید کلمه $word تو لیست کلماتت وجود داره:( "
+                        } else {
+                            ""
+                        }
+                    },
                     textStyle = TextStyle(
                         textDirection = TextDirection.Rtl, textAlign = TextAlign.Right
                     ),
@@ -79,7 +96,7 @@ fun AddKeyWordAlert(
                         )
                     },
                     value = word,
-                    onValueChange = { word = it })
+                    onValueChange = { word = it;configGameViewModel.checkWordExist(word) })
                 Row(Modifier.padding(horizontal = 16.dp)) {
                     Button(
                         onClick = {
@@ -103,16 +120,14 @@ fun AddKeyWordAlert(
                         onClick = {
                             scope.launch {
                                 if (word.isNotEmpty()) {
-                                    if (!wordExist) {
-                                        configGameViewModel.addWord(
-                                            KeyWord(word = word)
-                                        )
-                                        word = ""
+                                    configGameViewModel.addWord(
+                                        KeyWord(word = word)
+                                    )
+                                    word = ""
 
-                                        Toast.makeText(
-                                            ctx, " کلمه $word به بازی اضافه شد ", Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
+                                    Toast.makeText(
+                                        ctx, " کلمه $word به بازی اضافه شد ", Toast.LENGTH_SHORT
+                                    ).show()
 
 
                                 }

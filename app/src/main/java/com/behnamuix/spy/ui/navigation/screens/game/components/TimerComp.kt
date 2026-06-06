@@ -51,7 +51,7 @@ fun TimerScreenComp(
         }
 
         //WaveProgress
-        WaterTankProgressBar(progress = progress)
+        WaterProgress(progress = progress)
 
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(

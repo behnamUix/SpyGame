@@ -50,6 +50,7 @@ fun GameSc(
         verticalArrangement = Arrangement.SpaceAround
     ) {
         ToolbarComp("زمان بحث و گفتگو", word)
+
         LazyColumn {
             items(vm.questionList.toList().take(4)) {
                 QCardComp(quiz = it.first, answer = it.second)
