@@ -9,8 +9,11 @@ import com.behnamuix.spy.data.local.db.model.KeyWord
 import com.behnamuix.spy.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spy.utils.setLog
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -38,14 +41,22 @@ class ConfigGameViewModel(
     private val _mediaState = MutableStateFlow<MediaState>(MediaState.PLAY)
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
 
+    private val _enabled = MutableStateFlow<Boolean>(true)
+    val enabled: StateFlow<Boolean> = _enabled.asStateFlow()
 
-    val wordExist = mutableStateOf(false)
+
+    private val _wordExist = MutableStateFlow<Boolean>(false)
+    val wordExist: StateFlow<Boolean> = _wordExist.asStateFlow()
+
 
     var showAddWordDialog = mutableStateOf(false)
 
 
     var progress by mutableStateOf(true)
 
+    fun setEnabled(value: Boolean) {
+        _enabled.value = value
+    }
 
     //Room
     fun addWord(
@@ -107,7 +118,7 @@ class ConfigGameViewModel(
 
 
     fun decAgentCountPlayer() {
-        if (_agentCount.value > 1) {
+        if (_agentCount.value > 2) {
 
             viewModelScope.launch {
                 _agentCount.value--
@@ -157,6 +168,20 @@ class ConfigGameViewModel(
     fun init(agent: Int, spy: Int) {
         _agentCount.value = agent
         _spyCount.value = spy
+    }
+
+    fun checkWordExist(word: String) {
+        viewModelScope.launch {
+            _wordList.value.forEach {
+                setLog(it.word)
+                if (it.word == word) {
+                    _wordExist.emit(true)
+                } else {
+                    _wordExist.emit(false)
+                }
+            }
+        }
+
     }
 
 

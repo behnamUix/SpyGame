@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Spy"
 include(":app")
- 
+include(":app:baselineprofile")

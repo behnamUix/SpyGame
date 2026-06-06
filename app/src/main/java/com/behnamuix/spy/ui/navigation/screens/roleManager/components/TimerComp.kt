@@ -11,6 +11,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,10 +28,8 @@ fun TimerCard(
     vm: RoleManagerViewModel,
     time: Int,
 ) {
-    Card(
-        colors = CardDefaults.cardColors(
-            Color.Transparent
-        ),
+    OutlinedCard (
+
         enabled = true,
         onClick = {},
         modifier = Modifier
@@ -55,7 +55,7 @@ fun TimerCard(
                 )
                 Spacer(Modifier.weight(1f))
 
-                Text(title, modifier = Modifier.padding(end = 20.dp))
+                Text(title, modifier = Modifier.padding(end = 20.dp),style = MaterialTheme.typography.titleLarge)
             }
         }
 
@@ -79,7 +79,7 @@ fun TimerComp(
         }) {
             Text("—", fontSize = 20.sp)
         }
-        Text(time.toString())
+        Text(time.toString(), style = MaterialTheme.typography.titleLarge)
         IconButton({
             vm.incTime()
         }) {

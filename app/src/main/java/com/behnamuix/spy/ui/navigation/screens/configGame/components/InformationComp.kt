@@ -61,9 +61,10 @@ fun InformationComp() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Text("طراحی و برنامه نویسی:BehnamUix")
-                Text("نسخه 1")
+                Text("طراحی و توسعه : بهنام محجوب")
+                Text("نسخه 1.0.0")
                 OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
                     border = BorderStroke(
                         1.dp, color = Color(0xFFFFFF00),
                     ),
