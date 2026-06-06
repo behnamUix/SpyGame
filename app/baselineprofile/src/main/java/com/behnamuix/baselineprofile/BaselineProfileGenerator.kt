@@ -88,11 +88,20 @@ class BaselineProfileGenerator {
         device.waitForIdle()
 
         // ورق زدن کارت‌ها
-        for (i in 1..3) {
+        for (i in 1..4) {
+            val showRoleBtn = device.findObject(By.text(" رو اینجا ضربه بزن تا نقشت رو نشون بدم"))
             val nextPlayerBtn = device.findObject(By.text("بده نفر بعدی"))
+            showRoleBtn?.click()
             nextPlayerBtn?.click()
             device.waitForIdle()
         }
+        val startGame = device.findObject(By.text("شروع بازی"))
+        startGame.click()
+        device.waitForIdle()
+        val goHome = device.findObject(By.text("صفحه اصلی"))
+        goHome.click()
+        device.waitForIdle()
+
 
     }
 }
