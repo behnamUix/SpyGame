@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.baselineprofile)
+    alias(libs.plugins.firebase)
 
 }
 
@@ -90,7 +91,24 @@ dependencies {
     //DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    //Profiler
     implementation(libs.androidx.profileinstaller.v141)
+
+    //Firebase-Auth
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    //Coil
+    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+
+
+
 
 
 

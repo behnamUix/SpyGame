@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "698021296400",
+    "project_id": "spygame-98a69",
+    "storage_bucket": "spygame-98a69.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698021296400:android:a5f92618a004ba12854d95",
+        "android_client_info": {
+          "package_name": "com.behnamuix.spy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698021296400-dc5v30cvq0obsbqkn512lur3rmjnfhad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.behnamuix.spy",
+            "certificate_hash": "2a479963e912f4735ddcaac9ead5bb05c1361897"
+          }
+        },
+        {
+          "client_id": "698021296400-l9shtgvvahqav9gols0pim6gpgisnl4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAS11LVa8x23wFnGLRSnJxOf_ONuym5CI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698021296400-l9shtgvvahqav9gols0pim6gpgisnl4q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

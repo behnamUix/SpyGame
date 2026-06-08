@@ -1,6 +1,8 @@
 package com.behnamuix.spy.base
 
 import android.app.Application
+import com.behnamuix.spy.di.authModule
+import com.behnamuix.spy.di.gioModule
 import com.behnamuix.spy.di.daoModule
 import com.behnamuix.spy.di.dataStoreModule
 import com.behnamuix.spy.di.databaseModule
@@ -22,7 +24,9 @@ class MyApp : Application() {
                     daoModule,
                     viewModelModule,
                     mediaModule,
-                    dataStoreModule
+                    dataStoreModule,
+                    gioModule,
+                    authModule
                 )
             )
         }
