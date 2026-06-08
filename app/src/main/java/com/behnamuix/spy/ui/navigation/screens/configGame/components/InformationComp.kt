@@ -47,6 +47,12 @@ fun InformationComp(authVm: AuthViewModel = koinViewModel()) {
 
     val ctx = LocalContext.current
     val userProfile = authVm.currentUserProfile.collectAsState()
+
+    val versionName = try {
+        val packageInfo = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
+        packageInfo.versionName
+    } catch (e: Exception) { "1.0.0" }
+
     val infiniteTrans = rememberInfiniteTransition()
     val translateY by infiniteTrans.animateFloat(
         initialValue = 0f,
@@ -78,7 +84,7 @@ fun InformationComp(authVm: AuthViewModel = koinViewModel()) {
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text("طراحی و توسعه : بهنام محجوب")
-                Text("نسخه 1.0.0")
+                Text("نسخه $versionName")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {

@@ -3,7 +3,6 @@ package com.behnamuix.spy.di
 import android.content.Context
 import androidx.credentials.CredentialManager
 import androidx.room.Room
-import com.behnamuix.spy.authentication.config.getUser
 import com.behnamuix.spy.authentication.config.getGoogleIdOption
 import com.behnamuix.spy.authentication.repository.AuthRepository
 import com.behnamuix.spy.authentication.viewModel.AuthViewModel
