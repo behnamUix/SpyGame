@@ -11,9 +11,7 @@ import com.behnamuix.spy.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spy.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spy.utils.setLog
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -187,7 +185,11 @@ class ConfigGameViewModel(
 
     //MediaController
     fun play() {
-        mediaVm.play()
+        try {
+            mediaVm.play()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         _mediaState.value = MediaState.PLAY
     }
 
