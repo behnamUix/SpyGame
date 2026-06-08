@@ -75,5 +75,5 @@ val viewModelModule = module {
     viewModel { MediaPlayerViewModel(get()) }
     viewModel { TrainingViewModel(get()) }
     viewModel { DataStoreViewModel(get()) }
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get()) }
 }

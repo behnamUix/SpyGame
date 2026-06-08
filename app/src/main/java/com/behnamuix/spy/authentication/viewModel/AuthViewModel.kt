@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authReo: AuthRepository,
-    private val cred: CredentialManager
 ) :
     ViewModel() {
 
@@ -30,8 +29,14 @@ class AuthViewModel(
         onFailed: (String) -> Unit
     ) {
         viewModelScope.launch {
-
             authReo.loginWithGoogle(context, onSuccess, onFailed)
+        }
+    }
+    fun signOut() {
+        // When a user signs out, clear the current user credential state from all credential providers.
+        viewModelScope.launch {
+            authReo.signOut()
+            updateCurrentUser()
         }
     }
 
@@ -51,22 +56,8 @@ class AuthViewModel(
         }
     }
 
-    fun signOut() {
-        // Firebase sign out
-        authReo.profile.signOut()
 
-        // When a user signs out, clear the current user credential state from all credential providers.
-        viewModelScope.launch {
-            try {
-                val clearRequest = ClearCredentialStateRequest()
-                cred.clearCredentialState(clearRequest)
-                updateCurrentUser()
-            } catch (e: ClearCredentialException) {
-                setLog("Couldn't clear user credentials: ${e.localizedMessage}")
-            }
-        }
-    }
 
-    fun signedInCheck()= authReo.profile.currentUser !== null
+    fun signedInCheck() = authReo.profile.currentUser !== null
 
 }
