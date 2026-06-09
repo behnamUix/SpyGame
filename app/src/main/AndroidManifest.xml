@@ -6,6 +6,7 @@
     <application
         android:name=".base.MyApp"
         android:allowBackup="true"
+        android:appCategory="game"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/icon_gme"

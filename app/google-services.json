@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "698021296400-rtpf78ufp10s2qeionkie67ombq8u2cb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.behnamuix.spy",
+            "certificate_hash": "fa4ccc1c962b3e7319ebc749e7dc4f712fb85902"
+          }
+        },
+        {
           "client_id": "698021296400-l9shtgvvahqav9gols0pim6gpgisnl4q.apps.googleusercontent.com",
           "client_type": 3
         }

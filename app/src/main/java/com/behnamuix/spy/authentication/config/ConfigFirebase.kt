@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 fun getGoogleIdOption(): GetGoogleIdOption {
     val googleIdOption = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)
+
         .setServerClientId(
             "698021296400-l9shtgvvahqav9gols0pim6gpgisnl4q.apps.googleusercontent.com"
         )

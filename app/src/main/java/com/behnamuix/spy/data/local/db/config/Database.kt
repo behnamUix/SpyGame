@@ -10,3 +10,4 @@ abstract class SpyDatabase : RoomDatabase() {
     abstract fun keyWordDao(): KeywordDao
 
 }
+
