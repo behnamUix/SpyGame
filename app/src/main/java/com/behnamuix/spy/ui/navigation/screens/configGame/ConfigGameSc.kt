@@ -83,7 +83,7 @@ fun ConfigGameSc(
         } else {
             //MediaPlayer
             vm.setVolume()
-            //vm.play()
+            vm.play()
 
             //Authentication
             if (!authVm.signedInCheck()) {
