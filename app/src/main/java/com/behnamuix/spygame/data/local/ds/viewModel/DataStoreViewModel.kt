@@ -17,6 +17,14 @@ class DataStoreViewModel(private val dataStoreRepo: DataStoreRepository) : ViewM
     var agent = dataStoreRepo.getAgentCount()
     var spy = dataStoreRepo.getSpyCount()
 
+    val loggedInState = dataStoreRepo.getLoggedInState()
+
+    fun setLoggedInState(value: Boolean) {
+        viewModelScope.launch {
+            dataStoreRepo.setLoggedInState(value)
+        }
+    }
+
     fun setUserUse(value: Boolean) {
         viewModelScope.launch {
             dataStoreRepo.setUserUseState(value)

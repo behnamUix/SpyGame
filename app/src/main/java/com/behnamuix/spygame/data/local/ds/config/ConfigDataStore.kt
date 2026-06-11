@@ -12,4 +12,6 @@ object PrefKey {
     val USER_USE_KEY = booleanPreferencesKey("user_use")
     val AGENT_COUNT_KEY= intPreferencesKey("agent_count")
     val SPY_COUNT_KEY= intPreferencesKey("spy_count")
+    val KEY_IS_LOGGED_IN= booleanPreferencesKey("logged_in")
+
 }

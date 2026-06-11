@@ -20,7 +20,15 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
         it[PrefKey.SPY_COUNT_KEY] ?: 1
     }
 
+    fun getLoggedInState(): Flow<Boolean> = dataStore.data.map {
+        it[PrefKey.KEY_IS_LOGGED_IN] ?: false
+    }
 
+    suspend fun setLoggedInState(value: Boolean) {
+        dataStore.edit {
+            it[PrefKey.KEY_IS_LOGGED_IN] = value
+        }
+    }
     suspend fun setUserUseState(value: Boolean) {
         dataStore.edit {
             it[PrefKey.USER_USE_KEY] = value
@@ -32,6 +40,7 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
             it[PrefKey.AGENT_COUNT_KEY] = value
         }
     }
+
     suspend fun setSpyCount(value: Int) {
         dataStore.edit {
             it[PrefKey.SPY_COUNT_KEY] = value

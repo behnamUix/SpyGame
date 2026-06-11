@@ -86,30 +86,42 @@ fun ConfigGameSc(
 
             vm.setVolume()
             vm.play()
-
-            // 👇 اینجا فقط اینو صدا بزن
-            authVm.checkPreviousLogin { profile ->
-
-                if (profile != null) {
-                    // ✔️ کاربر قبلاً لاگین کرده
-                    authVm.updateProfile(profile)
-
-                    Toast.makeText(ctx, "خوش برگشتی 👋", Toast.LENGTH_SHORT).show()
-
+            dsVm.loggedInState.collect {
+                if (it) {
                 } else {
+                    // 👇 اینجا فقط اینو صدا بزن
+                    authVm.checkPreviousLogin { profile ->
 
-                    // ❌ کاربر لاگین نیست → حالا لاگین کن
-                    authVm.singIn(
-                        ok = {
-                            Toast.makeText(ctx, "ورود با موفقیت انجام شد", Toast.LENGTH_SHORT).show()
-                            authVm.updateProfile(it)
-                        },
-                        error = {
-                            Toast.makeText(ctx, "خطا در ورود: $it", Toast.LENGTH_SHORT).show()
+                        if (profile != null) {
+                            // ✔️ کاربر قبلاً لاگین کرده
+                            authVm.updateProfile(profile)
+
+                            Toast.makeText(ctx, "خوش برگشتی 👋", Toast.LENGTH_SHORT).show()
+
+                        } else {
+                            dsVm.setLoggedInState(true)
+
+                            // ❌ کاربر لاگین نیست → حالا لاگین کن
+                            authVm.singIn(
+                                ok = {
+                                    Toast.makeText(
+                                        ctx,
+                                        "ورود با موفقیت انجام شد",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    authVm.updateProfile(it)
+                                    dsVm.setLoggedInState(true)
+                                },
+                                error = {
+                                    Toast.makeText(ctx, "خطا در ورود: $it", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            )
                         }
-                    )
+                    }
                 }
             }
+
         }
     }
     LaunchedEffect(agentCount, spyCount) {
