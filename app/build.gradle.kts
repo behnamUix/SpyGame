@@ -4,21 +4,20 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.baselineprofile)
-    alias(libs.plugins.firebase)
 
 }
 
 android {
 
-    namespace = "com.behnamuix.spy"
+    namespace = "com.behnamuix.spygame"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.behnamuix.spy"
+        applicationId = "com.behnamuix.spygame"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1.0"
     }
 
     signingConfigs {
@@ -101,10 +100,7 @@ dependencies {
     //Profiler
     implementation(libs.androidx.profileinstaller.v141)
 
-    //Firebase-Auth
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth)
+    //Google-Auth
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
@@ -112,6 +108,8 @@ dependencies {
     //Coil
     implementation(libs.coil3.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    implementation(libs.kotlinx.coroutines.android)
 
 
 }
