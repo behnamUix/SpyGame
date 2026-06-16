@@ -29,7 +29,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,19 +37,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.behnamuix.spygame.authentication.viewModel.GoogleAuthViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun InformationComp(authVm: GoogleAuthViewModel = koinViewModel()) {
+fun InformationComp() {
 
     val ctx = LocalContext.current
-    val userProfile = authVm.currentUserProfile.collectAsState()
 
     val versionName = try {
         val packageInfo = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
         packageInfo.versionName
-    } catch (e: Exception) { "1.0.0" }
+    } catch (e: Exception) {
+        "1.0.0"
+    }
 
     val infiniteTrans = rememberInfiniteTransition()
     val translateY by infiniteTrans.animateFloat(
@@ -108,50 +106,20 @@ fun InformationComp(authVm: GoogleAuthViewModel = koinViewModel()) {
                                     .show()
                             }
                         }) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
+                        Text(
+                            text = "پشتیبانی",
+                            color = Color(0xFFFFFF00),
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                        Icon(
+                            imageVector = Icons.Default.SupportAgent,
+                            contentDescription = "",
+                            tint = Color(0xFFFFFF00),
 
-                            Text(
-                                text = "پشتیبانی",
-                                color = Color(0xFFFFFF00),
-                                style = MaterialTheme.typography.labelMedium
                             )
-                            Icon(
-                                imageVector = Icons.Default.SupportAgent,
-                                contentDescription = "",
-                                tint = Color(0xFFFFFF00),
 
-                                )
-                        }
                     }
-                    if (userProfile.value != null) {
-                        Button(
-                            modifier = Modifier,
-                            colors = ButtonDefaults.buttonColors(Color(0xFFEF5350)),
-                            shape = RoundedCornerShape(8.dp), onClick = {
-                                authVm.signOut()
 
-                            }) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
-                            ) {
-
-                                Text(
-                                    text = "خروج از حساب",
-                                    color = Color(0xFFFFFFFF),
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                                Icon(
-                                    imageVector = Icons.Default.Logout,
-                                    contentDescription = "",
-                                    tint = Color.White
-                                )
-                            }
-                        }
-                    }
                 }
             }
         }

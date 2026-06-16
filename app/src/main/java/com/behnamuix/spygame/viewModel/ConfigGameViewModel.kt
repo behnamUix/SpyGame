@@ -50,6 +50,9 @@ class ConfigGameViewModel(
     var showAddWordDialog = mutableStateOf(false)
 
 
+    var showLoginBottomSheet = mutableStateOf(false)
+
+
     var progress by mutableStateOf(true)
 
     fun setEnabled(value: Boolean) {

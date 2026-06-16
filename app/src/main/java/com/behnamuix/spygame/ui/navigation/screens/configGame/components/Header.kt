@@ -1,5 +1,6 @@
 package com.behnamuix.spygame.ui.navigation.screens.configGame.components
 
+import android.widget.Space
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -39,20 +40,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.behnamuix.spygame.authentication.viewModel.GoogleAuthViewModel
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spygame.utils.setLog
 import com.behnamuix.spygame.viewModel.ConfigGameViewModel
+import kotlinx.coroutines.flow.first
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Header(
-    authVm: GoogleAuthViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
     vm: ConfigGameViewModel = koinViewModel(),
 ) {
     val ctx = LocalContext.current
-    val userProfile = authVm.currentUserProfile.collectAsState()
     val mediaState by vm.mediaState.collectAsState()
     val expandedState = vm.expanded.collectAsState()
     var check by remember { mutableStateOf(false) }
@@ -61,9 +60,12 @@ fun Header(
             dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow
         ), label = "rotation" // اضافه کردن label برای بهتر شدن لاگ‌ها
     )
+    var loggedIn by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(Unit) {
         vm.userUseOperation(dsVm, setCheck = { check = it })
+        loggedIn = dsVm.loggedInState.first()
 
     }
     Row(
@@ -85,50 +87,8 @@ fun Header(
                 contentDescription = ""
             )
         }
-        if (userProfile.value == null) {
-            Text(
-                text = "ورود انجام نشده",
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        authVm.checkPreviousLogin { profile ->
-                            if (profile != null) {
-                                // کاربر قبلاً وارد شده، بدون مزاحمت پروفایلش رو آپدیت کن
-                                authVm.updateProfile(profile)
-                                Toast.makeText(ctx, "خوش برگشتی 👋", Toast.LENGTH_SHORT).show()
-                            } else {
-                            }
+        Spacer(Modifier.weight(1f))
 
-                        }
-
-
-                    },
-                textAlign = TextAlign.Center
-            )
-        } else {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                AsyncImage(
-                    model = userProfile.value?.profilePictureUri,
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(50.dp)),
-                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    text = userProfile.value?.displayName ?: "",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Color(0xFFFFFF00),
-                )
-
-            }
-
-        }
 
         MediaControllerComp(mediaState, vm)
     }

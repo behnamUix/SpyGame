@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -34,12 +35,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.behnamuix.spygame.authentication.viewModel.GoogleAuthViewModel
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spygame.ui.navigation.Screens
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.AddKeyWordAlert
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.Header
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.InformationComp
+import com.behnamuix.spygame.ui.navigation.screens.configGame.components.otp.LoginBottomSheetComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spygame.utils.checkNet
@@ -49,13 +50,14 @@ import kotlinx.coroutines.flow.first
 import org.koin.androidx.compose.koinViewModel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
-    authVm: GoogleAuthViewModel = koinViewModel()
+
 
 ) {
     //context
@@ -69,11 +71,6 @@ fun ConfigGameSc(
 
     val enabled = vm.enabled.collectAsState()
 
-    val context = LocalContext.current
-
-
-
-
 
     LaunchedEffect(Unit) {
 
@@ -85,40 +82,12 @@ fun ConfigGameSc(
         } else {
 
             vm.setVolume()
-            vm.play()
+            //vm.play()
             dsVm.loggedInState.collect {
                 if (it) {
+
                 } else {
-                    // 👇 اینجا فقط اینو صدا بزن
-                    authVm.checkPreviousLogin { profile ->
-
-                        if (profile != null) {
-                            // ✔️ کاربر قبلاً لاگین کرده
-                            authVm.updateProfile(profile)
-
-                            Toast.makeText(ctx, "خوش برگشتی 👋", Toast.LENGTH_SHORT).show()
-
-                        } else {
-                            dsVm.setLoggedInState(true)
-
-                            // ❌ کاربر لاگین نیست → حالا لاگین کن
-                            authVm.singIn(
-                                ok = {
-                                    Toast.makeText(
-                                        ctx,
-                                        "ورود با موفقیت انجام شد",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    authVm.updateProfile(it)
-                                    dsVm.setLoggedInState(true)
-                                },
-                                error = {
-                                    Toast.makeText(ctx, "خطا در ورود: $it", Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-                            )
-                        }
-                    }
+                    vm.showLoginBottomSheet.value=true
                 }
             }
 
@@ -127,6 +96,9 @@ fun ConfigGameSc(
     LaunchedEffect(agentCount, spyCount) {
         dsVm.setAgent(agentCount)
         dsVm.setSpy(spyCount)
+    }
+    if(vm.showLoginBottomSheet.value){
+        LoginBottomSheetComp(vm.showLoginBottomSheet)
     }
 
     Column(

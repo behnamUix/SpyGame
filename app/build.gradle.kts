@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.androidx.baselineprofile)
+
+    alias(libs.plugins.kotlinx.serialization)
 
 }
 
@@ -18,6 +19,18 @@ android {
         targetSdk = 36
         versionCode = 2
         versionName = "1.1.0"
+
+        buildConfigField(
+            "String",
+            "API_USERNAME",
+            "\"09304050718\""
+        )
+
+        buildConfigField(
+            "String",
+            "API_PASSWORD",
+            "\"540703a2-dae1-4b20-8951-640ef0069f25\""
+        )
     }
 
     signingConfigs {
@@ -45,12 +58,20 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs += listOf(
+                "-Xskip-metadata-version-check",
+                "-Xallow-kotlin-package"
+            )
+        }
     }
 }
 
@@ -64,13 +85,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.profileinstaller)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    "baselineProfile"(project(":app:baselineprofile"))
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
@@ -97,13 +116,12 @@ dependencies {
     //DataStore
     implementation(libs.androidx.datastore.preferences)
 
-    //Profiler
-    implementation(libs.androidx.profileinstaller.v141)
 
-    //Google-Auth
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
+    // KTOR
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     //Coil
     implementation(libs.coil3.coil.compose)

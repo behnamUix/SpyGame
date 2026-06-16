@@ -1,11 +1,10 @@
 package com.behnamuix.spygame.base
 
 import android.app.Application
-import com.behnamuix.spygame.di.authModule
+import com.behnamuix.spygame.di.clientModule
 import com.behnamuix.spygame.di.daoModule
 import com.behnamuix.spygame.di.dataStoreModule
 import com.behnamuix.spygame.di.databaseModule
-import com.behnamuix.spygame.di.gioModule
 import com.behnamuix.spygame.di.mediaModule
 import com.behnamuix.spygame.di.repositoryModule
 import com.behnamuix.spygame.di.viewModelModule
@@ -25,8 +24,7 @@ class MyApp : Application() {
                     viewModelModule,
                     mediaModule,
                     dataStoreModule,
-                    gioModule,
-                    authModule
+                    clientModule
                 )
             )
         }
