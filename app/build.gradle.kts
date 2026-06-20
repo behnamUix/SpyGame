@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
-
     alias(libs.plugins.kotlinx.serialization)
+    id("org.jetbrains.kotlin.plugin.compose")
+
 
 }
 
@@ -14,6 +14,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applicationId = "com.behnamuix.spygame"
         minSdk = 26
         targetSdk = 36
@@ -57,7 +58,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
     buildFeatures {
         compose = true
         buildConfig = true
@@ -85,6 +88,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.ui.test.junit4)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -128,6 +133,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.kotlinx.coroutines.android)
+    testImplementation(kotlin("test"))
 
 
 }

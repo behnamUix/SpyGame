@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SpoilerComp(
+    setShowPlayer:(Boolean)->Unit,
     state: MutableIntState,
     index: Int
 ) {
@@ -40,6 +41,7 @@ fun SpoilerComp(
                 .testTag("showRole")
                 .clickable(onClick = {
                     state.intValue = index
+                    setShowPlayer(true)
 
 
                 })

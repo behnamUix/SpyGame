@@ -4,6 +4,8 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
@@ -17,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
@@ -38,39 +41,42 @@ fun MediaControllerComp(mediaState: MediaState, vm: ConfigGameViewModel) {
             0f
         }
     }
-    when (mediaState) {
-                MediaState . PLAY -> {
-            IconButton({ vm.pause();state = !state }) {
-                Icon(
-                    Icons.Default.Pause,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .rotate(rotate)
-                )
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        when (mediaState) {
+            MediaState . PLAY -> {
+                IconButton({ vm.pause();state = !state }) {
+                    Icon(
+                        Icons.Default.Pause,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .rotate(rotate)
+                    )
+                }
             }
-        }
 
-        MediaState.PAUSE -> {
-            IconButton({ vm.play();state = !state }) {
-                Icon(
+            MediaState.PAUSE -> {
+                IconButton({ vm.play();state = !state }) {
+                    Icon(
 
-                    Icons.Default.PlayArrow,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .rotate(rotate)
+                        Icons.Default.PlayArrow,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .rotate(rotate)
 
-                )
+                    )
+                }
             }
-        }
 
-        else -> {}
+            else -> {}
+        }
+        Icon(
+            Icons.Default.MusicNote,
+            contentDescription = ""
+        )
     }
-    Icon(
-        Icons.Default.MusicNote,
-        contentDescription = ""
-    )
+
 }

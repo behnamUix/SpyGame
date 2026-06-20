@@ -15,6 +15,7 @@ import com.behnamuix.spygame.media.repo.MediaPlayerRepository
 import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spygame.viewModel.ConfigGameViewModel
 import com.behnamuix.spygame.viewModel.GameViewModel
+import com.behnamuix.spygame.viewModel.OtpViewModel
 import com.behnamuix.spygame.viewModel.RoleManagerViewModel
 import com.behnamuix.spygame.viewModel.SplashViewModel
 import com.behnamuix.spygame.viewModel.TrainingViewModel
@@ -29,7 +30,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 
-val clientModule=module {
+val clientModule = module {
     single {
         HttpClient(CIO) {
 
@@ -40,7 +41,6 @@ val clientModule=module {
                     ignoreUnknownKeys = true
                 })
             }
-
 
 
         }
@@ -86,7 +86,8 @@ val viewModelModule = module {
     viewModel { MediaPlayerViewModel(get()) }
     viewModel { TrainingViewModel(get()) }
     viewModel { DataStoreViewModel(get()) }
-    viewModel { ApiViewModel(get(),get()) }
+    viewModel { ApiViewModel(get()) }
+    viewModel { OtpViewModel() }
 
 }
 

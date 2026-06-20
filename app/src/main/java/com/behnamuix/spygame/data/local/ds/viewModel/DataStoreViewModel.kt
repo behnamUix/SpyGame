@@ -17,16 +17,9 @@ class DataStoreViewModel(private val dataStoreRepo: DataStoreRepository) : ViewM
     var agent = dataStoreRepo.getAgentCount()
     var spy = dataStoreRepo.getSpyCount()
 
-    var code = dataStoreRepo.getOtpCode()
 
     val loggedInState = dataStoreRepo.getLoggedInState()
 
-
-    fun setOtpCode(value: String) {
-        viewModelScope.launch {
-            dataStoreRepo.setOtpCode(value)
-        }
-    }
 
     fun setLoggedInState(value: Boolean) {
         viewModelScope.launch {

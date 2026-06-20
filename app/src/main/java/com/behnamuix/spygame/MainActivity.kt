@@ -1,5 +1,6 @@
 package com.behnamuix.spygame
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,12 +20,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             SpyTheme(darkTheme = true) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    @SuppressLint("NewApi")
                     Box(modifier = Modifier.padding(innerPadding)) {
                         Image(
                             painter = painterResource(R.drawable.spy_bg),
                             contentDescription = ""
                         )
                         AppNavgraph()
+
                     }
                 }
             }

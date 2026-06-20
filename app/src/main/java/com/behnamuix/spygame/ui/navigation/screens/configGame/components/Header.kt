@@ -12,14 +12,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -33,24 +38,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
+import com.behnamuix.spygame.ui.navigation.Screens
 import com.behnamuix.spygame.utils.setLog
 import com.behnamuix.spygame.viewModel.ConfigGameViewModel
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.log
 
 @Composable
 fun Header(
+    navController: NavController,
     dsVm: DataStoreViewModel = koinViewModel(),
     vm: ConfigGameViewModel = koinViewModel(),
 ) {
+    var login by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
     val mediaState by vm.mediaState.collectAsState()
     val expandedState = vm.expanded.collectAsState()
@@ -64,14 +75,17 @@ fun Header(
 
 
     LaunchedEffect(Unit) {
+        login = if (dsVm.loggedInState.first()) true else false
         vm.userUseOperation(dsVm, setCheck = { check = it })
         loggedIn = dsVm.loggedInState.first()
 
     }
     Row(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(
             modifier = Modifier.padding(8.dp), onClick = {
@@ -87,8 +101,30 @@ fun Header(
                 contentDescription = ""
             )
         }
-        Spacer(Modifier.weight(1f))
 
+        // Login Status Section
+        SuggestionChip(
+            onClick = { navController.navigate(Screens.OtpLogin.route) },
+            label = {
+                Text(
+                    text = if (login) "پروفایل کاربری" else "ورود / ثبت‌نام",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = if (login) Color.White else Color.White.copy(alpha = 0.7f)
+                )
+            },
+            icon = {
+                Icon(
+                    imageVector = if (login) Icons.Default.CheckCircle else Icons.Default.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = if (login) Color.Green else Color.White
+                )
+            },
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .height(40.dp)
+        )
 
         MediaControllerComp(mediaState, vm)
     }

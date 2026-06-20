@@ -16,9 +16,6 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
         it[PrefKey.AGENT_COUNT_KEY] ?: 3
     }
 
-    fun getOtpCode(): Flow<String> = dataStore.data.map {
-        it[PrefKey.OTP_CODE] ?: ""
-    }
 
 
     fun getSpyCount(): Flow<Int> = dataStore.data.map {
@@ -40,11 +37,7 @@ class DataStoreRepository(private val dataStore: DataStore<Preferences>) {
             it[PrefKey.USER_USE_KEY] = value
         }
     }
-    suspend fun setOtpCode(value: String) {
-        dataStore.edit {
-            it[PrefKey.OTP_CODE] = value
-        }
-    }
+
 
     suspend fun setAgentCount(value: Int) {
         dataStore.edit {

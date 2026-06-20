@@ -40,7 +40,6 @@ import com.behnamuix.spygame.ui.navigation.Screens
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.AddKeyWordAlert
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.Header
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.InformationComp
-import com.behnamuix.spygame.ui.navigation.screens.configGame.components.otp.LoginBottomSheetComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spygame.utils.checkNet
@@ -59,7 +58,7 @@ fun ConfigGameSc(
     dsVm: DataStoreViewModel = koinViewModel(),
 
 
-) {
+    ) {
     //context
     val ctx = LocalContext.current
 
@@ -87,7 +86,8 @@ fun ConfigGameSc(
                 if (it) {
 
                 } else {
-                    vm.showLoginBottomSheet.value=true
+                    navController.navigate(Screens.OtpLogin.route)
+
                 }
             }
 
@@ -97,16 +97,14 @@ fun ConfigGameSc(
         dsVm.setAgent(agentCount)
         dsVm.setSpy(spyCount)
     }
-    if(vm.showLoginBottomSheet.value){
-        LoginBottomSheetComp(vm.showLoginBottomSheet)
-    }
+
 
     Column(
         Modifier
             .fillMaxSize()
             .animateContentSize()
     ) {
-        Header()
+        Header(navController)
         Spacer(Modifier.height(24.dp))
         Box(Modifier.fillMaxSize()) {
             Column(

@@ -50,7 +50,6 @@ class ConfigGameViewModel(
     var showAddWordDialog = mutableStateOf(false)
 
 
-    var showLoginBottomSheet = mutableStateOf(false)
 
 
     var progress by mutableStateOf(true)
@@ -134,15 +133,6 @@ class ConfigGameViewModel(
         if (_spyCount.value > 1) {
             _spyCount.value--
         }
-    }
-
-
-    fun configTime(): Int {
-        val total = agentCount.value + spyCount.value
-        //5-10
-        //8-16
-        return total * 2
-
     }
 
     fun reverseExpand() {
