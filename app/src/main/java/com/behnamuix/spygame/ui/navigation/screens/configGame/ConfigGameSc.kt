@@ -194,35 +194,13 @@ fun ConfigGameSc(
                     }) {
                     Text(
                         color = MaterialTheme.colorScheme.onBackground,
-                        text = " برو بعدی (${roleManagerViewModel.category.size.toString()} کلمه)",
+                        text = " شروع بازی (${roleManagerViewModel.category.size.toString()} کلمه)",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .padding(12.dp)
                             .testTag("boro_badi")
                     )
-                }
-                Column(
-                    Modifier.padding(horizontal = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        " 1405-02-05 برطرف شدن باگ پخش نقش ها الگوریتم رندوم تر دوست عزیزم رضا",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start,
-
-                        )
-                    Text(
-                        "1405-01-28 برطرف شدن باگ لو رفتن نقش با تشکر از دوست عزیزم سیاوش",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-
-                        )
                 }
                 InformationComp()
                 //Alert

@@ -41,6 +41,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,7 +76,7 @@ fun RoleManagerSc(
     nextClick: (Int, String) -> Unit
 
 ) {
-
+    var showNextButton = remember { mutableStateOf(false) }
     val check by dataStoreVm.userUse.collectAsState()
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
     val scrollState = rememberLazyListState()
@@ -151,7 +153,9 @@ fun RoleManagerSc(
                         PlayerCard(
                             vm.end, item.role, index,
                             vm.state, vm.word, vm.done
-                        )
+                        ) {
+                            showNextButton.value = it
+                        }
 
 
                     }
@@ -184,56 +188,55 @@ fun RoleManagerSc(
                         )
                     }
                 } else {
-                    Button(
-                        elevation = ButtonDefaults.elevatedButtonElevation(6.dp),
-                        shape = RoundedCornerShape(16.dp),
+                    if (showNextButton.value) {
+                        Button(
+                            elevation = ButtonDefaults.elevatedButtonElevation(6.dp),
+                            shape = RoundedCornerShape(16.dp),
 
 
-                        modifier = Modifier
-                            .graphicsLayer(scaleX = scaleState)
-                            .padding(horizontal = 16.dp)
-                            .fillMaxWidth(0.7f),
+                            modifier = Modifier
+                                .graphicsLayer(scaleX = scaleState)
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth(0.7f),
 
-                        onClick = {
+                            onClick = {
+                                val nextIndex = vm.currentCardIndex.intValue + 1
+                                if (nextIndex < newListPlayer.value.size) {
+                                    vm.done = false
+                                    scope.launch {
+                                        val job = launch {
+                                            showNextButton.value = false
 
-                            val nextIndex = vm.currentCardIndex.intValue + 1
-                            if (nextIndex < newListPlayer.value.size) {
-                                vm.done = false
-                                scope.launch {
-                                    val job = launch {
-                                        scrollState.animateScrollToItem(nextIndex)
-                                        vm.currentCardIndex.intValue = nextIndex
+                                            scrollState.animateScrollToItem(nextIndex)
+
+                                            vm.currentCardIndex.intValue = nextIndex
+                                        }
+                                        job.invokeOnCompletion {
+                                            vm.done = true
+                                        }
+
+
                                     }
-                                    job.invokeOnCompletion {
-                                        vm.done = true
-                                    }
-                                    launch() {
-                                        vm.stateScale = true
-                                        delay(400)
-                                        vm.stateScale = false
+                                } else {
 
-                                    }
-
+                                    vm.showStartButton = true
+                                    vm.end = true
 
                                 }
-                            } else {
+                            },
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
 
-                                vm.showStartButton = true
-                                vm.end = true
+                            ) {
+                            Text(
+                                text = "بده نفر بعدی",
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .testTag("bede_nafar_badi")
+                            )
+                        }
 
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-
-                        ) {
-                        Text(
-                            text = "بده نفر بعدی",
-                            color = Color.White,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .testTag("bede_nafar_badi")
-                        )
                     }
                 }
             }
@@ -250,6 +253,7 @@ fun PlayerCard(
     state: MutableIntState,
     keyWord: String,
     done: Boolean,
+    setShowNextButton: (Boolean) -> Unit
 ) {
     val infiniteState = rememberInfiniteTransition()
     val infiniteStateEnd = rememberInfiniteTransition()
@@ -281,6 +285,7 @@ fun PlayerCard(
                 .padding(28.dp)
         ) {
             if (state.intValue == index) {
+                setShowNextButton(true)
                 Box(
                     Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -440,6 +445,7 @@ fun PlayerCard(
                     }
                 }
             } else {
+
                 Box(
                     Modifier
                         .fillMaxSize(),
