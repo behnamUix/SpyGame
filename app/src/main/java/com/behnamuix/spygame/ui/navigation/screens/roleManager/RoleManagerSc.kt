@@ -1,4 +1,5 @@
 package com.behnamuix.spygame.ui.navigation.screens.roleManager
+
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.EaseInOutBack
@@ -13,6 +14,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,6 +74,7 @@ fun RoleManagerSc(
     nextClick: (Int, String) -> Unit
 
 ) {
+
     val check by dataStoreVm.userUse.collectAsState()
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
     val scrollState = rememberLazyListState()
@@ -278,11 +281,11 @@ fun PlayerCard(
                 .padding(28.dp)
         ) {
             if (state.intValue == index) {
-                Box(Modifier.fillMaxSize(),
+                Box(
+                    Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (end)
-                    {
+                    if (end) {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -341,11 +344,11 @@ fun PlayerCard(
 
 
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Column(
-                            Modifier.fillMaxSize(),
+                            Modifier
+                                .fillMaxSize()
+                                .background(Color.Black),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -361,8 +364,11 @@ fun PlayerCard(
                                         contentDescription = ""
                                     )
                                     Box(
-                                        Modifier.fillMaxSize(),
+                                        Modifier
+                                            .fillMaxSize()
+                                            .background(Color.Black),
                                         contentAlignment = Alignment.Center
+
                                     ) {
                                         Column(
                                             horizontalAlignment = Alignment.CenterHorizontally,
