@@ -16,7 +16,22 @@
       <SelectionState runConfigName="Generate Baseline Profile for app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="StartupBenchmarks">
+      <SelectionState runConfigName="otpInput_Letter_NotAccepted()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="otpInput_TwoFieldsFilled_ThirdEmpty()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="SquareOtpInputCompTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="otpInput_MultipleChars_OnlyFirstAccepted()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="LoginWithOtpScKtTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="phoneInput_acceptsNumber()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
