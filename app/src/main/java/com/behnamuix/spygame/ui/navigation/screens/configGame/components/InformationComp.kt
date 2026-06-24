@@ -60,15 +60,10 @@ fun InformationComp() {
         Modifier
 
 
-            .alpha(0.6f)
             .fillMaxWidth()
             .offset(x = 0.dp, y = translateY.dp)
             .padding(16.dp), contentAlignment = Alignment.TopCenter
     ) {
-        OutlinedCard(
-            modifier =
-                Modifier
-        ) {
             Column(
                 Modifier
                     .padding(16.dp)
@@ -133,7 +128,7 @@ fun InformationComp() {
 
                 }
             }
-        }
+
 
 
     }
