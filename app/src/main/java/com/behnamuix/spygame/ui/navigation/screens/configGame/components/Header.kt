@@ -82,7 +82,7 @@ fun Header(
     }
     Row(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(16.dp,end=16.dp, top = 24.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -103,7 +103,7 @@ fun Header(
         }
 
         // Login Status Section
-        SuggestionChip(
+       /* SuggestionChip(
             onClick = { navController.navigate(Screens.OtpLogin.route) },
             label = {
                 Text(
@@ -124,7 +124,7 @@ fun Header(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .height(40.dp)
-        )
+        )*/
 
         MediaControllerComp(mediaState, vm)
     }

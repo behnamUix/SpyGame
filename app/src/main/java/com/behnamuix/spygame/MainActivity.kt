@@ -11,22 +11,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import com.behnamuix.spygame.ui.navigation.AppNavgraph
+import androidx.navigation.compose.rememberNavController
+import com.behnamuix.spygame.ui.navigation.SetupNavGraph
+import com.behnamuix.spygame.ui.navigation.BottomNavigationBar
 import com.behnamuix.spygame.ui.theme.SpyTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             SpyTheme(darkTheme = true) {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { BottomNavigationBar(navController = navController) }) { innerPadding ->
                     @SuppressLint("NewApi")
-                    Box(modifier = Modifier.padding(innerPadding)) {
+                    Box() {
                         Image(
                             painter = painterResource(R.drawable.spy_bg),
                             contentDescription = ""
                         )
-                        AppNavgraph()
+                        SetupNavGraph(innerPadding, navController)
 
                     }
                 }

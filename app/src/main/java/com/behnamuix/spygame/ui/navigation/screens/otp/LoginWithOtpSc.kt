@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -72,7 +73,8 @@ fun LoginWithOtpSc(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = Modifier
             .background(Color.White)
-            .fillMaxSize()
+            .fillMaxWidth()
+            .fillMaxHeight(0.5f)
             .padding(16.dp)
     ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -150,7 +152,7 @@ fun LoginWithOtpSc(
                 }
                 TextButton(
                     shape = RoundedCornerShape(8.dp),
-                    onClick = { dsVm.setLoggedInState(false) }
+                    onClick = { dsVm.setLoggedInState(true) }
                 ) {
                     Text(
                         "ورود به عنوان مهمان",

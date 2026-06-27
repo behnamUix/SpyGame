@@ -137,7 +137,7 @@ fun SpyComp(
                     configGameViewModel
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = title, style = MaterialTheme.typography.titleLarge)
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
             }
         }
     }
