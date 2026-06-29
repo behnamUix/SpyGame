@@ -59,7 +59,7 @@ fun GameSc(
             mediaVm = mediaVm,
             vm = vm
         )
-        BottomBarComp(navController, vm, isRunning)
+        BottomBarComp(navController, vm, isRunning,word)
     }
 }
 
