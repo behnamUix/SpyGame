@@ -1,7 +1,9 @@
 package com.behnamuix.spygame.ui.navigation.screens.configGame
 
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.infiniteRepeatable
@@ -19,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,6 +30,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +38,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -47,15 +48,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.behnamuix.spygame.R
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
+import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.ui.navigation.BottomNavigationBar
 import com.behnamuix.spygame.ui.navigation.Screens
+import com.behnamuix.spygame.ui.navigation.SetupNavGraph
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.AddKeyWordAlert
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.Header
 import com.behnamuix.spygame.ui.navigation.screens.configGame.components.InformationComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.AgentComp
 import com.behnamuix.spygame.ui.navigation.screens.training.components.SpyComp
-import com.behnamuix.spygame.utils.checkNet
+import com.behnamuix.spygame.utils.checkInternet
 import com.behnamuix.spygame.viewModel.ConfigGameViewModel
 import com.behnamuix.spygame.viewModel.RoleManagerViewModel
 import kotlinx.coroutines.flow.first
@@ -67,6 +72,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
+    mediaVm: MediaPlayerViewModel = koinViewModel(),
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
 
@@ -105,32 +111,15 @@ fun ConfigGameSc(
     )
 
     LaunchedEffect(Unit) {
-
+        mediaVm.volumeHigh()
         vm.init(dsVm.agent.first(), dsVm.spy.first())
         vm.getWords()
 
-        if (ctx.checkNet() == false) {
-            Toast.makeText(ctx, "اینترنت قطع است!", Toast.LENGTH_SHORT).show()
-        } else {
-
-            vm.setVolume()
-            vm.play()
-            /*dsVm.loggedInState.collect {
-                if (it) {
-
-                } else {
-                    navController.navigate(Screens.OtpLogin.route)
-
-                }
-            }
-*/
-        }
     }
     LaunchedEffect(agentCount, spyCount) {
         dsVm.setAgent(agentCount)
         dsVm.setSpy(spyCount)
     }
-
 
     Column(
         Modifier
@@ -177,7 +166,10 @@ fun ConfigGameSc(
                         .padding(horizontal = 8.dp),
                     contentAlignment = Alignment.CenterEnd
                 ) {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
 
                         //training
                         OutlinedButton(
@@ -197,7 +189,8 @@ fun ConfigGameSc(
                         //َAi
                         Button(
                             onClick = {
-                                Toast.makeText(ctx, "به زودی ...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "به زودی ...", Toast.LENGTH_SHORT)
+                                    .show()
                             },
                             modifier = Modifier
 
@@ -301,7 +294,10 @@ fun ConfigGameSc(
         }
 
     }
+
 }
+
+
 
 
 

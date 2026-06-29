@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.behnamuix.spygame.media.repo.MediaPlayerRepository
 
 class MediaPlayerViewModel(private val repo: MediaPlayerRepository) : ViewModel() {
+
     fun play() {
         repo.play()
     }
@@ -33,6 +34,7 @@ class MediaPlayerViewModel(private val repo: MediaPlayerRepository) : ViewModel(
     fun volumeLow() {
         repo.setVolume(0.3f, 0.3f)
     }
+
 
 
 }
