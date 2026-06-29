@@ -1,7 +1,6 @@
 package com.behnamuix.spygame.ui.navigation.screens.roleManager
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.EaseInOutBack
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -51,6 +50,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +63,6 @@ import com.behnamuix.spygame.ui.navigation.screens.roleManager.components.Spoile
 import com.behnamuix.spygame.ui.navigation.screens.roleManager.components.TimerCard
 import com.behnamuix.spygame.utils.randomColor
 import com.behnamuix.spygame.viewModel.RoleManagerViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -76,6 +75,9 @@ fun RoleManagerSc(
     nextClick: (Int, String) -> Unit
 
 ) {
+    val density = LocalDensity.current
+
+    val cardWidthPx = with(density) { 380.dp.roundToPx() }
     var showNextButton = remember { mutableStateOf(false) }
     val check by dataStoreVm.userUse.collectAsState()
     val timeLeft by vm.baseTimeInMinutes.collectAsState()
@@ -119,8 +121,7 @@ fun RoleManagerSc(
 
     Column(
         Modifier
-            .fillMaxSize()
-            .animateContentSize(tween(500)),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -151,10 +152,15 @@ fun RoleManagerSc(
 
                     itemsIndexed(newListPlayer.value) { index, item ->
                         PlayerCard(
-                            vm.end, item.role, index,
-                            vm.state, vm.word, vm.done
+                            end = vm.end,
+                            role = item.role,
+                            index = index,
+                            state = vm.state,
+                            keyWord = vm.word,
+                            done = vm.done
                         ) {
-                            showNextButton.value = it
+                            showNextButton.value = true
+
                         }
 
 
@@ -200,6 +206,8 @@ fun RoleManagerSc(
                                 .fillMaxWidth(0.7f),
 
                             onClick = {
+                                showNextButton.value = false
+
                                 val nextIndex = vm.currentCardIndex.intValue + 1
                                 if (nextIndex < newListPlayer.value.size) {
                                     vm.done = false
@@ -207,7 +215,19 @@ fun RoleManagerSc(
                                         val job = launch {
                                             showNextButton.value = false
 
-                                            scrollState.animateScrollToItem(nextIndex)
+                                            //scrollState.animateScrollToItem(nextIndex)
+                                            val viewportWidth =
+                                                scrollState.layoutInfo.viewportSize.width
+
+                                            val scrollOffset =
+                                                -(viewportWidth / 2 - cardWidthPx / 2)
+
+                                            scrollState.animateScrollToItem(
+                                                index = nextIndex,
+                                                scrollOffset = scrollOffset
+                                            )
+
+                                            vm.currentCardIndex.intValue = nextIndex
 
                                             vm.currentCardIndex.intValue = nextIndex
                                         }
@@ -253,7 +273,7 @@ fun PlayerCard(
     state: MutableIntState,
     keyWord: String,
     done: Boolean,
-    setShowNextButton: (Boolean) -> Unit
+    onRoleShown: () -> Unit
 ) {
     val infiniteState = rememberInfiniteTransition()
     val infiniteStateEnd = rememberInfiniteTransition()
@@ -285,7 +305,7 @@ fun PlayerCard(
                 .padding(28.dp)
         ) {
             if (state.intValue == index) {
-                setShowNextButton(true)
+
                 Box(
                     Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -451,7 +471,11 @@ fun PlayerCard(
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    SpoilerComp(state, index)
+                    SpoilerComp(
+                        state = state,
+                        index = index,
+                        onRoleShown = onRoleShown
+                    )
                 }
 
 

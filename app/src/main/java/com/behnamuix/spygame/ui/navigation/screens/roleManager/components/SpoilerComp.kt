@@ -20,14 +20,15 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SpoilerComp(
     state: MutableIntState,
-    index: Int
-) {
+    index: Int,
+    onRoleShown: () -> Unit
+){
     Box(
         modifier = Modifier
-            .clickable(onClick = {
+            .clickable {
                 state.intValue = index
-
-            })
+                onRoleShown()
+            }
             .padding(2.dp)
             .fillMaxSize()
             .background(
@@ -38,11 +39,10 @@ fun SpoilerComp(
         Box(
             modifier = Modifier
                 .testTag("showRole")
-                .clickable(onClick = {
+                .clickable {
                     state.intValue = index
-
-
-                })
+                    onRoleShown()
+                }
                 .padding(32.dp)
                 .fillMaxSize()
                 .background(
