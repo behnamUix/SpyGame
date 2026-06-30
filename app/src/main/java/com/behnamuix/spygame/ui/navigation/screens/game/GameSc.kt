@@ -42,7 +42,7 @@ fun GameSc(
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ToolbarComp("زمان بحث و گفتگو", word)
 
@@ -59,7 +59,7 @@ fun GameSc(
             mediaVm = mediaVm,
             vm = vm
         )
-        BottomBarComp(navController, vm, isRunning)
+        BottomBarComp(navController, vm, isRunning,word)
     }
 }
 

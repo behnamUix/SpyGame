@@ -61,7 +61,7 @@ import com.behnamuix.spygame.ui.navigation.screens.training.TrainingSc
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun SetupNavGraph(paddingValue: PaddingValues, navController: NavHostController) {
-    NavHost(navController, startDestination = BottomNavScreen.HomeSc.route) {
+    NavHost(navController, startDestination = Screens.ConfigGame.route) {
         composable(Screens.Splash.route) { SplashSc(navController = navController) }
         composable(Screens.OtpLogin.route) { LoginWithOtpSc(navController = navController) }
         composable(Screens.OtpVerification.route) {
@@ -87,10 +87,8 @@ fun SetupNavGraph(paddingValue: PaddingValues, navController: NavHostController)
             val time = navController.currentBackStackEntry?.arguments?.getInt("time")
             GameSc(navController = navController, time = time ?: 0, word = word ?: "null")
         }
-        composable(BottomNavScreen.HomeSc.route) {
-            ConfigGameSc(navController = navController)
-        }
-        composable(BottomNavScreen.MapSc.route) {
+
+        composable(Screens.Map.route) {
             MapGameSc(navController = navController)
         }
     }
@@ -99,59 +97,61 @@ fun SetupNavGraph(paddingValue: PaddingValues, navController: NavHostController)
 
 @Composable
 fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavController) {
-    NavigationBar(
-        containerColor = Color.Black,
-        modifier = Modifier
-            .padding(horizontal = 2.dp)
-            .offset(y=2.dp)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-            .border(
-                width = 1.dp,
-                brush = Brush
-                    .horizontalGradient(
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val hiddenRoutes = listOf(
+        Screens.ConfigGame.route,
+        Screens.Map.route,
+    )
+
+    if (currentRoute in hiddenRoutes){
+        NavigationBar(
+            containerColor = Color.Black,
+            modifier = modifier
+                .padding(horizontal = 2.dp)
+                .offset(y = 2.dp)
+                .border(
+                    width = 1.dp,
+                    brush = Brush.horizontalGradient(
                         listOf(
                             Color.Gray,
                             Color.Transparent,
                             MaterialTheme.colorScheme.primary.copy(0.4f)
-                        ),
-
-                        ),
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-            )
-            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-    )
-    {
-        val currentRoute by navController.currentBackStackEntryAsState()
-        BottomNavScreen.btnNavItems.forEach { screen ->
-            CustomNavigationBarItem(
-                selected = currentRoute?.destination?.route == screen.route,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-
-                    }
-                },
-                modifier = Modifier.weight(1f),
-                icon = {
-                    Icon(
-                        painter = painterResource(id = screen.icon),
-                        modifier = Modifier.size(32.dp),
-                        contentDescription = screen.title
-                    )
-                },
-                label = {
-                    Text(screen.title)
-                },
-
+                        )
+                    ),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
-
+                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+        ) {
+            BottomNavScreen.btnNavItems.forEach { screen ->
+                CustomNavigationBarItem(
+                    selected = currentRoute == screen.route,
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = screen.icon),
+                            modifier = Modifier.size(32.dp),
+                            contentDescription = screen.title
+                        )
+                    },
+                    label = {
+                        Text(screen.title)
+                    }
+                )
+            }
         }
     }
-
-
 }
 
 @Composable
@@ -192,17 +192,8 @@ fun CustomNavigationBarItem(
         },
         label = "Scale"
     ) { isSelected ->
-        if (isSelected) 1f else 0f
+        if (isSelected) 1f else 0.8f
     }
-    val rotationTarget by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(4000),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "Rotation"
-    )
 
     val floatingBox by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -234,10 +225,7 @@ fun CustomNavigationBarItem(
         ) {
             Box(contentAlignment = Alignment.Center) {
                 icon()
-
             }
-
-
         }
 
         Spacer(modifier = Modifier.height(4.dp))

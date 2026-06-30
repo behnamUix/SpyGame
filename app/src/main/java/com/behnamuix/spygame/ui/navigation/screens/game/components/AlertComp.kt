@@ -125,3 +125,95 @@ fun AlertCardComp(
         }
     }
 }
+@Composable
+fun AlertAgentWinComp(
+    navController: NavController,
+    word: String,
+    onDismiss: () -> Unit = {}
+) {
+
+    Dialog(onDismissRequest = { onDismiss() }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .wrapContentHeight()
+                .padding(16.dp),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF1A1A2E)
+            ),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                Icon(
+                    painter = painterResource(R.drawable.img_agent),
+                    contentDescription = "Agent",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                    tint = Color.Unspecified
+                )
+
+                Text(
+                    text = "👮 مأمورها برنده شدند!",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF4CAF50),
+                    textAlign = TextAlign.Center
+                )
+
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.White.copy(alpha = 0.3f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Text(
+                    text = "کلمه بازی: $word",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
+
+                Text(
+                    text = "تبریک! مأمورها توانستند جاسوس را شناسایی کنند.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate(Screens.ConfigGame.route) {
+                            popUpTo(Screens.ConfigGame.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4CAF50)
+                    ),
+                    modifier = Modifier.fillMaxWidth(0.7f)
+                ) {
+                    Text(
+                        text = "بازی دوباره",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        }
+    }
+}

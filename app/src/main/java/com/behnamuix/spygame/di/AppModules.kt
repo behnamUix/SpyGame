@@ -13,6 +13,7 @@ import com.behnamuix.spygame.data.remote.authentication.viewModel.ApiViewModel
 import com.behnamuix.spygame.media.config.getMediaPlayer
 import com.behnamuix.spygame.media.repo.MediaPlayerRepository
 import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.receiver.NetworkMonitor
 import com.behnamuix.spygame.viewModel.ConfigGameViewModel
 import com.behnamuix.spygame.viewModel.GameViewModel
 import com.behnamuix.spygame.viewModel.OtpViewModel
@@ -62,6 +63,7 @@ val daoModule = module {
 
 
 }
+
 val mediaModule = module {
     single { getMediaPlayer() }
 }

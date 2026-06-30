@@ -1,8 +1,5 @@
 package com.behnamuix.spygame.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.behnamuix.spygame.R
 
 sealed class Screens(val route: String) {
@@ -17,14 +14,20 @@ sealed class Screens(val route: String) {
     object RoleManager : Screens("roleManagement")
     object Game : Screens("game/{time}/{word}") {
         fun createRoute(time: Int, word: String) = "game/$time/$word"
-
     }
+
+    object Map : Screens("map")
 }
 
-sealed class BottomNavScreen(val route: String, val title: String, val icon: Int) {
-    object HomeSc : BottomNavScreen(route = "game", title = "بازی", R.drawable.icon_game)
-    object MapSc : BottomNavScreen("map", "همبازی", R.drawable.icon_map)
+sealed class BottomNavScreen(
+    val route: String,
+    val title: String,
+    val icon: Int
+) {
+    object HomeSc : BottomNavScreen(Screens.ConfigGame.route, "بازی", R.drawable.icon_game)
+    object MapSc : BottomNavScreen(Screens.Map.route, "همبازی", R.drawable.icon_map)
+
     companion object {
-        val btnNavItems = listOf(MapSc,HomeSc )
+        val btnNavItems get() = listOf(HomeSc, MapSc)
     }
 }
