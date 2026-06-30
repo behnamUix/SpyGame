@@ -111,7 +111,7 @@ fun AgentComp(
 
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(title, style = MaterialTheme.typography.titleLarge)
+                Text(title, style = MaterialTheme.typography.titleMedium)
             }
         }
 

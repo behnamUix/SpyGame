@@ -96,7 +96,7 @@ fun InformationComp() {
                             modifier = Modifier.size(48.dp),
                             imageVector = Icons.Default.SupportAgent,
                             contentDescription = "",
-                            tint = Color(0xFFFFFF00),
+                            tint = Color.White
 
 
                             )

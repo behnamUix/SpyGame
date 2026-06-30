@@ -115,7 +115,7 @@ fun ConfigGameSc(
 
             vm.setVolume()
             vm.play()
-            dsVm.loggedInState.collect {
+            /*dsVm.loggedInState.collect {
                 if (it) {
 
                 } else {
@@ -123,7 +123,7 @@ fun ConfigGameSc(
 
                 }
             }
-
+*/
         }
     }
     LaunchedEffect(agentCount, spyCount) {
@@ -246,6 +246,16 @@ fun ConfigGameSc(
                     }
 
                 }
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.White.copy(0.5f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+
+
+
+
                 Button(
                     enabled = enabled.value,
                     shape = RoundedCornerShape(8.dp),
