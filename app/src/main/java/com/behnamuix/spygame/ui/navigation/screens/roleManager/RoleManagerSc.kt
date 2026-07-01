@@ -166,7 +166,7 @@ fun RoleManagerSc(
 
                     }
                 }
-
+                Spacer(Modifier.height(16.dp))
                 if (vm.showStartButton) {
                     TimerCard(
                         "زمان بازی",

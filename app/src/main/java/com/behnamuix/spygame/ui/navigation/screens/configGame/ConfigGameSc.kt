@@ -144,11 +144,7 @@ fun ConfigGameSc(
                 SpyComp(
                     "تعداد جاسوسان", spyCount, vm
                 )
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color.White.copy(0.5f),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
+
                 if (listWord.isNotEmpty()) {
                     vm.progress = false
                     Text(
@@ -239,11 +235,7 @@ fun ConfigGameSc(
                     }
 
                 }
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color.White.copy(0.5f),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
+
 
 
 
