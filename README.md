@@ -5,7 +5,7 @@
 > **یک بازی گروهی معمایی و جذاب برای دورهمی‌ها**  
 > *در حال توسعه · نسخه آلفا · آماده برای تست*
 
-<img src="home.png" width="220" alt="Spy Manager Preview" />
+<img src="Screenshot_1782856747.png" width="220" alt="Spy Manager Preview" />
 
 *🎯 اسکرین‌شات واقعی به زودی — در حال آماده‌سازی نسخه نمایشی*
 
