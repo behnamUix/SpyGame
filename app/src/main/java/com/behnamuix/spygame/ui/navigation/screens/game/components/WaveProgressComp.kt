@@ -26,7 +26,7 @@ import kotlin.math.sin
 fun WaterProgress(
     progress: Float,
     modifier: Modifier = Modifier,
-    waterColor: Color = Color(0xFF2196F3),
+    waterColor: Color = Color(0xFF000000),
     tankColor: Color = Color(0xFFE0E0E0)
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "NaturalWater")
@@ -119,7 +119,7 @@ fun WaterProgress(
                 lineTo(width, height)
                 close()
             }
-            drawPath(path = backWavePath, color = waterColor.copy(alpha = 0.35f))
+            drawPath(path = backWavePath, color = waterColor)
 
             // 🌊 لایه دوم: بدنه اصلی آب (رنگ استاندارد)
             val middleWavePath = Path().apply {
