@@ -2,7 +2,7 @@ package com.behnamuix.spygame.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.behnamuix.retrofittest.SpyGame.model.Agent
-import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
 
 class TrainingViewModel(private val mediaVm: MediaPlayerViewModel) : ViewModel() {
     var listRole = listOf<String>(

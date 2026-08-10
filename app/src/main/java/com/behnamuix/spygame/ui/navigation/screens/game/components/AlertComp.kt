@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.behnamuix.spygame.R
-import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spygame.ui.navigation.Screens
 
 @Composable

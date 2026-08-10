@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name="com.behnamuix.spygame.base.MyApp"
+        android:name="com.behnamuix.spygame.MyApp"
         android:allowBackup="true"
         android:appCategory="game"
         android:dataExtractionRules="@xml/data_extraction_rules"

@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.behnamuix.spygame.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spygame.ui.navigation.screens.game.components.BottomBarComp
 import com.behnamuix.spygame.ui.navigation.screens.game.components.QCardComp
 import com.behnamuix.spygame.ui.navigation.screens.game.components.TimerScreenComp

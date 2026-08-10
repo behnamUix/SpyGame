@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.behnamuix.spygame.viewModel.ConfigGameViewModel
+import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
 
 @Composable
 fun SpyRoleComp(

@@ -50,7 +50,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.behnamuix.spygame.ui.navigation.screens.SplashSc
-import com.behnamuix.spygame.ui.navigation.screens.configGame.ConfigGameSc
+import com.behnamuix.spygame.feature.configgame.presentation.screen.ConfigGameSc
 import com.behnamuix.spygame.ui.navigation.screens.game.GameSc
 import com.behnamuix.spygame.ui.navigation.screens.mapGame.MapGameSc
 import com.behnamuix.spygame.ui.navigation.screens.otp.LoginWithOtpSc

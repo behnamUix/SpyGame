@@ -135,5 +135,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(kotlin("test"))
 
+    testImplementation(libs.mockito.kotlin)
+
 
 }
