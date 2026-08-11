@@ -6,6 +6,7 @@
 > *در حال توسعه · نسخه آلفا · آماده برای تست*
 
 <img src="home.png" width="220" alt="Spy Manager Preview" />
+<br>
 <img src="login.png" width="220" alt="Spy Manager Preview" />
 
 *🎯 اسکرین‌شات واقعی به زودی — در حال آماده‌سازی نسخه نمایشی*
