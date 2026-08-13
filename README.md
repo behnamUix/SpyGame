@@ -24,18 +24,16 @@
 
 Spy Manager یک بازی گروهی برای Android است که با هدف ایجاد یک تجربه ساده، سریع و سرگرم‌کننده برای دورهمی‌ها توسعه داده می‌شود.
 
-این پروژه علاوه بر جنبه محصولی، یک پروژه عملی برای پیاده‌سازی اصول مدرن توسعه Android است و در حال حاضر ساختار داخلی آن در حال بازطراحی و انتقال تدریجی به Clean Architecture است.
+این پروژه علاوه بر جنبه محصولی، یک پروژه عملی برای پیاده‌سازی اصول مدرن توسعه Android است. در حال حاضر ساختار داخلی پروژه در حال بازطراحی و انتقال تدریجی به Clean Architecture است.
 
-تمرکز اصلی توسعه روی:
+تمرکز اصلی توسعه روی موارد زیر است:
 
-- معماری قابل توسعه
+- معماری قابل توسعه و مقیاس‌پذیر
 - کد تمیز و قابل نگهداری
 - تجربه کاربری مناسب
 - عملکرد و Startup سریع
 - تست‌پذیری
-- جداسازی مسئولیت‌ها
-
-است.
+- جداسازی صحیح مسئولیت‌ها
 
 ---
 
@@ -47,8 +45,8 @@ Spy Manager یک بازی گروهی برای Android است که با هدف ا
 - 🎯 مکانیزم شناسایی جاسوس
 - 🎨 رابط کاربری مدرن و فارسی
 - 🌙 طراحی مبتنی بر Material 3
-- ⚡ بهینه‌سازی عملکرد و Startup
-- 🧩 ساختار معماری قابل توسعه
+- ⚡ تمرکز روی Performance و Startup
+- 🧩 معماری قابل توسعه
 
 ---
 
@@ -56,20 +54,18 @@ Spy Manager یک بازی گروهی برای Android است که با هدف ا
 
 📱 Android Development
 
-Technology| Usage
+Technology| کاربرد
 Kotlin| زبان اصلی توسعه
 Android SDK| پلتفرم توسعه
 Jetpack Compose| ساخت رابط کاربری
 Material 3| طراحی و کامپوننت‌های UI
 Navigation Compose| مدیریت Navigation
-Coroutines| پردازش‌های asynchronous
+Coroutines| پردازش‌های Asynchronous
 Flow| مدیریت جریان داده
 
----
+🏗️ Architecture & Design
 
-🏗️ Architecture
-
-Technology / Pattern| Usage
+Technology / Pattern| کاربرد
 Clean Architecture| جداسازی لایه‌های برنامه
 MVVM / MVI| مدیریت State و منطق UI
 Repository Pattern| مدیریت دسترسی به داده
@@ -77,17 +73,13 @@ Use Case| جداسازی منطق کسب‌وکار
 Dependency Injection| مدیریت وابستگی‌ها
 Hilt| پیاده‌سازی Dependency Injection
 
----
-
 💾 Data & Networking
 
-Technology| Usage
+Technology| کاربرد
 Room| ذخیره‌سازی داده‌های محلی
 Retrofit| ارتباط با REST API
-OkHttp| HTTP Client
+OkHttp| مدیریت HTTP Requests
 Kotlin Serialization| Serialization / Deserialization
-
----
 
 🧰 Development Tools
 
@@ -100,11 +92,11 @@ Kotlin Serialization| Serialization / Deserialization
 
 ---
 
-🏛️ Architecture Overview
+🏛️ Architecture
 
-پروژه در حال مهاجرت به ساختار Clean Architecture است.
+پروژه در حال مهاجرت به Clean Architecture است.
 
-ساختار هدف:
+ساختار هدف پروژه:
 
 app/
 │
@@ -125,15 +117,15 @@ app/
     ├── navigation/
     └── state/
 
-🔹 Presentation
+Presentation
 
-مسئول رابط کاربری، State و تعامل کاربر با برنامه.
+مسئول رابط کاربری، مدیریت State و تعامل کاربر با برنامه.
 
-🔹 Domain
+Domain
 
-شامل منطق اصلی برنامه، مدل‌های Domain، Repository Contract و Use Caseها.
+شامل منطق اصلی برنامه، مدل‌های Domain، قرارداد Repository و Use Caseها.
 
-🔹 Data
+Data
 
 مسئول دریافت، ذخیره و تبدیل داده‌ها از منابع مختلف مانند Local Database و API.
 
@@ -171,7 +163,7 @@ Configuration| Average Startup
 - [x] ایجاد نسخه اولیه بازی
 - [x] طراحی رابط کاربری اولیه
 - [x] پیاده‌سازی قابلیت‌های اصلی
-- [ ] تکمیل Clean Architecture
+- [ ] تکمیل مهاجرت به Clean Architecture
 - [ ] تکمیل لایه Domain
 - [ ] تکمیل Unit Tests
 - [ ] اضافه کردن Baseline Profile
@@ -186,7 +178,7 @@ Configuration| Average Startup
 
 ساختار پروژه همزمان با مهاجرت به Clean Architecture در حال بازطراحی است.
 
-هدف نهایی، ایجاد جداسازی مشخص بین:
+هدف نهایی، ایجاد جداسازی مشخص بین سه لایه اصلی است:
 
 Presentation
       ↓
@@ -194,13 +186,13 @@ Presentation
       ↓
      Data
 
-به‌گونه‌ای که هر لایه مسئولیت مشخص خود را داشته باشد و تغییرات در یک بخش، کمترین وابستگی را به سایر بخش‌ها ایجاد کند.
+هر لایه مسئولیت مشخص خود را دارد تا تغییرات در یک بخش، کمترین وابستگی ممکن را به سایر بخش‌ها ایجاد کند.
 
 ---
 
 👨‍💻 Developer
 
-<div align="center">Ali Mahjoob
+<div dir="center">Ali Mahjoob
 
 Android Developer
 
@@ -208,6 +200,6 @@ Android Developer
 
 </div>---
 
-<div align="center">⭐ اگر پروژه برایتان جالب بود، با یک Star از آن حمایت کنید.
+<div dir="center">⭐ اگر پروژه برایتان جالب بود، با یک Star از آن حمایت کنید.
 
 </div>
