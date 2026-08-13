@@ -1,10 +1,12 @@
-<div dir="rtl" align="center">🎮 Spy Manager
+<div dir="rtl" align="center">🕵️ Spy Manager
 
-بازی گروهی جاسوسی و معمایی برای دورهمی‌ها
+🎮 بازی گروهی جاسوسی و معمایی برای دورهمی‌ها
 
-یک بازی گروهی سرگرم‌کننده که بازیکنان در آن نقش‌های مختلفی دریافت می‌کنند و باید با استفاده از سرنخ‌ها، گفتگو و دقت، جاسوس را شناسایی کنند.
+یک بازی گروهی سرگرم‌کننده که بازیکنان در آن نقش‌های مختلفی دریافت می‌کنند و با استفاده از سرنخ، گفتگو و دقت تلاش می‌کنند جاسوس را شناسایی کنند.
 
-<br>🚧 پروژه در حال توسعه است
+<br>"Status" (https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge)
+"Platform" (https://img.shields.io/badge/Platform-Android-green?style=for-the-badge)
+"Kotlin" (https://img.shields.io/badge/Kotlin-2.x-purple?style=for-the-badge&logo=kotlin)
 
 </div>---
 
@@ -15,39 +17,94 @@
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="login.png" width="220" alt="Spy Manager Login Screen">
 </p><p align="center">
-  <sub>تصاویر مربوط به نسخه فعلی برنامه هستند.</sub>
+  <sub>تصاویر مربوط به نسخه فعلی پروژه هستند.</sub>
 </p>---
 
 🎯 درباره پروژه
 
-Spy Manager یک بازی گروهی برای Android است که با تمرکز بر تجربه‌ای ساده، سریع و سرگرم‌کننده برای بازی‌های چندنفره طراحی شده است.
+Spy Manager یک بازی گروهی برای Android است که با هدف ایجاد یک تجربه ساده، سریع و سرگرم‌کننده برای دورهمی‌ها توسعه داده می‌شود.
 
-هدف اصلی پروژه علاوه بر ساخت یک بازی قابل استفاده، ایجاد یک نمونه واقعی از توسعه یک اپلیکیشن Android با معماری مدرن، کد قابل نگهداری و ساختار مقیاس‌پذیر است.
+این پروژه علاوه بر جنبه محصولی، یک پروژه عملی برای پیاده‌سازی اصول مدرن توسعه Android است و در حال حاضر ساختار داخلی آن در حال بازطراحی و انتقال تدریجی به Clean Architecture است.
 
-در حال حاضر پروژه در حال بازطراحی معماری و انتقال تدریجی به Clean Architecture است.
+تمرکز اصلی توسعه روی:
+
+- معماری قابل توسعه
+- کد تمیز و قابل نگهداری
+- تجربه کاربری مناسب
+- عملکرد و Startup سریع
+- تست‌پذیری
+- جداسازی مسئولیت‌ها
+
+است.
 
 ---
 
-✨ قابلیت‌ها
+✨ Features
 
 - 🕵️ سیستم نقش و جاسوس
-- 👥 پشتیبانی از بازی گروهی
+- 👥 مناسب برای بازی‌های گروهی
 - 🎭 مدیریت نقش بازیکنان
 - 🎯 مکانیزم شناسایی جاسوس
 - 🎨 رابط کاربری مدرن و فارسی
 - 🌙 طراحی مبتنی بر Material 3
-- ⚡ تمرکز بر عملکرد و زمان شروع برنامه
-- 🏗️ معماری قابل توسعه و نگهداری
+- ⚡ بهینه‌سازی عملکرد و Startup
+- 🧩 ساختار معماری قابل توسعه
+
+---
+
+🛠️ Tech Stack
+
+📱 Android Development
+
+Technology| Usage
+Kotlin| زبان اصلی توسعه
+Android SDK| پلتفرم توسعه
+Jetpack Compose| ساخت رابط کاربری
+Material 3| طراحی و کامپوننت‌های UI
+Navigation Compose| مدیریت Navigation
+Coroutines| پردازش‌های asynchronous
+Flow| مدیریت جریان داده
 
 ---
 
 🏗️ Architecture
 
-پروژه در حال انتقال از ساختار فعلی به Clean Architecture است.
+Technology / Pattern| Usage
+Clean Architecture| جداسازی لایه‌های برنامه
+MVVM / MVI| مدیریت State و منطق UI
+Repository Pattern| مدیریت دسترسی به داده
+Use Case| جداسازی منطق کسب‌وکار
+Dependency Injection| مدیریت وابستگی‌ها
+Hilt| پیاده‌سازی Dependency Injection
 
-هدف این بازطراحی، جداسازی مسئولیت‌ها و ایجاد وابستگی‌های کنترل‌شده بین لایه‌های مختلف برنامه است.
+---
 
-ساختار موردنظر پروژه:
+💾 Data & Networking
+
+Technology| Usage
+Room| ذخیره‌سازی داده‌های محلی
+Retrofit| ارتباط با REST API
+OkHttp| HTTP Client
+Kotlin Serialization| Serialization / Deserialization
+
+---
+
+🧰 Development Tools
+
+- Android Studio
+- Gradle
+- KSP
+- Git
+- GitHub
+- GitHub Actions
+
+---
+
+🏛️ Architecture Overview
+
+پروژه در حال مهاجرت به ساختار Clean Architecture است.
+
+ساختار هدف:
 
 app/
 │
@@ -68,66 +125,44 @@ app/
     ├── navigation/
     └── state/
 
-اهداف معماری
+🔹 Presentation
 
-- جداسازی مسئولیت‌ها
-- کاهش وابستگی بین لایه‌ها
-- افزایش قابلیت تست
-- ساده‌تر شدن نگهداری کد
-- امکان توسعه قابلیت‌های جدید
-- افزایش مقیاس‌پذیری پروژه
+مسئول رابط کاربری، State و تعامل کاربر با برنامه.
 
-«ساختار معماری در حال توسعه است و ممکن است در ادامه پروژه تغییر کند.»
+🔹 Domain
 
----
+شامل منطق اصلی برنامه، مدل‌های Domain، Repository Contract و Use Caseها.
 
-🛠️ Tech Stack
+🔹 Data
 
-Android
-
-- Kotlin
-- Android SDK
-- Jetpack Compose
-- Material 3
-
-Architecture & Development
-
-- Clean Architecture
-- MVVM / MVI
-- Dependency Injection
-- Coroutines
-- Flow
-
-هدف پروژه
-
-تمرکز پروژه روی استفاده از اصول مدرن توسعه Android و ایجاد کدی است که در طول زمان قابل توسعه و نگهداری باقی بماند.
+مسئول دریافت، ذخیره و تبدیل داده‌ها از منابع مختلف مانند Local Database و API.
 
 ---
 
 ⚡ Performance
 
-یکی از بخش‌های مهم توسعه Spy Manager، بهینه‌سازی زمان شروع برنامه و بهبود تجربه کاربر در اولین اجرای اپلیکیشن است.
+یکی از اهداف پروژه، کاهش زمان Startup و بهبود عملکرد اولیه برنامه است.
 
 Startup Benchmark
 
 Configuration| Average Startup
 ❌ Without Baseline Profile| 1,231 ms
-✅ With Baseline Profile| در حال اندازه‌گیری
+🚧 With Baseline Profile| در حال اندازه‌گیری
 
-Benchmarkها در شرایط یکسان اندازه‌گیری و در ادامه پروژه تکمیل خواهند شد.
+«Benchmarkها در شرایط یکسان اندازه‌گیری می‌شوند و نتایج نهایی پس از تکمیل بهینه‌سازی ثبت خواهند شد.»
 
 ---
 
 🚧 Development Status
 
 بخش| وضعیت
-UI / UX| 🟢 در حال توسعه
-Game Logic| 🟢 در حال توسعه
-Clean Architecture| 🟡 در حال مهاجرت
-Dependency Injection| 🟢 پیاده‌سازی شده
-Performance| 🟡 در حال بهینه‌سازی
-Unit Tests| 🟡 در حال توسعه
-Documentation| 🟡 در حال تکمیل
+🎨 UI / UX| 🟢 در حال توسعه
+🎮 Game Logic| 🟢 در حال توسعه
+🏗️ Clean Architecture| 🟡 در حال مهاجرت
+💉 Dependency Injection| 🟢 پیاده‌سازی شده
+⚡ Performance| 🟡 در حال بهینه‌سازی
+🧪 Unit Tests| 🟡 در حال توسعه
+📚 Documentation| 🟡 در حال تکمیل
 
 ---
 
@@ -135,8 +170,9 @@ Documentation| 🟡 در حال تکمیل
 
 - [x] ایجاد نسخه اولیه بازی
 - [x] طراحی رابط کاربری اولیه
-- [x] پیاده‌سازی بخش‌های اصلی بازی
-- [ ] تکمیل مهاجرت به Clean Architecture
+- [x] پیاده‌سازی قابلیت‌های اصلی
+- [ ] تکمیل Clean Architecture
+- [ ] تکمیل لایه Domain
 - [ ] تکمیل Unit Tests
 - [ ] اضافه کردن Baseline Profile
 - [ ] بهینه‌سازی Startup Performance
@@ -148,26 +184,30 @@ Documentation| 🟡 در حال تکمیل
 
 📂 Project Structure
 
-ساختار پروژه به صورت تدریجی و همزمان با مهاجرت معماری بازطراحی می‌شود.
+ساختار پروژه همزمان با مهاجرت به Clean Architecture در حال بازطراحی است.
 
-هدف نهایی، تفکیک واضح بخش‌های:
+هدف نهایی، ایجاد جداسازی مشخص بین:
 
-Presentation → Domain → Data
+Presentation
+      ↓
+   Domain
+      ↓
+     Data
 
-است تا هر بخش مسئولیت مشخصی داشته باشد و تغییرات یک لایه، کمترین تأثیر را روی سایر بخش‌ها ایجاد کند.
+به‌گونه‌ای که هر لایه مسئولیت مشخص خود را داشته باشد و تغییرات در یک بخش، کمترین وابستگی را به سایر بخش‌ها ایجاد کند.
 
 ---
 
 👨‍💻 Developer
 
-<div dir="center">Ali Mahjoob
+<div align="center">Ali Mahjoob
 
 Android Developer
 
-Kotlin · Jetpack Compose · Clean Architecture
+"Kotlin" · "Jetpack Compose" · "Clean Architecture"
 
 </div>---
 
-<div dir="center">⭐ اگر پروژه برایتان جالب بود، خوشحال می‌شوم با یک Star از آن حمایت کنید.
+<div align="center">⭐ اگر پروژه برایتان جالب بود، با یک Star از آن حمایت کنید.
 
 </div>
