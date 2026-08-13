@@ -1,39 +1,39 @@
-<div dir="rtl" align="center">🕵️ Spy Manager
+🕵️ Spy Manager
 
 🎮 بازی گروهی جاسوسی و معمایی برای دورهمی‌ها
 
 یک بازی گروهی سرگرم‌کننده که بازیکنان در آن نقش‌های مختلفی دریافت می‌کنند و با استفاده از سرنخ، گفتگو و دقت تلاش می‌کنند جاسوس را شناسایی کنند.
 
-🚧 وضعیت پروژه: در حال توسعه
+«🚧 وضعیت پروژه: در حال توسعه»
 
-</div>---
+---
 
-📱 Screenshots
+📱 Screenshots 
 
 <p align="center">
-  <img src="home.png" width="220" alt="Spy Manager Home Screen" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="login.png" width="220" alt="Spy Manager Login Screen" />
-</p><p align="center">
-  <sub>تصاویر مربوط به نسخه فعلی برنامه هستند.</sub>
-</p>---
+  <img src=""https://your-link.com/screenshot1.png" (https://your-link.com/screenshot1.png)" width="250"/>
+  <img src=""https://your-link.com/screenshot2.png" (https://your-link.com/screenshot2.png)" width="250"/>
+  <img src=""https://your-link.com/screenshot3.png" (https://your-link.com/screenshot3.png)" width="250"/>
+</p>
+
+---
 
 🎯 درباره پروژه
 
-Spy Manager یک بازی گروهی Android است که با هدف ایجاد تجربه‌ای ساده، سریع و سرگرم‌کننده برای دورهمی‌ها توسعه داده می‌شود.
+Spy Manager یک بازی گروهی برای Android است که با هدف ایجاد تجربه‌ای ساده، سریع و سرگرم‌کننده برای دورهمی‌ها توسعه داده می‌شود.
 
-این پروژه علاوه بر جنبه محصولی، بستری برای پیاده‌سازی و تمرین اصول مدرن توسعه Android، معماری نرم‌افزار و بهینه‌سازی عملکرد است.
+این پروژه علاوه بر جنبه محصولی، بستری برای پیاده‌سازی اصول مدرن توسعه Android، معماری نرم‌افزار و بهینه‌سازی عملکرد است.
 
-در حال حاضر ساختار داخلی پروژه در حال بازطراحی و مهاجرت تدریجی به Clean Architecture است.
+ساختار داخلی پروژه در حال حاضر در حال مهاجرت تدریجی به Clean Architecture است.
 
-اهداف اصلی
+اهداف پروژه
 
-- ایجاد معماری تمیز و قابل توسعه
+- معماری تمیز و قابل توسعه
 - جداسازی صحیح مسئولیت‌ها
 - افزایش تست‌پذیری
 - بهبود قابلیت نگهداری کد
-- بهینه‌سازی عملکرد برنامه
-- ایجاد تجربه کاربری روان و ساده
+- بهینه‌سازی عملکرد
+- تجربه کاربری ساده و روان
 
 ---
 
@@ -45,14 +45,14 @@ Spy Manager یک بازی گروهی Android است که با هدف ایجاد 
 - 🎯 مکانیزم شناسایی جاسوس
 - 🎨 رابط کاربری مدرن و فارسی
 - 🌙 طراحی مبتنی بر Material 3
-- ⚡ تمرکز بر Performance و Startup
+- ⚡ بهینه‌سازی Startup و Performance
 - 🧩 معماری قابل توسعه
 
 ---
 
-🛠️ فناوری‌های استفاده‌شده
+🛠️ Tech Stack
 
-📱 Android
+Android
 
 فناوری| کاربرد
 Kotlin| زبان اصلی توسعه
@@ -60,10 +60,10 @@ Android SDK| پلتفرم توسعه
 Jetpack Compose| ساخت رابط کاربری
 Material 3| طراحی رابط کاربری
 Navigation Compose| مدیریت Navigation
-Coroutines| مدیریت عملیات Asynchronous
+Coroutines| پردازش‌های Asynchronous
 Flow| مدیریت جریان داده
 
-🏗️ Architecture & Design
+Architecture & Design
 
 فناوری / الگو| کاربرد
 Clean Architecture| جداسازی لایه‌های برنامه
@@ -73,7 +73,7 @@ Use Case| جداسازی منطق کسب‌وکار
 Dependency Injection| مدیریت وابستگی‌ها
 Hilt| پیاده‌سازی Dependency Injection
 
-💾 Data & Networking
+Data & Networking
 
 فناوری| کاربرد
 Room| ذخیره‌سازی داده‌های محلی
@@ -81,7 +81,7 @@ Retrofit| ارتباط با REST API
 OkHttp| مدیریت HTTP Requests
 Kotlin Serialization| تبدیل داده‌ها
 
-🧰 ابزارهای توسعه
+Development Tools
 
 - Android Studio
 - Gradle
@@ -92,46 +92,33 @@ Kotlin Serialization| تبدیل داده‌ها
 
 ---
 
-🏛️ معماری پروژه
+🏛️ Architecture
 
-Spy Manager در حال مهاجرت به Clean Architecture است.
+پروژه در حال مهاجرت به Clean Architecture است.
 
-ساختار معماری پروژه بر اساس سه لایه اصلی طراحی می‌شود:
+ساختار معماری بر اساس سه لایه اصلی طراحی می‌شود:
 
-┌─────────────────────────┐
-│      Presentation       │
-│   UI • State • Events   │
-└────────────┬────────────┘
-             ↓
-┌─────────────────────────┐
-│         Domain          │
-│ Use Cases • Models      │
-│ Repository Contracts    │
-└────────────┬────────────┘
-             ↓
-┌─────────────────────────┐
-│          Data           │
-│ Local • Remote • Mapper │
-└─────────────────────────┘
+Presentation
+     ↓
+  Domain
+     ↓
+   Data
 
 Presentation
 
-مسئول رابط کاربری، مدیریت State، دریافت Eventها و نمایش وضعیت برنامه است.
+مسئول رابط کاربری، مدیریت State، دریافت Eventها و نمایش وضعیت برنامه.
 
 Domain
 
-هسته اصلی منطق برنامه است و شامل Modelها، Use Caseها و قرارداد Repositoryها می‌شود.
+هسته منطق برنامه که شامل Modelها، Use Caseها و قرارداد Repositoryها است.
 
 Data
 
-مسئول ارتباط با منابع داده مانند Database و API و همچنین تبدیل داده‌ها به Modelهای مورد نیاز Domain است.
+مسئول ارتباط با منابع داده مانند Database و API و تبدیل داده‌ها.
 
----
-
-📂 ساختار پیشنهادی پروژه
+Project Structure
 
 app/
-│
 ├── data/
 │   ├── local/
 │   ├── remote/
@@ -149,13 +136,13 @@ app/
     ├── navigation/
     └── state/
 
-«ساختار پروژه همزمان با فرآیند مهاجرت به Clean Architecture در حال تکمیل و بهینه‌سازی است.»
+«ساختار پروژه همزمان با فرآیند مهاجرت به Clean Architecture در حال تکمیل است.»
 
 ---
 
 ⚡ Performance
 
-یکی از اهداف اصلی توسعه Spy Manager، کاهش زمان Startup و بهبود عملکرد اولیه برنامه است.
+یکی از اهداف پروژه، کاهش زمان Startup و بهبود عملکرد اولیه برنامه است.
 
 Startup Benchmark
 
@@ -163,11 +150,11 @@ Startup Benchmark
 ❌ بدون Baseline Profile| 1,231 ms
 🚧 با Baseline Profile| در حال اندازه‌گیری
 
-«Benchmarkها در شرایط یکسان اندازه‌گیری می‌شوند و نتایج نهایی پس از تکمیل فرآیند بهینه‌سازی ثبت خواهند شد.»
+«Benchmarkها در شرایط یکسان اندازه‌گیری می‌شوند و نتایج نهایی پس از تکمیل بهینه‌سازی ثبت خواهند شد.»
 
 ---
 
-🚧 وضعیت توسعه
+🚧 Development Status
 
 بخش| وضعیت
 🎨 UI / UX| 🟢 در حال توسعه
@@ -187,7 +174,7 @@ Startup Benchmark
 - [x] پیاده‌سازی قابلیت‌های اصلی
 - [ ] تکمیل مهاجرت به Clean Architecture
 - [ ] تکمیل لایه Domain
-- [ ] افزایش پوشش Unit Test
+- [ ] افزایش پوشش Unit Tests
 - [ ] اضافه کردن Baseline Profile
 - [ ] بهینه‌سازی Startup Performance
 - [ ] بهبود UI / UX
@@ -196,16 +183,14 @@ Startup Benchmark
 
 ---
 
-👨‍💻 توسعه‌دهنده
+👨‍💻 Developer
 
-<div dir="rtl" align="center">Ali Mahjoob
+Ali Mahjoob
 
 Android Developer
 
-Kotlin • Jetpack Compose • Clean Architecture
+"Kotlin" · "Jetpack Compose" · "Clean Architecture"
 
-</div>---
+---
 
-<div align="center">⭐ اگر پروژه برایتان جالب بود، با یک Star از آن حمایت کنید.
-
-</div>
+⭐ اگر پروژه برایتان جالب بود، با یک Star از آن حمایت کنید.
