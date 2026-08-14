@@ -30,17 +30,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.behnamuix.spygame.R
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 import com.behnamuix.spygame.ui.navigation.Screens
 
 @Composable
 fun AlertCardComp(
-    mediaVm: MediaPlayerViewModel,
+    mediaVm: MusicPlayerViewModel,
     navController: NavController,
     word: String,
     onDismiss: () -> Unit = {}
 ) {
-    mediaVm.stop()
+    //mediaVm.stop()
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(

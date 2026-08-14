@@ -3,10 +3,10 @@ package com.behnamuix.spygame.core.di
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.room.Room
-import com.behnamuix.spygame.core.controller.MusicController
+import com.behnamuix.spygame.core.media.controller.MusicController
 import com.behnamuix.spygame.core.database.SpyDatabase
 
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepositoryImpl
 import com.behnamuix.spygame.data.local.ds.config.dataStore
@@ -29,15 +29,11 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 
-val exo = module {
-    single {
-        ExoPlayer.Builder(get())
-    }
-}
 
 val clientModule = module {
     single {
@@ -75,11 +71,7 @@ val configGameUseCaseModule = module {
     single { ConfigGameUseCase(get()) }
 }
 
-val musicControllerModule=module {
-    single {
-        MusicController(get())
-    }
-}
+
 
 val dataSourceModule = module {
     single { ConfigGameDataSource() }
@@ -100,11 +92,28 @@ val viewModelModule = module {
     viewModel { SplashViewModel() }
     viewModel { RoleManagerViewModel(get()) }
     viewModel { GameViewModel(get()) }
-    viewModel { MediaPlayerViewModel(get()) }
+    viewModel { MusicPlayerViewModel(get()) }
     viewModel { TrainingViewModel(get()) }
     viewModel { DataStoreViewModel(get()) }
     viewModel { ApiViewModel(get()) }
     viewModel { OtpViewModel() }
 
 }
+val mediaModule = module {
 
+    single<ExoPlayer> {
+        ExoPlayer.Builder(androidContext()).build()
+    }
+
+    single {
+        MusicController(
+            player = get()
+        )
+    }
+
+    viewModel {
+        MusicPlayerViewModel(
+            controller = get()
+        )
+    }
+}

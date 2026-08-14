@@ -2,9 +2,9 @@ package com.behnamuix.spygame.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.behnamuix.retrofittest.SpyGame.model.Agent
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 
-class TrainingViewModel(private val mediaVm: MediaPlayerViewModel) : ViewModel() {
+class TrainingViewModel(private val mediaVm: MusicPlayerViewModel) : ViewModel() {
     var listRole = listOf<String>(
         "مامور",
         "جاسوس",
@@ -41,7 +41,7 @@ class TrainingViewModel(private val mediaVm: MediaPlayerViewModel) : ViewModel()
     )
 
     fun setVolume() {
-        mediaVm.volumeLow()
+        //mediaVm.volumeLow()
     }
 
 

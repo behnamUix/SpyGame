@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.behnamuix.spygame.R
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 import com.behnamuix.spygame.feature.configgame.presentation.screen.components.AddKeyWordAlert
 import com.behnamuix.spygame.feature.configgame.presentation.screen.components.Header
 import com.behnamuix.spygame.ui.navigation.Screens
@@ -65,7 +65,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
-    mediaVm: MediaPlayerViewModel = koinViewModel(),
+    mediaVm: MusicPlayerViewModel = koinViewModel(),
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
 
@@ -104,7 +104,7 @@ fun ConfigGameSc(
     )
 
     LaunchedEffect(Unit) {
-        mediaVm.volumeHigh()
+        //mediaVm.volumeHigh()
         vm.init(dsVm.agent.first(), dsVm.spy.first())
         vm.getWords()
 

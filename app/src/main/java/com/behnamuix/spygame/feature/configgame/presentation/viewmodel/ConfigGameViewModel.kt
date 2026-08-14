@@ -1,6 +1,5 @@
 package com.behnamuix.spygame.feature.configgame.presentation.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.behnamuix.spygame.data.local.db.model.KeyWord
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 import com.behnamuix.spygame.feature.configgame.domain.usecase.ConfigGameUseCase
 import com.behnamuix.spygame.utils.setLog
 import kotlinx.coroutines.delay
@@ -17,11 +16,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 class ConfigGameViewModel(
     private val keywordRepo: KeywordRepository,
-    private val mediaVm: MediaPlayerViewModel,
+    private val mediaVm: MusicPlayerViewModel,
     private val useCase: ConfigGameUseCase
 ) : ViewModel() {
 
@@ -198,7 +196,7 @@ class ConfigGameViewModel(
     //MediaController
     fun play() {
         try {
-            mediaVm.play()
+           // mediaVm.play()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -206,12 +204,12 @@ class ConfigGameViewModel(
     }
 
     fun pause() {
-        mediaVm.pause()
+       // mediaVm.pause()
         _mediaState.value = MediaState.PAUSE
     }
 
     fun setVolume() {
-        mediaVm.volumeHigh()
+       // mediaVm.volumeHigh()
     }
 
 

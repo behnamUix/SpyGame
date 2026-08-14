@@ -1,4 +1,4 @@
-package com.behnamuix.spygame.core.controller
+package com.behnamuix.spygame.core.media.controller
 
 
 import androidx.media3.common.MediaItem

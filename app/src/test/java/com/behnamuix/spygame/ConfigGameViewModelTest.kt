@@ -1,6 +1,6 @@
 package com.behnamuix.spygame
 
-import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
+import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spygame.feature.configgame.domain.usecase.ConfigGameUseCase
 import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
@@ -20,7 +20,7 @@ import kotlin.test.Test
 class ConfigGameViewModelTest {
     private val dispatcher = StandardTestDispatcher()
     private val keywordRepo = mock<KeywordRepository>()
-    private val mediaVm = mock<MediaPlayerViewModel>()
+    private val mediaVm = mock<MusicPlayerViewModel>()
     private val useCase = mock<ConfigGameUseCase>()
 
     private lateinit var viewModel: ConfigGameViewModel
