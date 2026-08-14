@@ -132,6 +132,9 @@ dependencies {
     implementation(libs.coil3.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.media3.exoplayer)
+
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(kotlin("test"))
 

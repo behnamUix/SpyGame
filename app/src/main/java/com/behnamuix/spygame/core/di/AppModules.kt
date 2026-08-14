@@ -1,10 +1,11 @@
 package com.behnamuix.spygame.core.di
 
 import android.content.Context
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.room.Room
+import com.behnamuix.spygame.core.controller.MusicController
 import com.behnamuix.spygame.core.database.SpyDatabase
-import com.behnamuix.spygame.core.media.config.getMediaPlayer
-import com.behnamuix.spygame.core.media.repo.MediaPlayerRepository
+
 import com.behnamuix.spygame.core.media.viewmodel.MediaPlayerViewModel
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepository
 import com.behnamuix.spygame.data.local.db.repository.keyword.KeywordRepositoryImpl
@@ -31,6 +32,12 @@ import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
+
+val exo = module {
+    single {
+        ExoPlayer.Builder(get())
+    }
+}
 
 val clientModule = module {
     single {
@@ -68,8 +75,10 @@ val configGameUseCaseModule = module {
     single { ConfigGameUseCase(get()) }
 }
 
-val mediaModule = module {
-    single { getMediaPlayer() }
+val musicControllerModule=module {
+    single {
+        MusicController(get())
+    }
 }
 
 val dataSourceModule = module {
@@ -81,14 +90,13 @@ val dataStoreModule = module {
 val repositoryModule = module {
     single<ConfigGameRepository> { ConfigGameRepositoryImpl(get()) }
     single<KeywordRepository> { KeywordRepositoryImpl(get()) }
-    single { MediaPlayerRepository(get()) }
     single { DataStoreRepository(get()) }
     single { ApiRepository(get()) }
 
 }
 
 val viewModelModule = module {
-    viewModel { ConfigGameViewModel(get(),get(),get()) }
+    viewModel { ConfigGameViewModel(get(), get(), get()) }
     viewModel { SplashViewModel() }
     viewModel { RoleManagerViewModel(get()) }
     viewModel { GameViewModel(get()) }
