@@ -14,7 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
+import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
+
 import com.behnamuix.spygame.ui.navigation.screens.game.components.BottomBarComp
 import com.behnamuix.spygame.ui.navigation.screens.game.components.QCardComp
 import com.behnamuix.spygame.ui.navigation.screens.game.components.TimerScreenComp
@@ -28,7 +29,7 @@ fun GameSc(
     time: Int,
     navController: NavController,
     vm: GameViewModel = koinViewModel(),
-    mediaVm: MusicPlayerViewModel = koinViewModel()
+    mediaVm: ConfigGameViewModel = koinViewModel()
 ) {
     val secondsLeft by vm.secondsLeft.collectAsState()
     val isRunning by vm.isRunning.collectAsState()
@@ -56,7 +57,7 @@ fun GameSc(
             formattedTime = vm.showTimerFormatedString(secondsLeft),
             word = word,
             navController = navController,
-            mediaVm = mediaVm,
+
             vm = vm
         )
         BottomBarComp(navController, vm, isRunning,word)

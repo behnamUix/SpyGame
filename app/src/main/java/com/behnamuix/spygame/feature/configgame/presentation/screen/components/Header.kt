@@ -48,14 +48,14 @@ fun Header(
 ) {
     var login by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
-    val mediaState by vm.mediaState.collectAsState()
-    val expandedState = vm.expanded.collectAsState()
+   // val mediaState by vm.mediaState.collectAsState()
+   //val expandedState = vm.expanded.collectAsState()
     var check by remember { mutableStateOf(false) }
-    val rotationAngle by animateFloatAsState(
+    /*val rotationAngle by animateFloatAsState(
         targetValue = if (expandedState.value) 180f else 0f, animationSpec = spring(
             dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow
         ), label = "rotation" // اضافه کردن label برای بهتر شدن لاگ‌ها
-    )
+    )*/
     var loggedIn by remember { mutableStateOf(false) }
 
 
@@ -76,7 +76,7 @@ fun Header(
             modifier = Modifier.padding(8.dp), onClick = {
                 vm.reverseExpand()
             }) {
-            Icon(
+            /*Icon(
                 tint = Color.White,
                 imageVector = Icons.Default.Settings,
                 modifier = Modifier
@@ -84,7 +84,7 @@ fun Header(
 
                     .rotate(rotationAngle),
                 contentDescription = ""
-            )
+            )*/
         }
 
         // Login Status Section
@@ -111,9 +111,9 @@ fun Header(
                 .height(40.dp)
         )*/
 
-        MediaControllerComp(mediaState, vm)
+       // MediaControllerComp(mediaState, vm)
     }
-    AnimatedVisibility(
+/*    AnimatedVisibility(
         expandedState.value,
         enter = fadeIn(),
         exit = fadeOut()
@@ -146,6 +146,6 @@ fun Header(
                 )
             }
         }
-    }
+    }*/
 
 }

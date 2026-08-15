@@ -49,7 +49,7 @@ fun AddKeyWordAlert(
 ) {
     val scope = rememberCoroutineScope()
     var word by remember { mutableStateOf("") }
-    val wordExist = configGameViewModel.wordExist.collectAsState()
+//    val wordExist = configGameViewModel.wordExist.collectAsState()
 
 
     Dialog(
@@ -75,27 +75,27 @@ fun AddKeyWordAlert(
                     text = "هر کلمه ای بخوای میتونی به بازی اضافه کنی و از بازی بیشتر لذت ببری",
                     fontWeight = FontWeight.Medium
                 )
-                OutlinedTextField(
-                    isError = wordExist.value,
-                    supportingText = {
-                        if (wordExist.value) {
-                            " ببخشید کلمه $word تو لیست کلماتت وجود داره:( "
-                        } else {
-                            ""
-                        }
-                    },
-                    textStyle = TextStyle(
-                        textDirection = TextDirection.Rtl, textAlign = TextAlign.Right
-                    ),
-                    label = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "کلمه را وارد کنید",
-                            textAlign = TextAlign.Right
-                        )
-                    },
-                    value = word,
-                    onValueChange = { word = it;configGameViewModel.checkWordExist(word) })
+//                OutlinedTextField(
+//                    isError = wordExist.value,
+//                    supportingText = {
+//                        if (wordExist.value) {
+//                            " ببخشید کلمه $word تو لیست کلماتت وجود داره:( "
+//                        } else {
+//                            ""
+//                        }
+//                    },
+//                    textStyle = TextStyle(
+//                        textDirection = TextDirection.Rtl, textAlign = TextAlign.Right
+//                    ),
+//                    label = {
+//                        Text(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            text = "کلمه را وارد کنید",
+//                            textAlign = TextAlign.Right
+//                        )
+//                    },
+//                    value = word,
+//                    onValueChange = { word = it;configGameViewModel.checkWordExist(word) })
                 Row(Modifier.padding(horizontal = 16.dp)) {
                     Button(
                         onClick = {

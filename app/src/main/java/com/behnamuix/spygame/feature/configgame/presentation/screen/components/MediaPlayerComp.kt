@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
-import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.MediaState
+
 
 @Composable
 fun MediaControllerComp(mediaState: MediaState, vm: ConfigGameViewModel) {
@@ -42,7 +42,7 @@ fun MediaControllerComp(mediaState: MediaState, vm: ConfigGameViewModel) {
         }
     }
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        when (mediaState) {
+       /* when (mediaState) {
             MediaState . PLAY -> {
                 IconButton({ vm.pause();state = !state }) {
                     Icon(
@@ -72,11 +72,15 @@ fun MediaControllerComp(mediaState: MediaState, vm: ConfigGameViewModel) {
             }
 
             else -> {}
-        }
+        }*/
         Icon(
             Icons.Default.MusicNote,
             contentDescription = ""
         )
     }
+
+}
+
+enum class MediaState {
 
 }

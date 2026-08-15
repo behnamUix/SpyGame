@@ -1,28 +1,41 @@
 package com.behnamuix.spygame.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Blue80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val SpyDarkColorScheme = darkColorScheme(
+    primary = Copper,
+    onPrimary = Charcoal,
+
+    secondary = Cream,
+    onSecondary = Charcoal,
+
+    tertiary = Danger,
+    onTertiary = Charcoal,
+
+    background = Charcoal,
+    onBackground = Cream,
+
+    surface = Charcoal,
+    onSurface = Cream,
+
+    surfaceVariant = Color(0xFF2A3138),
+    onSurfaceVariant = Cream,
+
+    outline = Copper,
+
+    error = Danger,
+    onError = Charcoal
 )
-
 
 @Composable
 fun SpyTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-
-
     MaterialTheme(
-        colorScheme = DarkColorScheme,
+        colorScheme = SpyDarkColorScheme,
         typography = Typography,
         content = content
     )

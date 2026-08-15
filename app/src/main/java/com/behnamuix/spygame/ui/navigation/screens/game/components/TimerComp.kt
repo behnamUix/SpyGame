@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
+
 import com.behnamuix.spygame.viewModel.GameViewModel
 
 @Composable
@@ -29,7 +29,7 @@ fun TimerScreenComp(
     word: String,
     navController: NavController,
     vm: GameViewModel,
-    mediaVm: MusicPlayerViewModel
+
 ) {
 
     var show by remember { mutableStateOf(false) }
@@ -47,7 +47,7 @@ fun TimerScreenComp(
             .fillMaxHeight(0.7f)
     ) {
         if (show) {
-            AlertCardComp(mediaVm, navController, word)
+  /*          AlertCardComp(mediaVm, navController, word)*/
         }
 
         //WaveProgress

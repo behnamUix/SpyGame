@@ -1,15 +1,8 @@
 package com.behnamuix.spygame.feature.configgame.presentation.screen
 
-
-import android.widget.Toast
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,279 +13,188 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
+import com.behnamuix.appointment.const.BACKGROUND_URL
 import com.behnamuix.spygame.R
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
-import com.behnamuix.spygame.core.media.presentation.viewmodel.MusicPlayerViewModel
-import com.behnamuix.spygame.feature.configgame.presentation.screen.components.AddKeyWordAlert
-import com.behnamuix.spygame.feature.configgame.presentation.screen.components.Header
-import com.behnamuix.spygame.ui.navigation.Screens
-import com.behnamuix.spygame.feature.configgame.presentation.screen.components.InformationComp
-import com.behnamuix.spygame.ui.navigation.screens.training.components.AgentComp
-import com.behnamuix.spygame.ui.navigation.screens.training.components.SpyComp
 import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
-import com.behnamuix.spygame.viewModel.RoleManagerViewModel
-import kotlinx.coroutines.flow.first
+import com.behnamuix.spygame.ui.theme.AppDimens
+import com.behnamuix.spygame.ui.theme.AppShapes
+import com.behnamuix.spygame.ui.theme.SpyTheme
 import org.koin.androidx.compose.koinViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
-
-    roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
+) {
+    val configState by vm.configGameState.collectAsState()
 
+    ConfigGameContent()
+}
 
-    ) {
-    //context
-    val ctx = LocalContext.current
-
-    val listWord by vm.wordList.collectAsState()
-
-    val agentCount by vm.agentCount.collectAsState()
-
-    val spyCount by vm.spyCount.collectAsState()
-
-    val enabled = vm.enabled.collectAsState()
-
-    val infiniteTransition = rememberInfiniteTransition(label = "color")
-    val infiniteTransition2 = rememberInfiniteTransition(label = "color")
-    val colorAnimate1 by infiniteTransition.animateColor(
-        initialValue = Color(0xFFEF5350),
-        targetValue = Color(0xFFFFEE58),
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "angle"
-    )
-    val colorAnimate2 by infiniteTransition2.animateColor(
-        initialValue = Color(0xFF42A5F5),
-        targetValue = Color(0xFF66BB6A),
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1500),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "angle"
-    )
-
-    LaunchedEffect(Unit) {
-        //mediaVm.volumeHigh()
-        vm.init(dsVm.agent.first(), dsVm.spy.first())
-        vm.getWords()
-
-    }
-    LaunchedEffect(agentCount, spyCount) {
-        dsVm.setAgent(agentCount)
-        dsVm.setSpy(spyCount)
-    }
-
-    Column(
-        Modifier
+@Composable
+fun ConfigGameContent() {
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .animateContentSize()
+            .background(Color(0xFFBE9A73))
     ) {
-        Header(navController)
-        Spacer(Modifier.height(24.dp))
-        Box(Modifier.fillMaxSize()) {
-            Column(
+        AsyncImage(
+            model = BACKGROUND_URL,
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(AppDimens.screenPadding)
+        ) {
+            Spacer(modifier = Modifier.height(AppDimens.contentTopSpace))
+
+            Text(
+                text = "CONFIDENTIAL INFORMATION",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(AppDimens.contentTopSpace))
+
+            Box(
                 modifier = Modifier
-
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.End
-            ) {
-                AgentComp(
-                    title = "تعداد ماموران",
-                    agentCount = agentCount,
-                    vm,
-                )
-                SpyComp(
-                    "تعداد جاسوسان", spyCount, vm
-                )
-
-                if (listWord.isNotEmpty()) {
-                    vm.progress = false
-                    Text(
-                        "پایگاه داده بازی آماده است!",
-                        style = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center,
-                        color = Color(0xFF64DD17),
-                        modifier = Modifier.fillMaxWidth(),
-                        fontSize = 14.sp
+                    .fillMaxWidth()
+                    .border(
+                        width = AppDimens.borderWidth,
+                        color = Color.Black,
+                        shape = MaterialTheme.shapes.large
                     )
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    contentAlignment = Alignment.CenterEnd
+            ) {
+                Column(
+                    modifier = Modifier.padding(AppDimens.screenPadding)
                 ) {
+                    Text(
+                        text = "AGENT COUNT",
+                        color = Color.Black,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    HorizontalDivider(
+                        modifier = Modifier.padding(
+                            top = AppDimens.dividerTopPadding
+                        )
+                    )
+
                     Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
+                        modifier = Modifier.padding(top = AppDimens.dividerTopPadding)
                     ) {
-
-                        //training
-                        OutlinedButton(
-                            border = BorderStroke(1.dp, Color(0xFF03A9F4)),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier,
-
-                            onClick = { navController.navigate(Screens.Training.route) }) {
-                            Text(
-                                text = "آموزش بازی",
-                                color = Color.White,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
-
-                        //َAi
-                        Button(
-                            onClick = {
-                                Toast.makeText(ctx, "به زودی ...", Toast.LENGTH_SHORT)
-                                    .show()
-                            },
+                        Icon(
+                            painter = painterResource(R.drawable.icon_spy),
+                            contentDescription = null,
                             modifier = Modifier
-
+                                .size(AppDimens.iconHero)
                                 .border(
-                                    width = 4.dp,
-                                    brush = Brush.linearGradient(
-                                        listOf(
-                                            colorAnimate1,
-                                            colorAnimate2
-                                        )
-                                    ),
-                                    shape = CircleShape
-                                ),
-                            shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.White,
-                                contentColor = Color.Black
-                            ),
-                            elevation = ButtonDefaults.elevatedButtonElevation(
-                                defaultElevation = 2.dp
-                            )
+                                    width = AppDimens.borderWidth,
+                                    color = Color.Black,
+                                    shape = MaterialTheme.shapes.large
+                                )
+                        )
+
+                        Column(
+                            modifier = Modifier.padding(start = AppDimens.screenPadding)
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.icon_ai),
-                                contentDescription = null,
-                                modifier = Modifier.size(36.dp),
-                                tint = Color.Black
-                            )
-
+                            Text(text = "Code: 24G7")
+                            Text(text = "Status:\nInfiltered")
                         }
+                        Column(
+                            modifier = Modifier.padding(start = AppDimens.screenPadding)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(AppDimens.spacingMedium)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(AppDimens.spacingXl)
+                                        .border(
+                                            width = 1.dp,
+                                            color = Color.Black,
+                                            shape = AppShapes.small
+                                        )
+                                        .clickable { /* کم کردن تعداد */ },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(AppDimens.iconMedium),
+                                        painter = painterResource(R.drawable.icon_minus),
+                                        contentDescription = "Decrease count",
 
-                        //addWord
-                        OutlinedButton(
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier,
-                            onClick = { vm.showAddWordDialog.value = true }) {
-                            Text(
-                                text = "کلمات شما",
-                                color = Color.White,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(8.dp)
-                            )
+                                    )
+                                }
+
+                                Text(
+                                    text = "1",
+                                    style = MaterialTheme.typography.headlineMedium,
+
+                                )
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(AppDimens.spacingXl)
+                                        .border(
+                                            width = 1.dp,
+                                            color = Color.Black,
+                                            shape = AppShapes.small
+                                        )
+                                        .clickable { /* افزایش تعداد */ },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(AppDimens.iconMedium),
+                                        painter = painterResource(R.drawable.icon_plus),
+                                        contentDescription = "Increase count",
+
+                                    )
+                                }
+                            }
+                            Text(text = "9587295729857123")
                         }
-
 
                     }
-
-                }
-
-
-
-
-
-
-                Button(
-                    enabled = enabled.value,
-                    shape = RoundedCornerShape(8.dp),
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            MaterialTheme.colorScheme.primary
-                        ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-
-                    onClick = {
-                        navController.navigate(Screens.RoleManager.route)
-
-                    }) {
-                    Text(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        text = " شروع بازی (${roleManagerViewModel.category.size} کلمه)",
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(12.dp)
-                            .testTag("boro_badi")
-                    )
-                }
-
-
-
-
-
-                InformationComp()
-                //Alert
-                if (vm.showAddWordDialog.value) {
-                    AddKeyWordAlert(
-                        vm.showAddWordDialog,
-                        vm,
-                        ctx,
-                        listWord
-
-                    )
                 }
             }
         }
-
     }
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun ConfigGamePreview() {
+    SpyTheme { // نام تم اصلی پروژه‌ات را اینجا بگذار
+        ConfigGameContent()
+    }
+}
