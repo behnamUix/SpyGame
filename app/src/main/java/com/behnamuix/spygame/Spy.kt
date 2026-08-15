@@ -7,9 +7,9 @@ import com.behnamuix.spygame.core.di.daoModule
 import com.behnamuix.spygame.core.di.dataSourceModule
 import com.behnamuix.spygame.core.di.dataStoreModule
 import com.behnamuix.spygame.core.di.databaseModule
-import com.behnamuix.spygame.core.di.mediaModule
 import com.behnamuix.spygame.core.di.repositoryModule
 import com.behnamuix.spygame.core.di.viewModelModule
+import com.behnamuix.spygame.core.media.di.mediaModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
