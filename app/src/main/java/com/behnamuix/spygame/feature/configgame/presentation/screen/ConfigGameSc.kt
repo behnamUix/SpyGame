@@ -65,7 +65,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ConfigGameSc(
     navController: NavController,
     vm: ConfigGameViewModel = koinViewModel(),
-    mediaVm: MusicPlayerViewModel = koinViewModel(),
+
     roleManagerViewModel: RoleManagerViewModel = koinViewModel(),
     dsVm: DataStoreViewModel = koinViewModel(),
 
