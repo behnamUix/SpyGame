@@ -27,5 +27,7 @@ class ConfigGameUseCase(
     fun getAgentCode()=configGameRepository.getAgentCode()
     fun getSpyCode()=configGameRepository.getSpyCode()
 
+    fun getBiometricProg()=configGameRepository.getBioProg()
+
 
 }

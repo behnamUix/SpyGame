@@ -13,7 +13,8 @@ object ConfigGameContract {
         val enabled: Boolean = true,
         val wordExist: Boolean = false,
         val showAddWordDialog: Boolean = false,
-        val progress: Boolean = true
+        val progress: Boolean = true,
+        val biometricSyncProg:Float=0f
     )
 
     sealed class ConfigGameAction {
@@ -43,6 +44,8 @@ object ConfigGameContract {
 
         data object ShowAddWordDialog : ConfigGameAction()
         data object HideAddWordDialog : ConfigGameAction()
+
+        data object setBiometricProgress: ConfigGameAction()
 
         data class SetProgress(val value: Boolean) : ConfigGameAction()
     }

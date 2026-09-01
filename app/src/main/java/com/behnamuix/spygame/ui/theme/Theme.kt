@@ -29,9 +29,9 @@ private val SpyDarkColorScheme = darkColorScheme(
     error = Danger,
     onError = Charcoal
 )
-
 @Composable
 fun SpyTheme(
+    darkTheme: Boolean = true,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(

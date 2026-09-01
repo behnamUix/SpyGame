@@ -2,6 +2,7 @@ package com.behnamuix.spygame.feature.configgame.data.repository
 
 import com.behnamuix.spygame.feature.configgame.data.local.ConfigGameDataSource
 import com.behnamuix.spygame.feature.configgame.domain.model.Agent
+import com.behnamuix.spygame.feature.configgame.domain.model.Biometric
 import com.behnamuix.spygame.feature.configgame.domain.model.Spy
 import com.behnamuix.spygame.feature.configgame.domain.repository.ConfigGameRepository
 
@@ -40,12 +41,17 @@ class ConfigGameRepositoryImpl :
 
     }
 
-    override fun getAgentCode(): String{
+    override fun getAgentCode(): String {
         return Agent.code
     }
 
     override fun getSpyCode(): String {
         return Spy.code
+    }
+
+    override fun getBioProg(): Float {
+        configGameDataSource.generateBiometricProg()
+        return Biometric.prog
     }
 
 

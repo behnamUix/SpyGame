@@ -13,4 +13,6 @@ interface ConfigGameRepository {
 
     fun getAgentCode(): String
     fun getSpyCode():String
+
+    fun getBioProg():Float
 }

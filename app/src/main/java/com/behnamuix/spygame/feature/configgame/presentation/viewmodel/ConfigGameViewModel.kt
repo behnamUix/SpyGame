@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 class ConfigGameViewModel(
     private val keywordRepo: KeywordRepository,
@@ -33,6 +34,7 @@ class ConfigGameViewModel(
 
     fun onAction(action: ConfigGameContract.ConfigGameAction) {
         when (action) {
+            is ConfigGameContract.ConfigGameAction.setBiometricProgress -> getBiometricProg()
             is ConfigGameContract.ConfigGameAction.SetEnabled ->
                 setEnabled(action.enabled)
 
@@ -120,6 +122,19 @@ class ConfigGameViewModel(
 
     fun checkDb(): Boolean {
         return configGameState.value.wordList.isEmpty()
+    }
+
+    fun getBiometricProg() {
+        viewModelScope.launch {
+            while (true) {
+                delay(5.seconds)
+                _configGameState.update {
+                    it.copy(biometricSyncProg = useCase.getBiometricProg())
+                }
+            }
+        }
+
+
     }
 
     fun incAgentCountPlayer() {
@@ -228,14 +243,14 @@ class ConfigGameViewModel(
     }
 
     fun play() {
-         controller.play(listTrack.random())
+        controller.play(listTrack.random())
     }
 
     fun pause() {
-         controller.pause()
+        controller.pause()
     }
 
     fun setVolume() {
-         controller.setVolume(1f)
+        controller.setVolume(1f)
     }
 }
