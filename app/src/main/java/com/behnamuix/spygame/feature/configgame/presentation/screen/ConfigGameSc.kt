@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,10 +28,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -395,7 +403,8 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
             )
     ) {
         Column(
-            modifier = Modifier.padding(AppDimens.screenPadding)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(AppDimens.dividerTopPadding)
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -450,6 +459,79 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                     )
                 }
             }
+            HorizontalDivider(
+                modifier = Modifier.padding(
+                    top = AppDimens.dividerTopPadding
+                )
+            )
+            /*OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = {
+                    Text(
+                        text = "example word",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.Gray
+                    )
+                },
+                trailingIcon = {
+                    Box(
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .size(32.dp)
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(7.dp)
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = RoundedCornerShape(7.dp)
+                            )
+                            .clickable {},
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add",
+                            tint = Color.Black,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(46.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+
+                    focusedPlaceholderColor = Color.Gray,
+                    unfocusedPlaceholderColor = Color.Gray,
+
+                    focusedBorderColor = Color.Black,
+                    unfocusedBorderColor = Color.Black,
+
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+
+                    cursorColor = Color.Black,
+
+                    focusedTrailingIconColor = Color.Black,
+                    unfocusedTrailingIconColor = Color.Black
+                ),
+                singleLine = true
+            )*/
+
+            Row() {
+                Text("USE AI:")
+                //Switch()
+            }
+            Button(onClick = {}, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.3f), shape = RoundedCornerShape(8.dp), colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)) {
+                Text("RUN TURN", color = MaterialTheme.colorScheme.outline, fontWeight = FontWeight.Black)
+            }
+
         }
     }
 }

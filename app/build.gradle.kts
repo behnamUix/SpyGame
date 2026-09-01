@@ -140,5 +140,7 @@ dependencies {
 
     testImplementation(libs.mockito.kotlin)
 
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
 
 }

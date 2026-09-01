@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val SpyDarkColorScheme = darkColorScheme(
-    primary = Copper,
-    onPrimary = Charcoal,
+    primary = Charcoal,
+    onPrimary = Color.White,
 
     secondary = Cream,
     onSecondary = Charcoal,
