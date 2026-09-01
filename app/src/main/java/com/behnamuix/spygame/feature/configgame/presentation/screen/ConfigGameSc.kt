@@ -1,7 +1,14 @@
 package com.behnamuix.spygame.feature.configgame.presentation.screen
 
 import android.util.Log
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.InfiniteTransition
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +22,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,13 +39,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -299,6 +310,7 @@ fun CountCard(
 
                         Text(
                             color = Color.Black,
+                            fontWeight = FontWeight.Bold,
                             text = count.toString(),
                             style = MaterialTheme.typography.headlineMedium
                         )
@@ -339,9 +351,39 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
     val animatedProgress by animateFloatAsState(
         targetValue = configGameState.value.biometricSyncProg,
         animationSpec = tween(
-            durationMillis = 800
+            durationMillis = 1200,
+            easing = FastOutSlowInEasing
         ),
         label = "progress"
+    )
+    val infiniteTransition = rememberInfiniteTransition(
+        label = "laser"
+    )
+
+    val laserAnimateFinger by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 2600,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "finger_laser"
+    )
+
+    val laserAnimateHand by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 2200,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "hand_laser"
     )
     Box(
         modifier = Modifier
@@ -359,13 +401,14 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painterResource(R.drawable.fingerprint),
-                    contentDescription = "", modifier = Modifier.size(70.dp)
+                ScanningIcon(
+                    imageRes = R.drawable.fingerprint,
+                    laserAnimate = laserAnimateFinger
                 )
-                Image(
-                    painterResource(R.drawable.handprint),
-                    contentDescription = "", modifier = Modifier.size(70.dp)
+
+                ScanningIcon(
+                    imageRes = R.drawable.handprint,
+                    laserAnimate = laserAnimateHand
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
@@ -408,6 +451,54 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ScanningIcon(
+    imageRes: Int,
+    laserAnimate: Float,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.size(70.dp)
+    ) {
+        Image(
+            painter = painterResource(imageRes),
+            contentDescription = null,
+            modifier = Modifier.size(70.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(3.dp)
+                .offset(y = 60.dp * laserAnimate)
+                .background(
+                    color = Color(0xFF00E5FF),
+                    shape = RoundedCornerShape(50)
+                )
+                .dropShadow(
+                    shape = RoundedCornerShape(50),
+                    shadow = Shadow(
+                        radius = 14.dp,
+                        color = Color(0xFF00E5FF),
+                        spread = 2.dp,
+                        offset = DpOffset(0.dp, 0.dp),
+                        alpha = 0.8f
+                    )
+                )
+                .dropShadow(
+                    shape = RoundedCornerShape(50),
+                    shadow = Shadow(
+                        radius = 28.dp,
+                        color = Color(0xFF00B8FF),
+                        spread = 4.dp,
+                        offset = DpOffset(0.dp, 0.dp),
+                        alpha = 0.35f
+                    )
+                )
+        )
     }
 }
 

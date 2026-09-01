@@ -35,6 +35,10 @@ class ConfigGameDataSource {
 
     }
     fun generateBiometricProg(){
-        Biometric.prog= Random.nextFloat()
+        val current = Random.nextFloat()
+
+        val next = (current + Random.nextFloat() * 0.2f)
+            .coerceAtMost(1f)
+        Biometric.prog= next
     }
 }
