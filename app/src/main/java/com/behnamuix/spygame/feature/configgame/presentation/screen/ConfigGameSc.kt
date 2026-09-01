@@ -1,8 +1,6 @@
 package com.behnamuix.spygame.feature.configgame.presentation.screen
 
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -28,17 +26,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +44,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -62,6 +56,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil3.Bitmap
 import coil3.compose.AsyncImage
 import com.behnamuix.appointment.const.BACKGROUND_URL
 import com.behnamuix.spygame.R
@@ -70,10 +65,9 @@ import com.behnamuix.spygame.feature.configgame.presentation.contract.ConfigGame
 import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
 import com.behnamuix.spygame.ui.theme.AppDimens
 import com.behnamuix.spygame.ui.theme.AppShapes
-import kotlinx.coroutines.delay
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import org.koin.androidx.compose.koinViewModel
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 
 @Composable
@@ -126,7 +120,7 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
 
             Text(
                 text = "CONFIDENTIAL INFORMATION",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -140,6 +134,8 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
             )
 
             CountCard(
+
+                configGameState = configGameState,
                 title = "AGENT COUNT",
                 count = configGameState.value.agentCount,
                 onDecrease = {
@@ -147,14 +143,13 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
                         ConfigGameContract.ConfigGameAction
                             .DecreaseAgentCount
                     )
-                },
-                onIncrease = {
-                    vm.onAction(
-                        ConfigGameContract.ConfigGameAction
-                            .IncreaseAgentCount
-                    )
                 }
-            )
+            ) {
+                vm.onAction(
+                    ConfigGameContract.ConfigGameAction
+                        .IncreaseAgentCount
+                )
+            }
 
             Spacer(
                 modifier = Modifier.height(
@@ -163,6 +158,7 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
             )
 
             CountCard(
+                configGameState,
                 title = "SPY COUNT",
                 count = configGameState.value.spyCount,
                 iconTint = MaterialTheme.colorScheme.error,
@@ -193,6 +189,7 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
 
 @Composable
 fun CountCard(
+    configGameState: State<ConfigGameContract.ConfigGameState>,
     title: String,
     count: Int,
     iconTint: Color = Color.Unspecified,
@@ -281,6 +278,8 @@ fun CountCard(
                 }
 
                 Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(
                         start = AppDimens.screenPadding
                     )
@@ -346,12 +345,55 @@ fun CountCard(
                             )
                         }
                     }
+                    Image(
+                        bitmap = BarcodeGeneratorComp(
+                            value = (count * 100).toString(),
+                            format = BarcodeFormat.CODE_128,
+                            width = 350,
+                            height = 50
+                        ).asImageBitmap(),
+                        contentDescription = "Barcode",
+                        modifier = Modifier
+                            .width(350.dp)
+                            .height(50.dp)
+                    )
 
-                    Text(text = "9587295729857123", color = Color.Black)
+
                 }
             }
         }
     }
+}
+
+@Composable
+fun BarcodeGeneratorComp(
+    value: String,
+    format: BarcodeFormat,
+    width: Int,
+    height: Int
+): Bitmap {
+
+    val encoder = BarcodeEncoder()
+    val bitmap = encoder.encodeBitmap(
+        value,
+        format,
+        width,
+        height
+    )
+    bitmap.apply {
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                if (getPixel(x, y) == android.graphics.Color.WHITE) {
+                    setPixel(
+                        x,
+                        y,
+                        android.graphics.Color.TRANSPARENT
+                    )
+                }
+            }
+        }
+    }
+    return bitmap
 }
 
 @Composable
@@ -528,8 +570,20 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                 Text("USE AI:")
                 //Switch()
             }
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.3f), shape = RoundedCornerShape(8.dp), colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)) {
-                Text("RUN TURN", color = MaterialTheme.colorScheme.outline, fontWeight = FontWeight.Black)
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.3f),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+            ) {
+                Text(
+                    "RUN TURN",
+                    color = MaterialTheme.colorScheme.outline,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Black
+                )
             }
 
         }
