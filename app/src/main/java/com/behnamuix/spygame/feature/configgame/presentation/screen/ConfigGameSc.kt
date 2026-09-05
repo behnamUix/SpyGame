@@ -1,5 +1,6 @@
 package com.behnamuix.spygame.feature.configgame.presentation.screen
 
+import android.widget.Space
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -26,17 +27,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,6 +70,7 @@ import com.behnamuix.appointment.const.BACKGROUND_URL
 import com.behnamuix.spygame.R
 import com.behnamuix.spygame.data.local.ds.viewModel.DataStoreViewModel
 import com.behnamuix.spygame.feature.configgame.presentation.contract.ConfigGameContract
+import com.behnamuix.spygame.feature.configgame.presentation.screen.components.IconISwitch
 import com.behnamuix.spygame.feature.configgame.presentation.viewmodel.ConfigGameViewModel
 import com.behnamuix.spygame.ui.theme.AppDimens
 import com.behnamuix.spygame.ui.theme.AppShapes
@@ -177,10 +186,30 @@ fun ConfigGameContent(vm: ConfigGameViewModel) {
             )
             Spacer(
                 modifier = Modifier.height(
-                    AppDimens.screenPadding
+                    AppDimens.spacingXl
                 )
             )
             AiCard(configGameState)
+            Box(                   modifier = Modifier
+                .padding(top = 24.dp)){
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.4f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        "RUN TURN",
+                        color = MaterialTheme.colorScheme.outline,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Black
+                    )
+                }
+            }
+
         }
     }
 
@@ -398,6 +427,7 @@ fun BarcodeGeneratorComp(
 
 @Composable
 fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
+    var check by remember { mutableStateOf(false) }
     val animatedProgress by animateFloatAsState(
         targetValue = configGameState.value.biometricSyncProg,
         animationSpec = tween(
@@ -437,6 +467,7 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
     )
     Box(
         modifier = Modifier
+
             .fillMaxWidth()
             .border(
                 width = AppDimens.borderWidth,
@@ -446,7 +477,7 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(AppDimens.dividerTopPadding)
+            modifier = Modifier.padding(AppDimens.screenPadding)
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -506,7 +537,7 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                     top = AppDimens.dividerTopPadding
                 )
             )
-            /*OutlinedTextField(
+            OutlinedTextField(
                 value = "",
                 onValueChange = {},
                 placeholder = {
@@ -564,27 +595,16 @@ fun AiCard(configGameState: State<ConfigGameContract.ConfigGameState>) {
                     unfocusedTrailingIconColor = Color.Black
                 ),
                 singleLine = true
-            )*/
+            )
 
-            Row() {
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                 Text("USE AI:")
-                //Switch()
+                Spacer(modifier = Modifier.width(32.dp))
+                IconISwitch(checked = check, onCheckedChange = {
+                    check=it
+                })
             }
-            Button(
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.3f),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
-            ) {
-                Text(
-                    "RUN TURN",
-                    color = MaterialTheme.colorScheme.outline,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Black
-                )
-            }
+
 
         }
     }
